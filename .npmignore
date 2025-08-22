@@ -1,0 +1,59 @@
+# Source files - only include compiled dist
+src/
+*.ts
+!*.d.ts
+
+# Development files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Node modules
+node_modules/
+
+# Build files
+tsconfig.json
+nodemon.json
+
+# Development documentation
+HOMEBRIDGE-UI-GUIDE.md
+GUI-LAYOUT.md
+AHOY-DTU-MQTT-SPECS.md
+homebridge-ui-styles.css
+config-examples.json
+
+# Git files
+.git/
+.gitignore
+
+# npm files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test files
+test/
+tests/
+__tests__/
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+
+# Coverage
+coverage/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

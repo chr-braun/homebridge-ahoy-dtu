@@ -1,0 +1,46 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
+        registry-url: 'https://registry.npmjs.org'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run build
+      run: npm run build
+
+    - name: Run tests
+      run: npm test --if-present
+
+    - name: Verify package contents
+      run: npm pack --dry-run
+
+    - name: Publish to npm
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Create deployment summary
+      run: |
+        echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Package built successfully" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Published to npm registry" >> $GITHUB_STEP_SUMMARY
+        echo "- 📦 Package: homebridge-ahoy-dtu@$(node -p "require('./package.json').version")" >> $GITHUB_STEP_SUMMARY
+        echo "- 🌐 Available at: https://www.npmjs.com/package/homebridge-ahoy-dtu" >> $GITHUB_STEP_SUMMARY

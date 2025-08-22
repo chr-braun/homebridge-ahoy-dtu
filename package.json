@@ -1,0 +1,68 @@
+{
+  "name": "homebridge-ahoy-dtu",
+  "version": "1.0.0",
+  "description": "Homebridge plugin for AHOY-DTU solar inverter monitoring via MQTT with device discovery and modern UI",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rimraf ./dist && tsc",
+    "prepublishOnly": "npm run build",
+    "watch": "tsc -w",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "test": "echo \"No tests specified\" && exit 0",
+    "lint": "eslint src --ext .ts",
+    "clean": "rimraf ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/homebridge/homebridge-ahoy-dtu.git"
+  },
+  "keywords": [
+    "homebridge",
+    "homebridge-plugin",
+    "homekit",
+    "solar",
+    "ahoy-dtu",
+    "ahoy",
+    "dtu",
+    "mqtt",
+    "inverter",
+    "renewable-energy",
+    "energy-monitoring",
+    "hoymiles",
+    "solar-power",
+    "iot",
+    "smart-home",
+    "photovoltaic",
+    "pv"
+  ],
+  "author": {
+    "name": "Homebridge Community",
+    "email": "support@homebridge.io"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/homebridge/homebridge-ahoy-dtu/issues"
+  },
+  "homepage": "https://github.com/homebridge/homebridge-ahoy-dtu#readme",
+  "engines": {
+    "node": ">=14.18.1",
+    "homebridge": ">=1.3.0"
+  },
+  "files": [
+    "dist/**/*",
+    "config.schema.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "mqtt": "^4.3.7"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.0",
+    "homebridge": "^1.6.0",
+    "nodemon": "^2.0.22",
+    "rimraf": "^4.4.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  }
+}

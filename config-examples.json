@@ -1,0 +1,95 @@
+{
+  "examples": [
+    {
+      "name": "Discovery Mode - Find Your Devices",
+      "description": "Use this first to discover all available MQTT topics from your AHOY-DTU",
+      "config": {
+        "platform": "AhoyDTU",
+        "name": "AHOY-DTU Solar",
+        "mqttHost": "192.168.1.100",
+        "mqttPort": 1883,
+        "mqttUsername": "your-username",
+        "mqttPassword": "your-password",
+        "discoverDevices": true
+      }
+    },
+    {
+      "name": "Basic Preset - Simple Setup",
+      "description": "Quick setup with essential solar monitoring (power, daily energy, status)",
+      "config": {
+        "platform": "AhoyDTU",
+        "name": "AHOY-DTU Solar",
+        "mqttHost": "192.168.1.100",
+        "mqttPort": 1883,
+        "mqttUsername": "your-username",
+        "mqttPassword": "your-password",
+        "discoverDevices": false,
+        "usePreset": "basic",
+        "maxEnergyPerDay": 8,
+        "offlineThresholdMinutes": 15
+      }
+    },
+    {
+      "name": "Detailed Preset - Complete Monitoring",
+      "description": "Comprehensive monitoring including temperature, efficiency, and total energy",
+      "config": {
+        "platform": "AhoyDTU",
+        "name": "AHOY-DTU Solar",
+        "mqttHost": "192.168.1.100",
+        "mqttPort": 1883,
+        "mqttUsername": "your-username", 
+        "mqttPassword": "your-password",
+        "discoverDevices": false,
+        "usePreset": "detailed",
+        "maxEnergyPerDay": 12
+      }
+    },
+    {
+      "name": "Custom Selection - Pick Your Topics",
+      "description": "Manually select specific MQTT topics (discovered from discovery mode)",
+      "config": {
+        "platform": "AhoyDTU",
+        "name": "AHOY-DTU Solar",
+        "mqttHost": "192.168.178.23",
+        "mqttPort": 1883,
+        "mqttUsername": "biber",
+        "mqttPassword": "2203801826",
+        "discoverDevices": false,
+        "selectedDevices": [
+          "AHOY-DTU_TOTAL/power",
+          "AHOY-DTU_TOTAL/energy_today",
+          "AHOY-DTU_TOTAL/energy_total",
+          "AHOY-DTU_TOTAL/temperature",
+          "AHOY-DTU_TOTAL/status",
+          "AHOY-DTU_TOTAL/efficiency",
+          "AHOY-DTU_114172220001/power",
+          "AHOY-DTU_114172220001/temperature"
+        ],
+        "maxEnergyPerDay": 15
+      }
+    },
+    {
+      "name": "Large System - Multiple Inverters",
+      "description": "Configuration for systems with multiple individual inverters",
+      "config": {
+        "platform": "AhoyDTU",
+        "name": "AHOY-DTU Solar",
+        "mqttHost": "192.168.1.100",
+        "mqttPort": 1883,
+        "discoverDevices": false,
+        "selectedDevices": [
+          "AHOY-DTU_TOTAL/power",
+          "AHOY-DTU_TOTAL/energy_today",
+          "AHOY-DTU_TOTAL/status",
+          "AHOY-DTU_INV1/power",
+          "AHOY-DTU_INV1/temperature",
+          "AHOY-DTU_INV2/power", 
+          "AHOY-DTU_INV2/temperature",
+          "AHOY-DTU_INV3/power",
+          "AHOY-DTU_INV3/temperature"
+        ],
+        "maxEnergyPerDay": 25
+      }
+    }
+  ]
+}
