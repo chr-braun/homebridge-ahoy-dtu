@@ -1,4 +1,4 @@
-# 🌞 Homebridge AHOY-DTU Plugin
+# 🌞 Homebridge AHOY-DTU Plugin (work in progress)
 
 <div align="center">
 
