@@ -1,4 +1,4 @@
-# 🌞 Homebridge AHOY-DTU Plugin
+# 🌞 Homebridge AHOY-DTU Plugin (work in progress)
 
 > ⚠️ **Work in Progress** - This plugin is currently under active development. While functional, some features may change before the first stable release.
 
