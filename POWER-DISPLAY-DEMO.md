@@ -174,4 +174,4 @@ A: Check logs for actual power values. Outlet only shows ON when power > 0W.
 A: This is the minimum value when power is 0W (prevents HomeKit display issues).
 
 **Q: Can I use both modes simultaneously?**  
-A: No, choose one mode. The configuration applies to all power devices.
+A: No, choose one mode. The git tag v1.1.0configuration applies to all power devices.
