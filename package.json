@@ -1,10 +1,10 @@
 {
   "name": "homebridge-ahoy-dtu",
-  "version": "1.1.0",
-  "description": "Homebridge plugin for AHOY-DTU solar inverter monitoring via MQTT with device discovery, modern UI, and configurable power measurement units",
+  "version": "1.2.0",
+  "description": "Homebridge plugin for AHOY-DTU solar inverter monitoring via MQTT with device discovery, modern UI, configurable power measurement units, and multi-language daily reports",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rimraf ./dist && tsc",
+    "build": "rimraf ./dist && tsc && cp -r src/i18n/locales dist/i18n/",
     "prepublishOnly": "npm run build",
     "watch": "tsc -w",
     "dev": "nodemon --exec ts-node src/index.ts",
@@ -35,7 +35,12 @@
     "iot",
     "smart-home",
     "photovoltaic",
-    "pv"
+    "pv",
+    "daily-reports",
+    "multi-language",
+    "i18n",
+    "notifications",
+    "analytics"
   ],
   "author": {
     "name": "Christian Braun",

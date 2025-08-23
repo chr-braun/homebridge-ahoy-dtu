@@ -23,15 +23,49 @@
 
 ## 🌟 Key Features
 
+- **🌍 Multi-Language Daily Reports** - Get personalized end-of-day solar summaries in 5 languages (🇺🇸🇩🇪🇫🇷🇮🇹🇨🇳) via HomeKit notifications
 - **🎨 Modern Homebridge UI** - Beautiful, responsive GUI with step-by-step setup
 - **🔍 Easy Device Discovery** - Just enter your MQTT server IP and discover all available devices
 - **🚀 Quick Setup Presets** - Choose from Basic, Detailed, or Custom configurations
+- **⚡ Flexible Power Display** - Choose between Light Sensor (exact watts) or Outlet (on/off state) representation
 - **🌙 Offline Detection** - Automatically detects when solar system shuts down (evening/night/no sun)
 - **📐 Flexible Device Selection** - Choose exactly which MQTT topics to expose as HomeKit devices  
 - **✅ Smart Data Validation** - Automatic filtering of invalid/error messages
 - **📊 Health Monitoring** - Track device connectivity and data freshness
 - **⚡ Smart Energy Calculation** - Configurable daily energy limits for accurate percentages
 - **🔄 Real-time Updates** - Live monitoring of solar power, energy, temperature, and status
+
+## 🌍 NEW: Multi-Language Daily Reports
+
+> **🎆 Latest Feature!** Get intelligent end-of-day solar production summaries delivered right to your HomeKit devices in your preferred language.
+
+### 🗣️ Supported Languages
+| Language | Code | Sample Report |
+|----------|------|---------------|
+| **🇺🇸 English** | `en` | "Solar production complete • Generated: 15.8 kWh (79% of target) • Peak: 4.2 kW at 13:15 • +12% vs yesterday" |
+| **🇩🇪 German** | `de` | "Solarproduktion abgeschlossen • Erzeugt: 15,8 kWh (79% des Ziels) • Spitze: 4,2 kW um 13:15 • +12% vs gestern" |
+| **🇫🇷 French** | `fr` | "Production solaire terminée • Générée: 15,8 kWh (79% de l'objectif) • Pic: 4,2 kW à 13:15 • +12% vs hier" |
+| **🇮🇹 Italian** | `it` | "Produzione solare completata • Generata: 15,8 kWh (79% dell'obiettivo) • Picco: 4,2 kW alle 13:15 • +12% vs ieri" |
+| **🇨🇳 Chinese** | `zh` | "今日太阳能发电完成 • 发电量：15.8 千瓦时（目标的79%） • 峰值：4.2 千瓦 于 13:15 • 昨日+12%" |
+
+### 📱 Quick Setup for Daily Reports
+```json
+{
+  "platforms": [{
+    "platform": "AhoyDTU",
+    "mqttHost": "192.168.1.100",
+    "usePreset": "detailed",
+    "dailyReports": {
+      "enabled": true,
+      "language": "de",
+      "reportStyle": "motion",
+      "reportTime": "sunset+30"
+    }
+  }]
+}
+```
+
+📚 **[Read the complete Multi-Language Daily Reports Guide](./MULTILANG-DAILY-REPORTS.md)**
 
 ## 📦 Installation
 
@@ -186,6 +220,10 @@ The plugin offers **two ways** to display power data in HomeKit:
 | `maxEnergyPerDay` | ❌ | 10 | Maximum daily energy (kWh) for percentage calculation |
 | `offlineThresholdMinutes` | ❌ | 15 | Minutes without data before marking device offline |
 | `usePowerOutlets` | ❌ | false | Use Outlet service for power (shows on/off state vs exact watts) |
+| `dailyReports.enabled` | ❌ | false | Enable multi-language daily solar reports |
+| `dailyReports.language` | ❌ | "en" | Report language: "en", "de", "fr", "it", "zh" |
+| `dailyReports.reportStyle` | ❌ | "motion" | Delivery method: "motion", "doorbell", "switch" |
+| `dailyReports.reportTime` | ❌ | "sunset+30" | When to send: "sunset", "sunset+30", "HH:MM" |
 
 ## 🌃 Offline Detection (Night/No Sun)
 

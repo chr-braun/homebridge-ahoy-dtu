@@ -1,0 +1,39 @@
+{
+  "energyGenerated": "Énergie Générée",
+  "peakPower": "Puissance de Pointe",
+  "productionHours": "Heures de Production",
+  "efficiency": "Efficacité",
+  
+  "dailySummaryTitle": "Résumé Solaire Quotidien",
+  "productionComplete": "Production solaire terminée pour aujourd'hui",
+  "excellentDay": "Excellente production solaire aujourd'hui! ☀️",
+  "goodDay": "Bonne production solaire aujourd'hui! 🌤️",
+  "averageDay": "Production solaire moyenne aujourd'hui ⛅",
+  "poorDay": "Peu de soleil aujourd'hui, mais chaque bit aide! ☁️",
+  "noProduction": "Aucune production solaire détectée aujourd'hui 🌧️",
+  
+  "vsYesterday": "{{sign}}{{percent}}{{percentUnit}} par rapport à hier",
+  "aboveAverage": "{{sign}}{{percent}}{{percentUnit}} au-dessus de la moyenne",
+  "belowAverage": "{{percent}}{{percentUnit}} en dessous de la moyenne",
+  "newRecord": "Nouveau record quotidien! 🎉",
+  
+  "sunny": "Ensoleillé",
+  "partlyCloudy": "Partiellement Nuageux",
+  "cloudy": "Nuageux",
+  "mixed": "Conditions Variables",
+  
+  "peakAt": "pic à",
+  "hoursOfSun": "heures de soleil",
+  
+  "kwh": "kWh",
+  "kw": "kW",
+  "hours": "heures",
+  "percent": "%",
+  
+  "templates": {
+    "dailyComplete": "Production solaire terminée pour aujourd'hui\n• Générée: {{energy}} {{energyUnit}} ({{efficiency}}{{percent}} de l'objectif)\n• Pic: {{peak}} {{peakUnit}} à {{peakTime}}\n• {{comparison}}",
+    "summary": "Résumé solaire d'aujourd'hui: {{energy}} {{energyUnit}} générée",
+    "comparison": "{{sign}}{{percent}}{{percentUnit}} par rapport à {{period}}",
+    "weather": "Conditions: {{condition}}"
+  }
+}

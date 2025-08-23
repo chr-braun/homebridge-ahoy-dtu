@@ -1,0 +1,24 @@
+{
+  "name": "AHOY-DTU Solar with Multi-Language Daily Reports",
+  "platforms": [
+    {
+      "platform": "AhoyDTU",
+      "name": "AHOY-DTU Solar",
+      "mqttHost": "192.168.1.100",
+      "mqttPort": 1883,
+      "mqttUsername": "solar_user",
+      "mqttPassword": "solar_password",
+      "usePreset": "detailed",
+      "usePowerOutlets": true,
+      "maxEnergyPerDay": 25.0,
+      "offlineThresholdMinutes": 20,
+      "dailyReports": {
+        "enabled": true,
+        "language": "de",
+        "reportStyle": "motion",
+        "reportTime": "sunset+30",
+        "includeComparisons": true
+      }
+    }
+  ]
+}

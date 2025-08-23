@@ -1,0 +1,31 @@
+{
+  "platforms": [
+    {
+      "platform": "AhoyDTU",
+      "name": "AHOY-DTU Solar",
+      "mqttHost": "192.168.178.23",
+      "mqttPort": 1883,
+      "mqttUsername": "biber",
+      "mqttPassword": "2203801826",
+      "discoverDevices": false,
+      "selectedDevices": [
+        "AHOY-DTU_TOTAL/power",
+        "AHOY-DTU_TOTAL/energy_today",
+        "AHOY-DTU_TOTAL/energy_total",
+        "AHOY-DTU_TOTAL/temperature",
+        "AHOY-DTU_TOTAL/status",
+        "AHOY-DTU_TOTAL/efficiency"
+      ],
+      "usePowerOutlets": true,
+      "maxEnergyPerDay": 25.0,
+      "offlineThresholdMinutes": 15,
+      "dailyReports": {
+        "enabled": true,
+        "language": "de",
+        "reportStyle": "motion",
+        "reportTime": "sunset+30",
+        "includeComparisons": true
+      }
+    }
+  ]
+}

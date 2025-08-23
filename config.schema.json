@@ -88,6 +88,60 @@
         "default": false,
         "description": "⚡ Enable to show power values in actual Watts using Outlet service instead of Lux (Light Sensor). Outlets display true power consumption and can be controlled in HomeKit."
       },
+      "dailyReports": {
+        "title": "Daily Solar Reports",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "title": "Enable Daily Reports",
+            "type": "boolean",
+            "default": false,
+            "description": "📊 Enable end-of-day solar production reports delivered as HomeKit notifications"
+          },
+          "language": {
+            "title": "Report Language",
+            "type": "string",
+            "enum": ["en", "de", "fr", "it", "zh"],
+            "enumNames": ["🇺🇸 English", "🇩🇪 Deutsch", "🇫🇷 Français", "🇮🇹 Italiano", "🇨🇳 中文"],
+            "default": "en",
+            "condition": {
+              "functionBody": "return model.dailyReports && model.dailyReports.enabled;"
+            },
+            "description": "🌍 Language for daily report messages and notifications"
+          },
+          "reportStyle": {
+            "title": "Report Delivery Method",
+            "type": "string",
+            "enum": ["motion", "doorbell", "switch"],
+            "enumNames": ["🚶 Motion Sensor (with notification)", "🔔 Doorbell Alert", "🔘 Programmable Switch"],
+            "default": "motion",
+            "condition": {
+              "functionBody": "return model.dailyReports && model.dailyReports.enabled;"
+            },
+            "description": "📱 How to deliver daily reports in HomeKit"
+          },
+          "reportTime": {
+            "title": "Report Time",
+            "type": "string",
+            "enum": ["sunset", "sunset+30", "sunset+60", "20:00", "21:00", "22:00"],
+            "enumNames": ["🌅 At sunset", "🌅 Sunset + 30 min", "🌅 Sunset + 1 hour", "🕐 8:00 PM", "🕘 9:00 PM", "🕙 10:00 PM"],
+            "default": "sunset+30",
+            "condition": {
+              "functionBody": "return model.dailyReports && model.dailyReports.enabled;"
+            },
+            "description": "⏰ When to send daily solar production reports"
+          },
+          "includeComparisons": {
+            "title": "Include Daily Comparisons",
+            "type": "boolean",
+            "default": true,
+            "condition": {
+              "functionBody": "return model.dailyReports && model.dailyReports.enabled;"
+            },
+            "description": "📈 Include comparisons with yesterday and weekly averages in reports"
+          }
+        }
+      },
       "mqttTopic": {
         "title": "MQTT Topic Prefix (Legacy)",
         "type": "string",
@@ -152,6 +206,19 @@
         "offlineThresholdMinutes",
         "usePowerOutlets",
         {
+          "type": "fieldset",
+          "title": "📊 Daily Solar Reports (Beta)",
+          "expandable": true,
+          "expanded": false,
+          "items": [
+            "dailyReports.enabled",
+            "dailyReports.language",
+            "dailyReports.reportStyle", 
+            "dailyReports.reportTime",
+            "dailyReports.includeComparisons"
+          ]
+        },
+        {
           "type": "help",
           "helpvalue": "<div style='background: #fff8dc; padding: 10px; border-radius: 5px; margin: 10px 0;'><strong>📄 Common AHOY-DTU Topics:</strong><br/>• <code>AHOY-DTU_TOTAL/power</code> - Current power output<br/>• <code>AHOY-DTU_TOTAL/energy_today</code> - Daily energy production<br/>• <code>AHOY-DTU_TOTAL/temperature</code> - Inverter temperature<br/>• <code>AHOY-DTU_TOTAL/status</code> - System status<br/>• <code>AHOY-DTU_123456/power</code> - Individual inverter power</div>"
         }
@@ -180,6 +247,10 @@
     {
       "type": "help",
       "helpvalue": "<div style='background: #fef3c7; border: 1px solid #f59e0b; padding: 15px; border-radius: 8px; margin-top: 10px;'><h5 style='color: #92400e; margin-top: 0;'>⚡ Power Measurement Options:</h5><p style='margin: 5px 0; color: #92400e;'><strong>Light Sensor (Default):</strong> Shows power as 'Lux' - works on all HomeKit versions<br/><strong>Outlet Service (New):</strong> Shows actual Watts and power state - more intuitive display</p><p style='margin: 5px 0; color: #92400e; font-size: 0.9em;'><em>Enable 'Use Outlet Service for Power Measurement' in Advanced Settings to display power in true Watts.</em></p></div>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<div style='background: #f0f9ff; border: 1px solid #0ea5e9; padding: 15px; border-radius: 8px; margin-top: 10px;'><h5 style='color: #0c4a6e; margin-top: 0;'>📊 Daily Solar Reports (Beta):</h5><p style='margin: 5px 0; color: #0c4a6e;'><strong>Smart Notifications:</strong> Get end-of-day solar production summaries delivered as HomeKit notifications in your preferred language</p><ul style='margin: 5px 0; color: #0c4a6e;'><li>🌍 Multi-language support (English, German, French, Italian, Chinese)</li><li>📏 Energy totals, peak power, and efficiency metrics</li><li>📈 Smart comparisons with yesterday and weekly averages</li><li>🌅 Automatic sunset-based timing or custom schedule</li></ul><p style='margin: 5px 0; color: #0c4a6e; font-size: 0.9em;'><em>Reports are delivered via Motion Sensor notifications, perfect for HomeKit automations!</em></p></div>"
     }
   ]
 }

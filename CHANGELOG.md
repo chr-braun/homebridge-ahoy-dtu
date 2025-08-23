@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2024-08-23
+
+### Added
+- **🌍 Multi-Language Daily Reports**: Comprehensive end-of-day solar production summaries in 5 languages
+  - 🇺🇸 English, 🇩🇪 German, 🇫🇷 French, 🇮🇹 Italian, 🇨🇳 Chinese support
+  - Intelligent analytics with yesterday comparisons and weekly averages
+  - Weather condition detection (sunny, partly cloudy, cloudy, mixed)
+  - Cultural number formatting (15.8 vs 15,8) and time display preferences
+- **📱 HomeKit Motion Sensor Delivery**: Reports delivered via Motion Sensor notifications
+  - Push notifications to all family devices
+  - HomeKit automation and scene compatibility
+  - Configurable timing (sunset-based or custom schedule)
+- **📊 Smart Solar Analytics**: Comprehensive daily tracking and insights
+  - Daily energy totals (Wh to kWh conversion)
+  - Peak power detection with timestamps
+  - Production hours calculation
+  - Efficiency percentage vs configurable targets
+- **🔧 Flexible Configuration**: Full customization via Homebridge UI
+  - Language selection dropdown with native names
+  - Multiple delivery methods (Motion Sensor, Doorbell, Switch)
+  - Custom report timing or automatic sunset calculation
+  - Optional comparisons and analytics
+
+### Technical
+- **Internationalization System**: Template-based i18n with JSON locale files
+- **Real-time Data Integration**: Power data feeding into daily analytics
+- **Build Process Enhancement**: Automatic locale file copying during compilation
+- **Type Safety**: Full TypeScript support for all new features
+- **Extensible Architecture**: Easy addition of new languages and features
+
+### Documentation
+- **Comprehensive Multi-Language Guide**: Detailed setup and usage instructions
+- **Configuration Examples**: Sample configs for all supported languages
+- **Demo Scripts**: Interactive demonstration of multi-language features
+- **Updated README**: Prominent featuring of new daily reports capability
+
 ## [1.1.0] - 2024-08-23
 
 ### Added

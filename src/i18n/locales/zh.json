@@ -1,0 +1,39 @@
+{
+  "energyGenerated": "发电量",
+  "peakPower": "峰值功率",
+  "productionHours": "发电时长",
+  "efficiency": "效率",
+  
+  "dailySummaryTitle": "每日太阳能报告",
+  "productionComplete": "今日太阳能发电完成",
+  "excellentDay": "今日太阳能发电极佳！☀️",
+  "goodDay": "今日太阳能发电良好！🌤️",
+  "averageDay": "今日太阳能发电一般 ⛅",
+  "poorDay": "今日阳光有限，但聊胜于无！☁️",
+  "noProduction": "今日未检测到太阳能发电 🌧️",
+  
+  "vsYesterday": "比昨日{{sign}}{{percent}}{{percentUnit}}",
+  "aboveAverage": "高于平均值{{sign}}{{percent}}{{percentUnit}}",
+  "belowAverage": "低于平均值{{percent}}{{percentUnit}}",
+  "newRecord": "创造新的日发电记录！🎉",
+  
+  "sunny": "晴朗",
+  "partlyCloudy": "多云",
+  "cloudy": "阴天",
+  "mixed": "天气多变",
+  
+  "peakAt": "峰值时间",
+  "hoursOfSun": "小时日照",
+  
+  "kwh": "千瓦时",
+  "kw": "千瓦",
+  "hours": "小时",
+  "percent": "%",
+  
+  "templates": {
+    "dailyComplete": "今日太阳能发电完成\n• 发电量：{{energy}} {{energyUnit}}（目标的{{efficiency}}{{percent}}）\n• 峰值：{{peak}} {{peakUnit}} 于 {{peakTime}}\n• {{comparison}}",
+    "summary": "今日太阳能概况：发电 {{energy}} {{energyUnit}}",
+    "comparison": "{{period}}{{sign}}{{percent}}{{percentUnit}}",
+    "weather": "天气状况：{{condition}}"
+  }
+}

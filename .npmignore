@@ -3,6 +3,9 @@ src/
 *.ts
 !*.d.ts
 
+# Keep locale files in distribution
+!dist/i18n/locales/*.json
+
 # Development files
 .vscode/
 .DS_Store

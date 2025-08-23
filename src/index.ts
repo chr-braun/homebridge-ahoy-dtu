@@ -8,6 +8,7 @@ import {
   Characteristic,
 } from 'homebridge';
 import * as mqtt from 'mqtt';
+import { DailyReportsManager, DailyReportConfig } from './daily-reports';
 
 export = (api: API) => {
   api.registerPlatform('homebridge-ahoy-dtu', 'AhoyDTU', AhoyDTUPlatform);
@@ -25,6 +26,7 @@ interface AhoyDTUConfig extends PlatformConfig {
   maxEnergyPerDay?: number; // For better energy percentage calculation
   offlineThresholdMinutes?: number; // Minutes before considering device offline
   usePowerOutlets?: boolean; // Use Outlet service for power measurements (shows actual Watts)
+  dailyReports?: DailyReportConfig; // Daily solar reports configuration
 }
 
 class AhoyDTUPlatform implements DynamicPlatformPlugin {
@@ -40,6 +42,7 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
   private deviceOfflineThreshold: number = 15 * 60 * 1000; // 15 minutes
   private lastDeviceActivity: Date = new Date();
   private isSystemOffline: boolean = false;
+  private dailyReportsManager: DailyReportsManager | null = null;
 
   constructor(
     public readonly log: Logger,
@@ -57,6 +60,17 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
     // Set offline threshold from config (default 15 minutes)
     this.deviceOfflineThreshold = (this.config.offlineThresholdMinutes || 15) * 60 * 1000;
     this.log.info(`Device offline threshold set to ${this.config.offlineThresholdMinutes || 15} minutes`);
+
+    // Initialize daily reports if enabled
+    if (this.config.dailyReports?.enabled) {
+      this.dailyReportsManager = new DailyReportsManager(
+        this.config.dailyReports, 
+        this.log, 
+        this.Service, 
+        this.Characteristic
+      );
+      this.log.info(`Daily reports enabled in ${this.config.dailyReports.language || 'en'} language`);
+    }
 
     this.api.on('didFinishLaunching', () => {
       this.log.debug('Executed didFinishLaunching callback');
@@ -184,6 +198,14 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
       value: message,
       timestamp: new Date()
     });
+
+    // Update daily reports with power data
+    if (this.dailyReportsManager && this.guessDataType(topic, message) === 'power') {
+      const powerValue = parseFloat(message);
+      if (!isNaN(powerValue) && powerValue >= 0) {
+        this.dailyReportsManager.updatePowerData(powerValue);
+      }
+    }
 
     // Update accessories
     this.updateAccessories();
@@ -381,6 +403,11 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
     });
     
     this.createAccessories(devices);
+    
+    // Create daily reports motion sensor if enabled
+    if (this.dailyReportsManager) {
+      this.createDailyReportsAccessory();
+    }
   }
 
   private setupSelectedDevices() {
@@ -433,6 +460,11 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
     
     this.createAccessories(devices);
     this.startHealthMonitoring();
+    
+    // Create daily reports motion sensor if enabled
+    if (this.dailyReportsManager) {
+      this.createDailyReportsAccessory();
+    }
   }
 
   private startHealthMonitoring() {
@@ -757,5 +789,60 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
           return 20;
         });
     }
+  }
+
+  private createDailyReportsAccessory() {
+    const uniqueId = 'ahoy-dtu-daily-reports';
+    const uuid = this.api.hap.uuid.generate(uniqueId);
+    const displayName = 'Solar Daily Reports';
+    
+    let existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
+    
+    if (existingAccessory) {
+      this.log.info('Restoring daily reports accessory from cache:', existingAccessory.displayName);
+    } else {
+      this.log.info('Creating new daily reports accessory:', displayName);
+      existingAccessory = new this.api.platformAccessory(displayName, uuid);
+      existingAccessory.context.device = {
+        uniqueId: uniqueId,
+        displayName: displayName,
+        serviceType: this.Service.MotionSensor,
+        topic: 'daily-reports',
+        dataType: 'reports'
+      };
+      this.api.registerPlatformAccessories('homebridge-ahoy-dtu', 'AhoyDTU', [existingAccessory]);
+      this.accessories.push(existingAccessory);
+    }
+    
+    // Setup the motion sensor service
+    this.setupDailyReportsAccessory(existingAccessory);
+    
+    // Register with daily reports manager
+    if (this.dailyReportsManager) {
+      this.dailyReportsManager.setReportAccessory(existingAccessory);
+    }
+  }
+
+  private setupDailyReportsAccessory(accessory: PlatformAccessory) {
+    accessory.getService(this.Service.AccessoryInformation)!
+      .setCharacteristic(this.Characteristic.Manufacturer, 'AHOY-DTU')
+      .setCharacteristic(this.Characteristic.Model, 'Daily Reports')
+      .setCharacteristic(this.Characteristic.SerialNumber, 'daily-reports-v1');
+
+    // Remove existing service if it exists
+    const existingService = accessory.getService(this.Service.MotionSensor);
+    if (existingService) {
+      accessory.removeService(existingService);
+    }
+
+    const service = accessory.addService(this.Service.MotionSensor, 'Solar Daily Reports');
+    
+    service.getCharacteristic(this.Characteristic.MotionDetected)
+      .onGet(() => {
+        // Motion detected indicates a report was triggered
+        return false; // Reset after reading
+      });
+      
+    this.log.info('Daily reports Motion Sensor configured for HomeKit notifications');
   }
 }
