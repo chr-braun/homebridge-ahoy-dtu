@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2024-08-23
+
+### Added
+- **Configurable Power Display**: Choose between Light Sensor (exact watts as lux) or Outlet Service (on/off state with logged watts)
+- **Power Measurement Options**: New `usePowerOutlets` configuration option for intuitive power state display
+- **Enhanced Documentation**: Comprehensive guides for power measurement choices with visual examples
+
+### Fixed
+- **MQTT Port Input**: Removed slider behavior for MQTT port field - now displays as proper number input
+- **UI Usability**: MQTT port field no longer shows unusable slider, improved user experience
+
+### Improved
+- **HomeKit Integration**: Better power representation options to suit different user preferences
+- **Configuration Schema**: Enhanced UI descriptions and help text for power measurement options
+- **Backward Compatibility**: All existing configurations continue to work unchanged
+
 ## [1.0.0] - 2024-01-XX
 
 ### Added

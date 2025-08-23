@@ -15,7 +15,10 @@
         "AHOY-DTU_TOTAL/temperature",
         "AHOY-DTU_TOTAL/status",
         "AHOY-DTU_TOTAL/efficiency"
-      ]
+      ],
+      "usePowerOutlets": true,
+      "maxEnergyPerDay": 25.0,
+      "offlineThresholdMinutes": 15
     }
   ]
 }

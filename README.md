@@ -1,5 +1,7 @@
 # 🌞 Homebridge AHOY-DTU Plugin
 
+> ⚠️ **Work in Progress** - This plugin is currently under active development. While functional, some features may change before the first stable release.
+
 <div align="center">
 
 [![npm version](https://badge.fury.io/js/homebridge-ahoy-dtu.svg)](https://badge.fury.io/js/homebridge-ahoy-dtu)
@@ -7,9 +9,9 @@
 [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[![GitHub stars](https://img.shields.io/github/stars/homebridge/homebridge-ahoy-dtu?style=social)](https://github.com/homebridge/homebridge-ahoy-dtu/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/homebridge/homebridge-ahoy-dtu)](https://github.com/homebridge/homebridge-ahoy-dtu/issues)
-[![GitHub last commit](https://img.shields.io/github/last-commit/homebridge/homebridge-ahoy-dtu)](https://github.com/homebridge/homebridge-ahoy-dtu/commits/main)
+[![GitHub stars](https://img.shields.io/github/stars/chr-braun/homebridge-ahoy-dtu?style=social)](https://github.com/chr-braun/homebridge-ahoy-dtu/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/chr-braun/homebridge-ahoy-dtu)](https://github.com/chr-braun/homebridge-ahoy-dtu/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/chr-braun/homebridge-ahoy-dtu)](https://github.com/chr-braun/homebridge-ahoy-dtu/commits/main)
 
 **Monitor your AHOY-DTU solar inverter data in Apple HomeKit via MQTT**
 
@@ -142,9 +144,29 @@ Device discovery completed. Found 6 devices:
 
 ## 📱 HomeKit Device Types
 
+### ⚡ Power Measurement Options
+
+The plugin offers **two ways** to display power data in HomeKit:
+
+| Method | Service Type | What You See | Best For |
+|--------|--------------|--------------|----------|
+| **Light Sensor** (default) | Light Sensor | Exact watts as "Lux" values | Precise monitoring, automations |
+| **Outlet Switch** (new) | Outlet | On/Off power state + logs | Simple monitoring, visual status |
+
+**Configure power method:**
+```json
+{
+  "usePowerOutlets": true   // Enable outlet display for power
+}
+```
+
+📖 **[Read detailed comparison](./POWER-MEASUREMENT-OPTIONS.md)** for choosing the best option.
+
+### All Device Mappings
+
 | MQTT Data Type | HomeKit Device | What You'll See |
-|----------------|----------------|-----------------|
-| **Power** | Light Sensor | Current power output (W) displayed as Lux |
+|----------------|----------------|------------------|
+| **Power** | Light Sensor / Outlet | Current power output (W as Lux) or On/Off state ⚡ |
 | **Energy** | Humidity Sensor | Energy production as percentage |
 | **Temperature** | Temperature Sensor | Temperature in °C |
 | **Status** | Contact Sensor | Online/offline status |
@@ -163,6 +185,7 @@ Device discovery completed. Found 6 devices:
 | `selectedDevices` | ❌ | [] | Array of MQTT topics to create HomeKit devices for |
 | `maxEnergyPerDay` | ❌ | 10 | Maximum daily energy (kWh) for percentage calculation |
 | `offlineThresholdMinutes` | ❌ | 15 | Minutes without data before marking device offline |
+| `usePowerOutlets` | ❌ | false | Use Outlet service for power (shows on/off state vs exact watts) |
 
 ## 🌃 Offline Detection (Night/No Sun)
 
@@ -295,9 +318,9 @@ AHOY-DTU_123456/rssi          # Signal strength (dBm)
 
 ## 🆘 Support
 
-Having issues? Check the [GitHub repository](https://github.com/homebridge/homebridge-ahoy-dtu) for help and to report bugs.
+Having issues? Check the [GitHub repository](https://github.com/chr-braun/homebridge-ahoy-dtu) for help and to report bugs.
 
-- **🐛 Report Issues**: [GitHub Issues](https://github.com/homebridge/homebridge-ahoy-dtu/issues)
+- **🐛 Report Issues**: [GitHub Issues](https://github.com/chr-braun/homebridge-ahoy-dtu/issues)
 - **📚 Documentation**: [Installation Guide](./INSTALL.md)
 - **💬 Community**: [Homebridge Discord](https://discord.gg/kqNCe2D)
 - **🔧 Debugging**: Check [Troubleshooting Guide](./README.md#troubleshooting)

@@ -1,7 +1,7 @@
 {
   "name": "homebridge-ahoy-dtu",
-  "version": "1.0.0",
-  "description": "Homebridge plugin for AHOY-DTU solar inverter monitoring via MQTT with device discovery and modern UI",
+  "version": "1.1.0",
+  "description": "Homebridge plugin for AHOY-DTU solar inverter monitoring via MQTT with device discovery, modern UI, and configurable power measurement units",
   "main": "dist/index.js",
   "scripts": {
     "build": "rimraf ./dist && tsc",
@@ -10,11 +10,13 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "test": "echo \"No tests specified\" && exit 0",
     "lint": "eslint src --ext .ts",
-    "clean": "rimraf ./dist"
+    "clean": "rimraf ./dist",
+    "verify-release": "node verify-release.js",
+    "prepare-npm": "npm run build && node verify-release.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/homebridge/homebridge-ahoy-dtu.git"
+    "url": "git+https://github.com/chr-braun/homebridge-ahoy-dtu.git"
   },
   "keywords": [
     "homebridge",
@@ -36,14 +38,14 @@
     "pv"
   ],
   "author": {
-    "name": "Homebridge Community",
-    "email": "support@homebridge.io"
+    "name": "Christian Braun",
+    "email": "chr-braun@users.noreply.github.com"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/homebridge/homebridge-ahoy-dtu/issues"
+    "url": "https://github.com/chr-braun/homebridge-ahoy-dtu/issues"
   },
-  "homepage": "https://github.com/homebridge/homebridge-ahoy-dtu#readme",
+  "homepage": "https://github.com/chr-braun/homebridge-ahoy-dtu#readme",
   "engines": {
     "node": ">=14.18.1",
     "homebridge": ">=1.3.0"

@@ -296,9 +296,9 @@ AHOY-DTU_123456/rssi          # Signal strength (dBm)
 
 ## 🆘 Support
 
-Having issues? Check the [GitHub repository](https://github.com/homebridge/homebridge-ahoy-dtu) for help and to report bugs.
+Having issues? Check the [GitHub repository](https://github.com/chr-braun/homebridge-ahoy-dtu) for help and to report bugs.
 
-- **🐛 Report Issues**: [GitHub Issues](https://github.com/homebridge/homebridge-ahoy-dtu/issues)
+- **🐛 Report Issues**: [GitHub Issues](https://github.com/chr-braun/homebridge-ahoy-dtu/issues)
 - **📚 Documentation**: [Installation Guide](./INSTALL.md)
 - **💬 Community**: [Homebridge Discord](https://discord.gg/kqNCe2D)
 - **🔧 Debugging**: Check [Troubleshooting Guide](./README.md#troubleshooting)

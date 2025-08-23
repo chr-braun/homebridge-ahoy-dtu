@@ -3,7 +3,7 @@
   "pluginType": "platform",
   "singular": false,
   "headerDisplay": "<p align='center'><img width='100px' src='https://raw.githubusercontent.com/homebridge/branding/latest/logos/homebridge-wordmark-logo-vertical.png'></p><p align='center'>Monitor your AHOY-DTU solar inverter data in Apple HomeKit via MQTT.</p><p align='center'><b>Quick Setup:</b> Enter your MQTT server details below, then choose Discovery mode to find all available devices, or use a preset for instant setup.</p>",
-  "footerDisplay": "<p align='center'>For support and documentation, visit the <a href='https://github.com/your-username/homebridge-ahoy-dtu' target='_blank'>GitHub repository</a>.</p>",
+  "footerDisplay": "<p align='center'>For support and documentation, visit the <a href='https://github.com/chr-braun/homebridge-ahoy-dtu' target='_blank'>GitHub repository</a>.</p>",
   "schema": {
     "type": "object",
     "properties": {
@@ -26,8 +26,7 @@
         "title": "MQTT Port",
         "type": "integer",
         "default": 1883,
-        "minimum": 1,
-        "maximum": 65535,
+        "placeholder": "1883",
         "description": "MQTT broker port (standard: 1883 for unencrypted, 8883 for SSL)"
       },
       "mqttUsername": {
@@ -82,6 +81,12 @@
         "minimum": 5,
         "maximum": 120,
         "description": "🌙 Minutes without MQTT data before marking device offline (normal during night or no sunlight)"
+      },
+      "usePowerOutlets": {
+        "title": "Use Outlet Service for Power Measurement",
+        "type": "boolean",
+        "default": false,
+        "description": "⚡ Enable to show power values in actual Watts using Outlet service instead of Lux (Light Sensor). Outlets display true power consumption and can be controlled in HomeKit."
       },
       "mqttTopic": {
         "title": "MQTT Topic Prefix (Legacy)",
@@ -145,6 +150,7 @@
       "items": [
         "maxEnergyPerDay",
         "offlineThresholdMinutes",
+        "usePowerOutlets",
         {
           "type": "help",
           "helpvalue": "<div style='background: #fff8dc; padding: 10px; border-radius: 5px; margin: 10px 0;'><strong>📄 Common AHOY-DTU Topics:</strong><br/>• <code>AHOY-DTU_TOTAL/power</code> - Current power output<br/>• <code>AHOY-DTU_TOTAL/energy_today</code> - Daily energy production<br/>• <code>AHOY-DTU_TOTAL/temperature</code> - Inverter temperature<br/>• <code>AHOY-DTU_TOTAL/status</code> - System status<br/>• <code>AHOY-DTU_123456/power</code> - Individual inverter power</div>"
@@ -170,6 +176,10 @@
     {
       "type": "help",
       "helpvalue": "<div style='background: #f0fdf4; border: 1px solid #bbf7d0; padding: 15px; border-radius: 8px; margin-top: 20px;'><h5 style='color: #15803d; margin-top: 0;'>🚀 Quick Start Guide:</h5><ol style='margin: 5px 0; color: #166534;'><li>Enter your MQTT server IP above</li><li>Enable 'Device Discovery Mode' and save</li><li>Restart Homebridge and check logs for discovered topics</li><li>Disable discovery, choose a preset or add custom topics</li><li>Save and restart - your solar data will appear in HomeKit!</li></ol></div>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<div style='background: #fef3c7; border: 1px solid #f59e0b; padding: 15px; border-radius: 8px; margin-top: 10px;'><h5 style='color: #92400e; margin-top: 0;'>⚡ Power Measurement Options:</h5><p style='margin: 5px 0; color: #92400e;'><strong>Light Sensor (Default):</strong> Shows power as 'Lux' - works on all HomeKit versions<br/><strong>Outlet Service (New):</strong> Shows actual Watts and power state - more intuitive display</p><p style='margin: 5px 0; color: #92400e; font-size: 0.9em;'><em>Enable 'Use Outlet Service for Power Measurement' in Advanced Settings to display power in true Watts.</em></p></div>"
     }
   ]
 }

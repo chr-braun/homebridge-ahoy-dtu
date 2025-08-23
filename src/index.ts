@@ -24,6 +24,7 @@ interface AhoyDTUConfig extends PlatformConfig {
   usePreset?: string; // 'basic', 'detailed', 'individual-inverters'
   maxEnergyPerDay?: number; // For better energy percentage calculation
   offlineThresholdMinutes?: number; // Minutes before considering device offline
+  usePowerOutlets?: boolean; // Use Outlet service for power measurements (shows actual Watts)
 }
 
 class AhoyDTUPlatform implements DynamicPlatformPlugin {
@@ -355,7 +356,7 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
       
       switch (dataType) {
         case 'power':
-          serviceType = this.Service.LightSensor;
+          serviceType = this.config.usePowerOutlets ? this.Service.Outlet : this.Service.LightSensor;
           break;
         case 'energy':
           serviceType = this.Service.HumiditySensor;
@@ -399,7 +400,7 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
       
       switch (dataType) {
         case 'power':
-          serviceType = this.Service.LightSensor;
+          serviceType = this.config.usePowerOutlets ? this.Service.Outlet : this.Service.LightSensor;
           break;
         case 'energy':
           serviceType = this.Service.HumiditySensor;
@@ -497,6 +498,11 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
       if (valueName === 'Energy Total') valueName = 'Total Energy';
       if (deviceName === 'Total') deviceName = 'Solar';
       
+      // Special naming for power devices when using outlets
+      if (valueName === 'Power' && this.config.usePowerOutlets) {
+        valueName = 'Power Switch'; // Clarify that it's a switch representation
+      }
+      
       return `${deviceName} ${valueName}`;
     }
     
@@ -530,6 +536,22 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
         if (service) {
           const lightValue = isNaN(numericValue) ? 0.0001 : Math.max(0.0001, numericValue);
           service.updateCharacteristic(this.Characteristic.CurrentAmbientLightLevel, lightValue);
+        }
+      } else if (device.serviceType === this.Service.Outlet) {
+        const service = accessory.getService(this.Service.Outlet);
+        if (service) {
+          // Set outlet as "On" if producing power
+          const isOn = !isNaN(numericValue) && numericValue > 0;
+          service.updateCharacteristic(this.Characteristic.On, isOn);
+          
+          // Update outlet usage status
+          const powerValue = isNaN(numericValue) ? 0 : Math.max(0, numericValue);
+          service.updateCharacteristic(this.Characteristic.OutletInUse, isOn);
+          
+          // Log power value since outlets don't directly show wattage
+          if (powerValue > 0) {
+            this.log.info(`${accessory.displayName}: ${powerValue}W (${isOn ? 'Producing' : 'Not Producing'})`);
+          }
         }
       } else if (device.serviceType === this.Service.ContactSensor) {
         const service = accessory.getService(this.Service.ContactSensor);
@@ -580,6 +602,13 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
       if (service) {
         // Set power to 0 when offline
         service.updateCharacteristic(this.Characteristic.CurrentAmbientLightLevel, 0.0001);
+      }
+    } else if (device.serviceType === this.Service.Outlet) {
+      const service = accessory.getService(this.Service.Outlet);
+      if (service) {
+        // Set outlet as "Off" when offline (not producing)
+        service.updateCharacteristic(this.Characteristic.On, false);
+        service.updateCharacteristic(this.Characteristic.OutletInUse, false);
       }
     } else if (device.serviceType === this.Service.ContactSensor) {
       const service = accessory.getService(this.Service.ContactSensor);
@@ -658,6 +687,37 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
             return isNaN(value) ? 0.0001 : Math.max(0.0001, value);
           }
           return 0.0001;
+        });
+    } else if (device.serviceType === this.Service.Outlet) {
+      // Configure outlet for power measurement
+      service.getCharacteristic(this.Characteristic.On)
+        .onGet(() => {
+          if (this.isSystemOffline) {
+            return false; // Outlet "off" when offline
+          }
+          const deviceData = this.deviceData.get(device.topic);
+          if (deviceData) {
+            const value = parseFloat(deviceData.value);
+            return !isNaN(value) && value > 0;
+          }
+          return false;
+        })
+        .onSet((value) => {
+          // Outlet switch is read-only for solar power - ignore set attempts
+          this.log.debug('Ignoring outlet set request - solar power is read-only');
+        });
+      
+      service.getCharacteristic(this.Characteristic.OutletInUse)
+        .onGet(() => {
+          if (this.isSystemOffline) {
+            return false;
+          }
+          const deviceData = this.deviceData.get(device.topic);
+          if (deviceData) {
+            const value = parseFloat(deviceData.value);
+            return !isNaN(value) && value > 0;
+          }
+          return false;
         });
     } else if (device.serviceType === this.Service.ContactSensor) {
       service.getCharacteristic(this.Characteristic.ContactSensorState)

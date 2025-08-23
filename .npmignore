@@ -21,6 +21,14 @@ GUI-LAYOUT.md
 AHOY-DTU-MQTT-SPECS.md
 homebridge-ui-styles.css
 config-examples.json
+POWER-DISPLAY-DEMO.md
+POWER-MEASUREMENT-OPTIONS.md
+POWER-MEASUREMENT-IMPLEMENTATION.md
+FIXES-SUMMARY.md
+test-config-*.json
+DEPLOYMENT.md
+GITHUB-READY.md
+git-setup.sh
 
 # Git files
 .git/
