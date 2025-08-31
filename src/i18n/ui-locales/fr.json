@@ -1,0 +1,110 @@
+{
+  "platform": {
+    "name": "AHOY-DTU Solar",
+    "description": "Surveillance d'onduleur solaire AHOY-DTU via MQTT"
+  },
+  "config": {
+    "basic": {
+      "title": "📝 Configuration de base",
+      "description": "Paramètres essentiels pour commencer",
+      "name": "Nom",
+      "nameDescription": "Nom de la plateforme AHOY-DTU"
+    },
+    "mqtt": {
+      "title": "🔌 Connexion MQTT",
+      "description": "Configurer la connexion à votre broker MQTT",
+      "host": "Hôte MQTT",
+      "hostDescription": "Adresse IP ou nom d'hôte de votre broker MQTT",
+      "port": "Port MQTT",
+      "portDescription": "Port de votre broker MQTT (par défaut: 1883)",
+      "username": "Nom d'utilisateur MQTT",
+      "usernameDescription": "Nom d'utilisateur pour l'authentification MQTT (optionnel)",
+      "password": "Mot de passe MQTT",
+      "passwordDescription": "Mot de passe pour l'authentification MQTT (optionnel)"
+    },
+    "devices": {
+      "title": "📱 Gestion des appareils",
+      "description": "Configurer quels appareils surveiller",
+      "discoverDevices": "Découverte automatique des appareils",
+      "discoverDevicesDescription": "Détecter automatiquement tous les topics MQTT disponibles",
+      "usePreset": "Utiliser un préréglage",
+      "usePresetDescription": "Configuration rapide avec des appareils prédéfinis",
+      "presetOptions": {
+        "basic": "Basique (Puissance + Énergie quotidienne + Statut)",
+        "detailed": "Détaillé (+ Température + Efficacité + Énergie totale)",
+        "individual": "Onduleurs individuels (ajoutés pendant la découverte)"
+      },
+      "selectedDevices": "Appareils sélectionnés",
+      "selectedDevicesDescription": "Liste des topics MQTT à surveiller"
+    },
+    "power": {
+      "title": "⚡ Mesure de puissance",
+      "description": "Configurer comment afficher les valeurs de puissance",
+      "usePowerOutlets": "Service de prise pour la mesure de puissance",
+      "usePowerOutletsDescription": "Afficher les valeurs de puissance en Watts réels (Prise) au lieu de Lux (Capteur de lumière)",
+      "maxEnergyPerDay": "Énergie quotidienne maximale",
+      "maxEnergyPerDayDescription": "Énergie quotidienne maximale en kWh pour un meilleur calcul de pourcentage"
+    },
+    "monitoring": {
+      "title": "📊 Surveillance",
+      "description": "Paramètres pour la surveillance des appareils et la détection hors ligne",
+      "offlineThresholdMinutes": "Seuil hors ligne (minutes)",
+      "offlineThresholdMinutesDescription": "Minutes sans données MQTT avant de marquer les appareils comme hors ligne"
+    },
+    "reports": {
+      "title": "📈 Rapports quotidiens",
+      "description": "Rapports de production solaire de fin de journée livrés comme notifications HomeKit",
+      "enabled": "Activer les rapports quotidiens",
+      "enabledDescription": "Activer les rapports de production solaire de fin de journée",
+      "language": "Langue du rapport",
+      "languageDescription": "Langue pour les messages de rapport et les notifications",
+      "languageOptions": {
+        "de": "🇩🇪 Allemand",
+        "en": "🇺🇸 Anglais",
+        "fr": "🇫🇷 Français"
+      },
+      "reportStyle": "Livraison du rapport",
+      "reportStyleDescription": "Comment livrer les rapports quotidiens dans HomeKit",
+      "reportStyleOptions": {
+        "motion": "🚶 Capteur de mouvement (avec notification)",
+        "doorbell": "🔔 Alerte de sonnette",
+        "switch": "🔘 Interrupteur programmable"
+      },
+      "reportTime": "Heure du rapport",
+      "reportTimeDescription": "Quand envoyer les rapports de production solaire quotidiens",
+      "reportTimeOptions": {
+        "sunset": "🌅 Au coucher du soleil",
+        "sunset+30": "🌅 Coucher du soleil + 30 min",
+        "sunset+60": "🌅 Coucher du soleil + 1 heure",
+        "20:00": "🕐 20h00",
+        "21:00": "🕘 21h00",
+        "22:00": "🕙 22h00"
+      },
+      "includeComparisons": "Inclure les comparaisons quotidiennes",
+      "includeComparisonsDescription": "Inclure les comparaisons avec hier et les moyennes hebdomadaires dans les rapports"
+    }
+  },
+  "messages": {
+    "success": "Succès",
+    "error": "Erreur",
+    "warning": "Avertissement",
+    "info": "Information",
+    "loading": "Chargement...",
+    "saving": "Sauvegarde...",
+    "testing": "Test...",
+    "connected": "Connecté",
+    "disconnected": "Déconnecté",
+    "online": "En ligne",
+    "offline": "Hors ligne"
+  },
+  "actions": {
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "test": "Tester",
+    "discover": "Découvrir",
+    "refresh": "Actualiser",
+    "restart": "Redémarrer",
+    "remove": "Supprimer",
+    "add": "Ajouter"
+  }
+}

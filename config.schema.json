@@ -7,6 +7,14 @@
   "schema": {
     "type": "object",
     "properties": {
+      "uiLanguage": {
+        "title": "🌍 UI Language / Benutzeroberfläche Sprache / Langue de l'interface",
+        "type": "string",
+        "enum": ["de", "en", "fr"],
+        "enumNames": ["🇩🇪 Deutsch", "🇺🇸 English", "🇫🇷 Français"],
+        "default": "en",
+        "description": "Choose your preferred language for the configuration interface"
+      },
       "name": {
         "title": "Platform Name",
         "type": "string",

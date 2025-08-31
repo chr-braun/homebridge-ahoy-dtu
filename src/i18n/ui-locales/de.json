@@ -1,0 +1,110 @@
+{
+  "platform": {
+    "name": "AHOY-DTU Solar",
+    "description": "AHOY-DTU Solaranlagen-Überwachung über MQTT"
+  },
+  "config": {
+    "basic": {
+      "title": "📝 Grundkonfiguration",
+      "description": "Wichtige Einstellungen zum Starten",
+      "name": "Name",
+      "nameDescription": "Name der AHOY-DTU Platform"
+    },
+    "mqtt": {
+      "title": "🔌 MQTT-Verbindung",
+      "description": "Verbindung zu deinem MQTT-Broker konfigurieren",
+      "host": "MQTT-Host",
+      "hostDescription": "IP-Adresse oder Hostname deines MQTT-Brokers",
+      "port": "MQTT-Port",
+      "portDescription": "Port deines MQTT-Brokers (Standard: 1883)",
+      "username": "MQTT-Benutzername",
+      "usernameDescription": "Benutzername für MQTT-Authentifizierung (optional)",
+      "password": "MQTT-Passwort",
+      "passwordDescription": "Passwort für MQTT-Authentifizierung (optional)"
+    },
+    "devices": {
+      "title": "📱 Geräteverwaltung",
+      "description": "Konfiguriere, welche Geräte überwacht werden sollen",
+      "discoverDevices": "Geräte automatisch entdecken",
+      "discoverDevicesDescription": "Alle verfügbaren MQTT-Topics automatisch erkennen",
+      "usePreset": "Voreinstellung verwenden",
+      "usePresetDescription": "Schnelle Einrichtung mit vordefinierten Geräten",
+      "presetOptions": {
+        "basic": "Basis (Leistung + Tagesenergie + Status)",
+        "detailed": "Detailliert (+ Temperatur + Effizienz + Gesamtenergie)",
+        "individual": "Einzelne Wechselrichter (während der Erkennung hinzugefügt)"
+      },
+      "selectedDevices": "Ausgewählte Geräte",
+      "selectedDevicesDescription": "Liste der zu überwachenden MQTT-Topics"
+    },
+    "power": {
+      "title": "⚡ Leistungsmessung",
+      "description": "Konfiguriere, wie Leistungswerte angezeigt werden",
+      "usePowerOutlets": "Steckdosen-Service für Leistungsmessung",
+      "usePowerOutletsDescription": "Leistungswerte in echten Watt anzeigen (Steckdose) statt in Lux (Lichtsensor)",
+      "maxEnergyPerDay": "Maximale Tagesenergie",
+      "maxEnergyPerDayDescription": "Maximale Tagesenergie in kWh für bessere Prozentberechnung"
+    },
+    "monitoring": {
+      "title": "📊 Überwachung",
+      "description": "Einstellungen für Geräteüberwachung und Offline-Erkennung",
+      "offlineThresholdMinutes": "Offline-Schwelle (Minuten)",
+      "offlineThresholdMinutesDescription": "Minuten ohne MQTT-Daten, bevor Geräte als offline markiert werden"
+    },
+    "reports": {
+      "title": "📈 Tagesberichte",
+      "description": "End-of-Day Solarproduktionsberichte als HomeKit-Benachrichtigungen",
+      "enabled": "Tagesberichte aktivieren",
+      "enabledDescription": "End-of-Day Solarproduktionsberichte aktivieren",
+      "language": "Berichtssprache",
+      "languageDescription": "Sprache für Berichtsnachrichten und Benachrichtigungen",
+      "languageOptions": {
+        "de": "🇩🇪 Deutsch",
+        "en": "🇺🇸 Englisch",
+        "fr": "🇫🇷 Französisch"
+      },
+      "reportStyle": "Berichtsübermittlung",
+      "reportStyleDescription": "Wie Tagesberichte in HomeKit übermittelt werden",
+      "reportStyleOptions": {
+        "motion": "🚶 Bewegungssensor (mit Benachrichtigung)",
+        "doorbell": "🔔 Türklingel-Alarm",
+        "switch": "🔘 Programmierbarer Schalter"
+      },
+      "reportTime": "Berichtszeit",
+      "reportTimeDescription": "Wann Tagesberichte gesendet werden sollen",
+      "reportTimeOptions": {
+        "sunset": "🌅 Bei Sonnenuntergang",
+        "sunset+30": "🌅 Sonnenuntergang + 30 min",
+        "sunset+60": "🌅 Sonnenuntergang + 1 Stunde",
+        "20:00": "🕐 20:00 Uhr",
+        "21:00": "🕘 21:00 Uhr",
+        "22:00": "🕙 22:00 Uhr"
+      },
+      "includeComparisons": "Tagesvergleiche einschließen",
+      "includeComparisonsDescription": "Vergleiche mit gestern und wöchentlichen Durchschnitten in Berichten einschließen"
+    }
+  },
+  "messages": {
+    "success": "Erfolgreich",
+    "error": "Fehler",
+    "warning": "Warnung",
+    "info": "Information",
+    "loading": "Lädt...",
+    "saving": "Speichert...",
+    "testing": "Testet...",
+    "connected": "Verbunden",
+    "disconnected": "Getrennt",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "actions": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "test": "Testen",
+    "discover": "Entdecken",
+    "refresh": "Aktualisieren",
+    "restart": "Neustart",
+    "remove": "Entfernen",
+    "add": "Hinzufügen"
+  }
+}

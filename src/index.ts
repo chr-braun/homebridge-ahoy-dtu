@@ -9,12 +9,14 @@ import {
 } from 'homebridge';
 import * as mqtt from 'mqtt';
 import { DailyReportsManager, DailyReportConfig } from './daily-reports';
+import { UILocalizationManager } from './i18n/ui-manager';
 
 export = (api: API) => {
   api.registerPlatform('homebridge-ahoy-dtu', 'AhoyDTU', AhoyDTUPlatform);
 };
 
 interface AhoyDTUConfig extends PlatformConfig {
+  uiLanguage?: string; // UI language preference (de, en, fr)
   mqttHost?: string;
   mqttPort?: number;
   mqttUsername?: string;
@@ -44,6 +46,7 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
   private isSystemOffline: boolean = false;
   private dailyReportsManager: DailyReportsManager | null = null;
   private configHash: string = ''; // Hash der aktuellen Konfiguration für Cache-Validierung
+  private uiLocalization!: UILocalizationManager;
 
   constructor(
     public readonly log: Logger,
@@ -59,6 +62,15 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
     }
 
     // Configuration hash will be generated in configureAccessory when first accessory is loaded
+
+    // Initialize UI localization
+    this.uiLocalization = new UILocalizationManager();
+    if (this.config.uiLanguage) {
+      this.uiLocalization.setLocale(this.config.uiLanguage);
+      this.log.info(`UI language set to: ${this.config.uiLanguage}`);
+    } else {
+      this.log.info(`UI language using default: ${this.uiLocalization.getCurrentLocale()}`);
+    }
 
     // Set offline threshold from config (default 15 minutes)
     this.deviceOfflineThreshold = (this.config.offlineThresholdMinutes || 15) * 60 * 1000;

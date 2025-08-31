@@ -1,0 +1,110 @@
+{
+  "platform": {
+    "name": "AHOY-DTU Solar",
+    "description": "AHOY-DTU Solar inverter monitoring via MQTT"
+  },
+  "config": {
+    "basic": {
+      "title": "📝 Basic Configuration",
+      "description": "Essential settings to get started",
+      "name": "Name",
+      "nameDescription": "Name of the AHOY-DTU Platform"
+    },
+    "mqtt": {
+      "title": "🔌 MQTT Connection",
+      "description": "Configure connection to your MQTT broker",
+      "host": "MQTT Host",
+      "hostDescription": "IP address or hostname of your MQTT broker",
+      "port": "MQTT Port",
+      "portDescription": "Port of your MQTT broker (default: 1883)",
+      "username": "MQTT Username",
+      "usernameDescription": "Username for MQTT authentication (optional)",
+      "password": "MQTT Password",
+      "passwordDescription": "Password for MQTT authentication (optional)"
+    },
+    "devices": {
+      "title": "📱 Device Management",
+      "description": "Configure which devices to monitor",
+      "discoverDevices": "Auto-discover devices",
+      "discoverDevicesDescription": "Automatically detect all available MQTT topics",
+      "usePreset": "Use preset",
+      "usePresetDescription": "Quick setup with predefined devices",
+      "presetOptions": {
+        "basic": "Basic (Power + Daily Energy + Status)",
+        "detailed": "Detailed (+ Temperature + Efficiency + Total Energy)",
+        "individual": "Individual inverters (added during discovery)"
+      },
+      "selectedDevices": "Selected devices",
+      "selectedDevicesDescription": "List of MQTT topics to monitor"
+    },
+    "power": {
+      "title": "⚡ Power Measurement",
+      "description": "Configure how power values are displayed",
+      "usePowerOutlets": "Outlet service for power measurement",
+      "usePowerOutletsDescription": "Show power values in actual Watts (Outlet) instead of Lux (Light Sensor)",
+      "maxEnergyPerDay": "Max daily energy",
+      "maxEnergyPerDayDescription": "Maximum daily energy in kWh for better percentage calculation"
+    },
+    "monitoring": {
+      "title": "📊 Monitoring",
+      "description": "Settings for device monitoring and offline detection",
+      "offlineThresholdMinutes": "Offline threshold (minutes)",
+      "offlineThresholdMinutesDescription": "Minutes without MQTT data before marking devices as offline"
+    },
+    "reports": {
+      "title": "📈 Daily Reports",
+      "description": "End-of-day solar production reports delivered as HomeKit notifications",
+      "enabled": "Enable daily reports",
+      "enabledDescription": "Enable end-of-day solar production reports",
+      "language": "Report language",
+      "languageDescription": "Language for report messages and notifications",
+      "languageOptions": {
+        "de": "🇩🇪 German",
+        "en": "🇺🇸 English",
+        "fr": "🇫🇷 French"
+      },
+      "reportStyle": "Report delivery",
+      "reportStyleDescription": "How to deliver daily reports in HomeKit",
+      "reportStyleOptions": {
+        "motion": "🚶 Motion Sensor (with notification)",
+        "doorbell": "🔔 Doorbell Alert",
+        "switch": "🔘 Programmable Switch"
+      },
+      "reportTime": "Report time",
+      "reportTimeDescription": "When to send daily solar production reports",
+      "reportTimeOptions": {
+        "sunset": "🌅 At sunset",
+        "sunset+30": "🌅 Sunset + 30 min",
+        "sunset+60": "🌅 Sunset + 1 hour",
+        "20:00": "🕐 8:00 PM",
+        "21:00": "🕘 9:00 PM",
+        "22:00": "🕙 10:00 PM"
+      },
+      "includeComparisons": "Include daily comparisons",
+      "includeComparisonsDescription": "Include comparisons with yesterday and weekly averages in reports"
+    }
+  },
+  "messages": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "testing": "Testing...",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "test": "Test",
+    "discover": "Discover",
+    "refresh": "Refresh",
+    "restart": "Restart",
+    "remove": "Remove",
+    "add": "Add"
+  }
+}
