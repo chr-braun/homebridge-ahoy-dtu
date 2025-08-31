@@ -47,6 +47,7 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
   private dailyReportsManager: DailyReportsManager | null = null;
   private configHash: string = ''; // Hash der aktuellen Konfiguration für Cache-Validierung
   private uiLocalization!: UILocalizationManager;
+  private isClearingCache: boolean = false; // Flag to prevent loading accessories during cache clear
 
   constructor(
     public readonly log: Logger,
@@ -102,54 +103,6 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
   }
 
   configureAccessory(accessory: PlatformAccessory) {
-    // Check if configuration has changed before loading cached accessories
-    if (!this.configHash) {
-      // First time loading, generate hash
-      this.configHash = this.generateConfigHash();
-      this.log.info('Initial configuration hash generated:', this.configHash);
-      this.log.info('Current config - usePowerOutlets:', this.config.usePowerOutlets);
-      
-      // Check if we need to clear cache on first load due to important config changes
-      if (this.shouldClearCacheOnFirstLoad()) {
-        this.log.warn('Important configuration change detected on first load. Clearing cached accessories.');
-        this.log.info('This ensures new service types (e.g., Outlet vs LightSensor) are properly applied.');
-        
-        // Clear all cached data
-        this.accessories.length = 0;
-        this.discoveredDevices.clear();
-        this.deviceData.clear();
-        
-        this.log.info('Cache cleared successfully. New accessories will be created with updated configuration.');
-        
-        // Force accessory creation by triggering the main logic
-        this.forceAccessoryCreation();
-        
-        return; // Don't add the old accessory
-      }
-    } else {
-      // Check if configuration changed
-      const currentHash = this.generateConfigHash();
-      this.log.debug('Comparing config hashes - Current:', currentHash, 'Previous:', this.configHash);
-      
-      if (currentHash !== this.configHash) {
-        this.log.warn('Configuration change detected in configureAccessory. Clearing cached accessories.');
-        this.log.info('This ensures new service types (e.g., Outlet vs LightSensor) are properly applied.');
-        
-        // Clear all cached data
-        this.accessories.length = 0;
-        this.discoveredDevices.clear();
-        this.deviceData.clear();
-        
-        // Update hash after clearing
-        this.configHash = currentHash;
-        
-        this.log.info('Cache cleared successfully. New accessories will be created with updated configuration.');
-        return; // Don't add the old accessory
-      } else {
-        this.log.debug('Configuration unchanged, hash matches:', this.configHash);
-      }
-    }
-    
     this.log.info('Loading accessory from cache:', accessory.displayName);
     this.accessories.push(accessory);
   }
