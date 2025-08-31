@@ -48,8 +48,7 @@ class AhoyDTUAccessory implements AccessoryPlugin {
 
     // Validate required configuration
     if (!this.config.mqttHost) {
-      this.log.error('MQTT Host is required in configuration');
-      return;
+      this.log.warn('MQTT Host not configured - accessory will work in demo mode');
     }
 
     // Initialize UI localization
@@ -61,8 +60,7 @@ class AhoyDTUAccessory implements AccessoryPlugin {
       this.log.info(`UI language using default: ${this.uiLocalization.getCurrentLocale()}`);
     }
 
-    // Connect to MQTT
-    this.connectMQTT();
+    this.log.info('AHOY-DTU Accessory initialized successfully');
   }
 
   /**
