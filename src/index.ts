@@ -810,6 +810,23 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
           }
           return false;
         });
+
+      // Add Power Characteristic for actual Watt display
+      if (device.dataType === 'power') {
+        // Add a custom characteristic for power display
+        service.addCharacteristic(this.Characteristic.CurrentAmbientLightLevel)
+          .onGet(() => {
+            if (this.isSystemOffline) {
+              return 0.0001;
+            }
+            const deviceData = this.deviceData.get(device.topic);
+            if (deviceData) {
+              const value = parseFloat(deviceData.value);
+              return isNaN(value) ? 0.0001 : Math.max(0.0001, value);
+            }
+            return 0.0001;
+          });
+      }
     } else if (device.serviceType === this.Service.ContactSensor) {
       service.getCharacteristic(this.Characteristic.ContactSensorState)
         .onGet(() => {
