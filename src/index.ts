@@ -39,29 +39,50 @@ class AhoyDTUAccessory implements AccessoryPlugin {
     const accessoryInfo = new this.Service.AccessoryInformation();
     accessoryInfo
       .setCharacteristic(this.Characteristic.Manufacturer, 'AHOY-DTU')
-      .setCharacteristic(this.Characteristic.Model, 'Solar Monitor')
+      .setCharacteristic(this.Characteristic.Model, 'Balkonkraftwerk')
       .setCharacteristic(this.Characteristic.SerialNumber, 'ahoy-dtu-v1');
     services.push(accessoryInfo);
     
-    // Add main service based on configuration
+    // Add Light Sensor Service for Power Display (shows actual Watts!)
+    const powerService = new this.Service.LightSensor(`${this.config.name} Power`);
+    powerService
+      .getCharacteristic(this.Characteristic.CurrentAmbientLightLevel)
+      .onGet(() => {
+        // Demo mode - 1000W = 1000 lux
+        return 1000;
+      });
+    services.push(powerService);
+    
+    // Add Humidity Sensor Service for Daily Energy (shows kWh as percentage)
+    const dailyEnergyService = new this.Service.HumiditySensor(`${this.config.name} Daily Energy`);
+    dailyEnergyService
+      .getCharacteristic(this.Characteristic.CurrentRelativeHumidity)
+      .onGet(() => {
+        // Demo mode - 50% (5 kWh of 10 kWh max)
+        return 50;
+      });
+    services.push(dailyEnergyService);
+    
+    // Add Temperature Sensor Service for Total Energy (shows total kWh as temperature)
+    const totalEnergyService = new this.Service.TemperatureSensor(`${this.config.name} Total Energy`);
+    totalEnergyService
+      .getCharacteristic(this.Characteristic.CurrentTemperature)
+      .onGet(() => {
+        // Demo mode - 25°C (5 kWh total)
+        return 25;
+      });
+    services.push(totalEnergyService);
+    
+    // Add Outlet Service as status indicator
     if (this.config.usePowerOutlets) {
-      const outletService = new this.Service.Outlet(this.config.name);
+      const outletService = new this.Service.Outlet(`${this.config.name} Status`);
       outletService
         .getCharacteristic(this.Characteristic.On)
         .onGet(() => {
-          // Return true if solar power is being produced
-          return true; // Demo mode - always on
+          // Demo mode - always producing power
+          return true;
         });
       services.push(outletService);
-    } else {
-      const lightSensorService = new this.Service.LightSensor(this.config.name);
-      lightSensorService
-        .getCharacteristic(this.Characteristic.CurrentAmbientLightLevel)
-        .onGet(() => {
-          // Return power value as light level
-          return 1000; // Demo mode - default value
-        });
-      services.push(lightSensorService);
     }
     
     return services;
