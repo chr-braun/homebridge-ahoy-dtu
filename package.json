@@ -1,6 +1,6 @@
 {
   "name": "homebridge-ahoy-dtu",
-  "version": "1.2.5-dev.15",
+  "version": "1.2.5-dev.16",
   "description": "Homebridge plugin for AHOY-DTU solar inverter monitoring via MQTT with device discovery, modern UI, configurable power measurement units, and multi-language daily reports",
   "main": "dist/index.js",
   "scripts": {
