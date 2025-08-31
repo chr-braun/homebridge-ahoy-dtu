@@ -1,264 +1,294 @@
 {
-  "pluginAlias": "AhoyDTU",
+  "pluginAlias": "AHOY-DTU",
   "pluginType": "platform",
-  "singular": false,
-  "headerDisplay": "<p align='center'><img width='100px' src='https://raw.githubusercontent.com/homebridge/branding/latest/logos/homebridge-wordmark-logo-vertical.png'></p><p align='center'>Monitor your AHOY-DTU solar inverter data in Apple HomeKit via MQTT.</p><p align='center'><b>Quick Setup:</b> Enter your MQTT server details below, then choose Discovery mode to find all available devices, or use a preset for instant setup.</p>",
-  "footerDisplay": "<p align='center'>For support and documentation, visit the <a href='https://github.com/chr-braun/homebridge-ahoy-dtu' target='_blank'>GitHub repository</a>.</p>",
   "schema": {
     "type": "object",
     "properties": {
-      "uiLanguage": {
-        "title": "🌍 UI Language / Benutzeroberfläche Sprache / Langue de l'interface",
-        "type": "string",
-        "enum": ["de", "en", "fr"],
-        "enumNames": ["🇩🇪 Deutsch", "🇺🇸 English", "🇫🇷 Français"],
-        "default": "en",
-        "description": "Choose your preferred language for the configuration interface"
-      },
       "name": {
         "title": "Platform Name",
         "type": "string",
-        "default": "AHOY-DTU Solar",
         "required": true,
-        "description": "Name for this platform instance in Homebridge logs"
+        "default": "AHOY-DTU Solar",
+        "description": "Name of the AHOY-DTU platform in Homebridge"
+      },
+      "uiLanguage": {
+        "title": "UI Language",
+        "type": "string",
+        "required": false,
+        "default": "de",
+        "enum": [
+          "de",
+          "en",
+          "fr",
+          "it",
+          "zh"
+        ],
+        "enumNames": [
+          "🇩🇪 Deutsch",
+          "🇺🇸 English",
+          "🇫🇷 Français",
+          "🇮🇹 Italiano",
+          "🇨🇳 中文"
+        ],
+        "description": "Language for the Homebridge UI interface"
       },
       "mqttHost": {
-        "title": "MQTT Server IP Address",
+        "title": "MQTT Host",
         "type": "string",
-        "format": "hostname",
-        "placeholder": "192.168.1.100",
         "required": true,
-        "description": "IP address of your MQTT broker (where AHOY-DTU publishes data)"
+        "format": "ipv4",
+        "description": "IP address of your MQTT broker (e.g., 192.168.1.100)"
       },
       "mqttPort": {
         "title": "MQTT Port",
         "type": "integer",
+        "required": false,
         "default": 1883,
-        "placeholder": "1883",
-        "description": "MQTT broker port (standard: 1883 for unencrypted, 8883 for SSL)"
+        "minimum": 1,
+        "maximum": 65535,
+        "description": "Port of your MQTT broker"
       },
       "mqttUsername": {
         "title": "MQTT Username",
         "type": "string",
-        "description": "Username for MQTT authentication (leave empty if not required)"
+        "required": false,
+        "description": "Username for MQTT authentication (if required)"
       },
       "mqttPassword": {
         "title": "MQTT Password",
         "type": "string",
-        "description": "Password for MQTT authentication (leave empty if not required)"
+        "required": false,
+        "format": "password",
+        "description": "Password for MQTT authentication (if required)"
       },
-      "discoverDevices": {
-        "title": "Device Discovery Mode",
-        "type": "boolean",
-        "default": false,
-        "description": "🔍 Enable to discover all available MQTT topics from your AHOY-DTU (check logs after 30 seconds, then disable this and configure devices below)"
+      "mqttTopic": {
+        "title": "MQTT Base Topic",
+        "type": "string",
+        "required": false,
+        "default": "ahoy-dtu",
+        "description": "Base MQTT topic for AHOY-DTU messages"
+      },
+      "connectionType": {
+        "title": "Connection Type",
+        "type": "string",
+        "required": false,
+        "default": "platform",
+        "enum": [
+          "platform",
+          "child-bridge"
+        ],
+        "enumNames": [
+          "🏠 Platform Plugin (Main Homebridge)",
+          "🔌 Child Bridge (Separate Process)"
+        ],
+        "description": "Choose between platform plugin or child bridge mode"
       },
       "usePreset": {
-        "title": "Quick Setup Preset",
+        "title": "Preset Configuration",
         "type": "string",
-        "enum": ["", "basic", "detailed", "individual-inverters"],
-        "enumNames": ["Custom Selection (use selectedDevices below)", "📊 Basic (Power + Energy + Status)", "📈 Detailed (Adds Temperature + Efficiency + Total Energy)", "🔢 Individual Inverters (Multiple inverter monitoring)"],
-        "description": "🚀 Choose a preset for instant setup, or select 'Custom' to manually choose topics"
+        "required": false,
+        "enum": [
+          "basic",
+          "detailed",
+          "individual-inverters"
+        ],
+        "enumNames": [
+          "📊 Basic (Power, Energy, Status)",
+          "🔍 Detailed (All Available Data)",
+          "🏭 Individual Inverters"
+        ],
+        "description": "Choose a preset configuration for your solar system"
       },
       "selectedDevices": {
-        "title": "Custom MQTT Topics",
+        "title": "Selected Devices",
         "type": "array",
         "items": {
-          "type": "string",
-          "title": "MQTT Topic",
-          "placeholder": "AHOY-DTU_TOTAL/power"
+          "type": "string"
         },
-        "condition": {
-          "functionBody": "return !model.usePreset || model.usePreset === '';"
-        },
-        "description": "📝 Manually specify MQTT topics to create HomeKit devices for. Use Discovery Mode first to see available topics."
+        "required": false,
+        "description": "Specific MQTT topics to monitor (leave empty to use preset)"
       },
-      "maxEnergyPerDay": {
-        "title": "Maximum Daily Energy Production (kWh)",
-        "type": "number",
-        "default": 10,
-        "minimum": 1,
-        "maximum": 100,
-        "multipleOf": 0.1,
-        "description": "⚡ Expected maximum daily energy production of your solar system for accurate percentage calculation in HomeKit"
-      },
-      "offlineThresholdMinutes": {
-        "title": "Offline Detection Threshold (Minutes)",
-        "type": "number",
-        "default": 15,
-        "minimum": 5,
-        "maximum": 120,
-        "description": "🌙 Minutes without MQTT data before marking device offline (normal during night or no sunlight)"
+      "discoverDevices": {
+        "title": "Auto-Discover Devices",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Automatically discover available devices from MQTT topics"
       },
       "usePowerOutlets": {
-        "title": "Use Outlet Service for Power Measurement",
+        "title": "Use Power Outlets",
         "type": "boolean",
-        "default": false,
-        "description": "⚡ Enable to show power values in actual Watts using Outlet service instead of Lux (Light Sensor). Outlets display true power consumption and can be controlled in HomeKit."
+        "required": false,
+        "default": true,
+        "description": "Use Outlet service for power measurements (shows actual Watts instead of lumens)"
+      },
+      "maxEnergyPerDay": {
+        "title": "Maximum Daily Energy",
+        "type": "number",
+        "required": false,
+        "default": 10,
+        "minimum": 0,
+        "maximum": 1000,
+        "description": "Maximum daily energy production in kWh (for percentage calculations)"
+      },
+      "offlineThresholdMinutes": {
+        "title": "Offline Threshold",
+        "type": "integer",
+        "required": false,
+        "default": 15,
+        "minimum": 1,
+        "maximum": 1440,
+        "description": "Minutes before considering device offline"
       },
       "dailyReports": {
-        "title": "Daily Solar Reports",
+        "title": "Daily Reports",
         "type": "object",
         "properties": {
           "enabled": {
             "title": "Enable Daily Reports",
             "type": "boolean",
-            "default": false,
-            "description": "📊 Enable end-of-day solar production reports delivered as HomeKit notifications"
+            "required": false,
+            "default": true,
+            "description": "Enable daily solar production reports"
           },
           "language": {
             "title": "Report Language",
             "type": "string",
-            "enum": ["en", "de", "fr", "it", "zh"],
-            "enumNames": ["🇺🇸 English", "🇩🇪 Deutsch", "🇫🇷 Français", "🇮🇹 Italiano", "🇨🇳 中文"],
-            "default": "en",
-            "condition": {
-              "functionBody": "return model.dailyReports && model.dailyReports.enabled;"
-            },
-            "description": "🌍 Language for daily report messages and notifications"
+            "required": false,
+            "default": "de",
+            "enum": [
+              "de",
+              "en",
+              "fr",
+              "it",
+              "zh"
+            ],
+            "enumNames": [
+              "🇩🇪 Deutsch",
+              "🇺🇸 English",
+              "🇫🇷 Français",
+              "🇮🇹 Italiano",
+              "🇨🇳 中文"
+            ],
+            "description": "Language for daily report notifications"
           },
-          "reportStyle": {
-            "title": "Report Delivery Method",
-            "type": "string",
-            "enum": ["motion", "doorbell", "switch"],
-            "enumNames": ["🚶 Motion Sensor (with notification)", "🔔 Doorbell Alert", "🔘 Programmable Switch"],
-            "default": "motion",
-            "condition": {
-              "functionBody": "return model.dailyReports && model.dailyReports.enabled;"
-            },
-            "description": "📱 How to deliver daily reports in HomeKit"
-          },
-          "reportTime": {
+          "time": {
             "title": "Report Time",
             "type": "string",
-            "enum": ["sunset", "sunset+30", "sunset+60", "20:00", "21:00", "22:00"],
-            "enumNames": ["🌅 At sunset", "🌅 Sunset + 30 min", "🌅 Sunset + 1 hour", "🕐 8:00 PM", "🕘 9:00 PM", "🕙 10:00 PM"],
-            "default": "sunset+30",
-            "condition": {
-              "functionBody": "return model.dailyReports && model.dailyReports.enabled;"
-            },
-            "description": "⏰ When to send daily solar production reports"
+            "required": false,
+            "default": "20:00",
+            "pattern": "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",
+            "description": "Time for daily reports (24-hour format, e.g., 20:00)"
           },
-          "includeComparisons": {
-            "title": "Include Daily Comparisons",
+          "includePowerStats": {
+            "title": "Include Power Statistics",
             "type": "boolean",
+            "required": false,
             "default": true,
-            "condition": {
-              "functionBody": "return model.dailyReports && model.dailyReports.enabled;"
-            },
-            "description": "📈 Include comparisons with yesterday and weekly averages in reports"
+            "description": "Include peak power and average power in daily reports"
+          },
+          "includeEnergyStats": {
+            "title": "Include Energy Statistics",
+            "type": "boolean",
+            "required": false,
+            "default": true,
+            "description": "Include daily energy and efficiency in daily reports"
           }
         }
       },
-      "mqttTopic": {
-        "title": "MQTT Topic Prefix (Legacy)",
-        "type": "string",
-        "default": "AHOY-DTU_TOTAL",
-        "description": "Legacy AHOY-DTU topic prefix - use selectedDevices instead for better control"
+      "energyProvider": {
+        "title": "Energy Provider Service",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "title": "Enable Energy Provider",
+            "type": "boolean",
+            "required": false,
+            "default": true,
+            "description": "Enable Apple Home Energy Provider service (iOS 16+)"
+          },
+          "fallbackToStandard": {
+            "title": "Fallback to Standard Services",
+            "type": "boolean",
+            "required": false,
+            "default": true,
+            "description": "Use standard HomeKit services if Energy Provider not available"
+          }
+        }
+      },
+      "advanced": {
+        "title": "Advanced Settings",
+        "type": "object",
+        "properties": {
+          "debugMode": {
+            "title": "Debug Mode",
+            "type": "boolean",
+            "required": false,
+            "default": false,
+            "description": "Enable detailed debug logging"
+          },
+          "cacheTimeout": {
+            "title": "Cache Timeout",
+            "type": "integer",
+            "required": false,
+            "default": 300,
+            "minimum": 60,
+            "maximum": 3600,
+            "description": "Cache timeout in seconds"
+          },
+          "autoRestart": {
+            "title": "Auto Restart",
+            "type": "boolean",
+            "required": false,
+            "default": true,
+            "description": "Automatically restart plugin on connection issues"
+          }
+        }
       }
     }
   },
-  "layout": [
-    {
-      "type": "fieldset",
-      "title": "📝 Basic Configuration",
-      "description": "Essential settings to get started",
-      "expandable": false,
-      "items": [
-        "name"
+  "ui": true,
+  "uiSchema": {
+    "ui:order": [
+      "name",
+      "uiLanguage",
+      "connectionType",
+      "mqttHost",
+      "mqttPort",
+      "mqttUsername",
+      "mqttPassword",
+      "mqttTopic",
+      "usePreset",
+      "selectedDevices",
+      "discoverDevices",
+      "usePowerOutlets",
+      "maxEnergyPerDay",
+      "offlineThresholdMinutes",
+      "dailyReports",
+      "energyProvider",
+      "advanced"
+    ],
+    "dailyReports": {
+      "ui:order": [
+        "enabled",
+        "language",
+        "time",
+        "includePowerStats",
+        "includeEnergyStats"
       ]
     },
-    {
-      "type": "fieldset",
-      "title": "🔌 MQTT Connection",
-      "description": "Configure connection to your MQTT broker where AHOY-DTU publishes data",
-      "expandable": false,
-      "items": [
-        "mqttHost",
-        "mqttPort",
-        {
-          "type": "fieldset",
-          "title": "Authentication (Optional)",
-          "expandable": true,
-          "expanded": false,
-          "items": [
-            "mqttUsername",
-            "mqttPassword"
-          ]
-        }
+    "energyProvider": {
+      "ui:order": [
+        "enabled",
+        "fallbackToStandard"
       ]
     },
-    {
-      "type": "fieldset",
-      "title": "🔧 Device Setup",
-      "description": "Choose how to configure your HomeKit devices",
-      "expandable": false,
-      "items": [
-        {
-          "type": "help",
-          "helpvalue": "<div style='background: #f0f8ff; padding: 15px; border-radius: 8px; border-left: 4px solid #0066cc; margin: 10px 0;'><h5 style='margin-top: 0; color: #0066cc;'>💡 Setup Methods:</h5><ul style='margin: 5px 0;'><li><strong>Discovery Mode:</strong> Find all available MQTT topics from your AHOY-DTU</li><li><strong>Quick Presets:</strong> Instant setup with predefined device collections</li><li><strong>Custom Selection:</strong> Manually choose specific MQTT topics</li></ul></div>"
-        },
-        "discoverDevices",
-        "usePreset",
-        "selectedDevices"
-      ]
-    },
-    {
-      "type": "fieldset",
-      "title": "⚙️ Advanced Settings",
-      "description": "Fine-tune behavior and thresholds",
-      "expandable": true,
-      "expanded": false,
-      "items": [
-        "maxEnergyPerDay",
-        "offlineThresholdMinutes",
-        "usePowerOutlets",
-        {
-          "type": "fieldset",
-          "title": "📊 Daily Solar Reports (Beta)",
-          "expandable": true,
-          "expanded": false,
-          "items": [
-            "dailyReports.enabled",
-            "dailyReports.language",
-            "dailyReports.reportStyle", 
-            "dailyReports.reportTime",
-            "dailyReports.includeComparisons"
-          ]
-        },
-        {
-          "type": "help",
-          "helpvalue": "<div style='background: #fff8dc; padding: 10px; border-radius: 5px; margin: 10px 0;'><strong>📄 Common AHOY-DTU Topics:</strong><br/>• <code>AHOY-DTU_TOTAL/power</code> - Current power output<br/>• <code>AHOY-DTU_TOTAL/energy_today</code> - Daily energy production<br/>• <code>AHOY-DTU_TOTAL/temperature</code> - Inverter temperature<br/>• <code>AHOY-DTU_TOTAL/status</code> - System status<br/>• <code>AHOY-DTU_123456/power</code> - Individual inverter power</div>"
-        }
-      ]
-    },
-    {
-      "type": "fieldset",
-      "title": "📜 Legacy Support",
-      "expandable": true,
-      "expanded": false,
-      "items": [
-        "mqttTopic"
+    "advanced": {
+      "ui:order": [
+        "debugMode",
+        "cacheTimeout",
+        "autoRestart"
       ]
     }
-  ],
-  "form": [
-    {
-      "type": "help",
-      "helpvalue": "<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px;'><h3 style='margin: 0; color: white;'>🌞 AHOY-DTU Solar Monitor</h3><p style='margin: 10px 0 0 0; opacity: 0.9;'>Monitor your solar inverter in Apple HomeKit</p></div>"
-    },
-    "*",
-    {
-      "type": "help",
-      "helpvalue": "<div style='background: #f0fdf4; border: 1px solid #bbf7d0; padding: 15px; border-radius: 8px; margin-top: 20px;'><h5 style='color: #15803d; margin-top: 0;'>🚀 Quick Start Guide:</h5><ol style='margin: 5px 0; color: #166534;'><li>Enter your MQTT server IP above</li><li>Enable 'Device Discovery Mode' and save</li><li>Restart Homebridge and check logs for discovered topics</li><li>Disable discovery, choose a preset or add custom topics</li><li>Save and restart - your solar data will appear in HomeKit!</li></ol></div>"
-    },
-    {
-      "type": "help",
-      "helpvalue": "<div style='background: #fef3c7; border: 1px solid #f59e0b; padding: 15px; border-radius: 8px; margin-top: 10px;'><h5 style='color: #92400e; margin-top: 0;'>⚡ Power Measurement Options:</h5><p style='margin: 5px 0; color: #92400e;'><strong>Light Sensor (Default):</strong> Shows power as 'Lux' - works on all HomeKit versions<br/><strong>Outlet Service (New):</strong> Shows actual Watts and power state - more intuitive display</p><p style='margin: 5px 0; color: #92400e; font-size: 0.9em;'><em>Enable 'Use Outlet Service for Power Measurement' in Advanced Settings to display power in true Watts.</em></p></div>"
-    },
-    {
-      "type": "help",
-      "helpvalue": "<div style='background: #f0f9ff; border: 1px solid #0ea5e9; padding: 15px; border-radius: 8px; margin-top: 10px;'><h5 style='color: #0c4a6e; margin-top: 0;'>📊 Daily Solar Reports (Beta):</h5><p style='margin: 5px 0; color: #0c4a6e;'><strong>Smart Notifications:</strong> Get end-of-day solar production summaries delivered as HomeKit notifications in your preferred language</p><ul style='margin: 5px 0; color: #0c4a6e;'><li>🌍 Multi-language support (English, German, French, Italian, Chinese)</li><li>📏 Energy totals, peak power, and efficiency metrics</li><li>📈 Smart comparisons with yesterday and weekly averages</li><li>🌅 Automatic sunset-based timing or custom schedule</li></ul><p style='margin: 5px 0; color: #0c4a6e; font-size: 0.9em;'><em>Reports are delivered via Motion Sensor notifications, perfect for HomeKit automations!</em></p></div>"
-    }
-  ]
+  }
 }

@@ -12,7 +12,7 @@ import { DailyReportsManager, DailyReportConfig } from './daily-reports';
 import { UILocalizationManager } from './i18n/ui-manager';
 
 export = (api: API) => {
-  api.registerPlatform('homebridge-kostal-dtu', 'KostalDTU', KostalDTUPlatform);
+  api.registerPlatform('homebridge-ahoy-dtu', 'AhoyDTU', AhoyDTUPlatform);
 };
 
 interface KostalDTUConfig extends PlatformConfig {
@@ -31,7 +31,7 @@ interface KostalDTUConfig extends PlatformConfig {
   dailyReports?: DailyReportConfig; // Daily solar reports configuration
 }
 
-class KostalDTUPlatform implements DynamicPlatformPlugin {
+class AhoyDTUPlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service = this.api.hap.Service;
   public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
   public readonly accessories: PlatformAccessory[] = [];
