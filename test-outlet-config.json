@@ -1,0 +1,19 @@
+{
+  "platforms": [
+    {
+      "platform": "AhoyDTU",
+      "name": "AHOY-DTU Solar Test",
+      "mqttHost": "192.168.178.23",
+      "mqttPort": 1883,
+      "mqttUsername": "biber",
+      "mqttPassword": "2203801826",
+      "discoverDevices": false,
+      "selectedDevices": [
+        "AHOY-DTU_TOTAL/power"
+      ],
+      "usePowerOutlets": true,
+      "maxEnergyPerDay": 25.0,
+      "offlineThresholdMinutes": 15
+    }
+  ]
+}

@@ -150,27 +150,37 @@ export class DailyReportsManager {
   private calculateReportTime(date: Date): Date {
     // Simplified sunset calculation (would use proper astronomical calculation in production)
     const reportTime = new Date(date);
+    let baseHour: number;
+    let baseMinute: number;
     
     switch (this.config.reportTime) {
       case 'sunset':
-        reportTime.setHours(19, 0, 0, 0); // Simplified sunset time
+        baseHour = 19;
+        baseMinute = 0;
         break;
       case 'sunset+30':
-        reportTime.setHours(19, 30, 0, 0);
+        baseHour = 19;
+        baseMinute = 30;
         break;
       case 'sunset+60':
-        reportTime.setHours(20, 0, 0, 0);
+        baseHour = 20;
+        baseMinute = 0;
         break;
-      default:
+      default: {
         // Parse custom time (e.g., "20:30")
         const timeParts = this.config.reportTime.split(':');
         if (timeParts.length === 2) {
-          reportTime.setHours(parseInt(timeParts[0]), parseInt(timeParts[1]), 0, 0);
+          baseHour = parseInt(timeParts[0]);
+          baseMinute = parseInt(timeParts[1]);
         } else {
-          reportTime.setHours(19, 30, 0, 0); // Default fallback
+          baseHour = 19;
+          baseMinute = 30; // Default fallback
         }
+        break;
+      }
     }
     
+    reportTime.setHours(baseHour, baseMinute, 0, 0);
     return reportTime;
   }
   
@@ -190,7 +200,7 @@ export class DailyReportsManager {
     const message = this.i18n.generateDailyReport(reportData);
     
     // Send report based on configured style
-    this.deliverReport(message, reportData);
+    this.deliverReport(message);
     
     this.log.info(`Daily solar report sent: ${reportData.energyKwh.toFixed(1)} kWh generated`);
   }
@@ -262,7 +272,7 @@ export class DailyReportsManager {
     return mean > 0 ? stdDev / mean : 0; // Coefficient of variation
   }
   
-  private deliverReport(message: string, data: DailyReportData): void {
+  private deliverReport(message: string): void {
     if (!this.reportAccessory) {
       this.log.warn('No report accessory configured');
       return;

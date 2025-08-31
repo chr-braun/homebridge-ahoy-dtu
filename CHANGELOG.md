@@ -2,8 +2,46 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.2] - 2025-01-31
+
+### Added
+- **Intelligent Cache Management**: Automatic cache clearing when configuration changes
+- **Configuration Hash Validation**: Detects changes in MQTT settings, device selection, or power outlet preferences
+- **Automatic Service Type Updates**: Ensures new service types (Outlet vs LightSensor) are properly applied without manual cache clearing
+
+### Changed
+- **Improved Power Outlet Detection**: Better handling of configuration changes for `usePowerOutlets` setting
+- **Enhanced Logging**: More informative messages about cache clearing and configuration changes
+
+### Fixed
+- **Cache Persistence Issues**: Resolves problems where changing `usePowerOutlets` from false to true didn't update existing accessories
+- **Service Type Mismatches**: Prevents old LightSensor accessories from persisting when Outlet service is requested
+
+### Technical
+- **Configuration Hash Generation**: Simple but effective hash function for detecting configuration changes
+- **Automatic Cache Invalidation**: Clears accessories, discovered devices, and device data when configuration changes
+- **Memory Management**: Proper cleanup of cached data to prevent memory leaks
+
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.2.1] - 2024-08-26
+
+### Added
+- **🚀 GitHub Actions Integration**: Automated dependency updates and CI/CD pipeline
+- **🔧 Enhanced Code Quality**: Improved ESLint configuration and TypeScript types
+- **📁 Project Cleanup**: Removed unnecessary files and optimized project structure
+- **📦 Better Build Scripts**: Enhanced npm scripts for development and testing
+
+### Technical
+- **CI/CD Pipeline**: Automated testing, linting, and security audits
+- **Dependency Management**: Weekly automated dependency updates via GitHub Actions
+- **Code Quality**: Fixed all critical linting errors, improved type safety
+- **Project Structure**: Cleaned up repository, optimized .gitignore and package.json
+
+### Documentation
+- **Updated Scripts**: Better npm scripts for development workflow
+- **GitHub Actions**: Comprehensive CI/CD documentation and setup
 
 ## [1.2.0] - 2024-08-23
 

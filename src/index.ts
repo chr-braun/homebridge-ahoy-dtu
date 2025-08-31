@@ -43,6 +43,7 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
   private lastDeviceActivity: Date = new Date();
   private isSystemOffline: boolean = false;
   private dailyReportsManager: DailyReportsManager | null = null;
+  private configHash: string = ''; // Hash der aktuellen Konfiguration für Cache-Validierung
 
   constructor(
     public readonly log: Logger,
@@ -56,6 +57,20 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
       this.log.error('MQTT Host is required in configuration');
       return;
     }
+
+    // Generate configuration hash for cache validation
+    this.configHash = this.generateConfigHash();
+    this.log.debug('Configuration hash generated:', this.configHash);
+
+    // Check if configuration has changed and clear cache if needed
+    this.checkAndClearCacheIfNeeded();
+
+    // Generate configuration hash for cache validation
+    this.configHash = this.generateConfigHash();
+    this.log.debug('Configuration hash generated:', this.configHash);
+
+    // Check if configuration has changed and clear cache if needed
+    this.checkAndClearCacheIfNeeded();
 
     // Set offline threshold from config (default 15 minutes)
     this.deviceOfflineThreshold = (this.config.offlineThresholdMinutes || 15) * 60 * 1000;
@@ -844,5 +859,59 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
       });
       
     this.log.info('Daily reports Motion Sensor configured for HomeKit notifications');
+  }
+
+  /**
+   * Generates a hash of the current configuration to detect changes
+   */
+  private generateConfigHash(): string {
+    const configString = JSON.stringify({
+      mqttHost: this.config.mqttHost,
+      mqttPort: this.config.mqttPort,
+      mqttUsername: this.config.mqttUsername,
+      mqttPassword: this.config.mqttPassword,
+      mqttTopic: this.config.mqttTopic,
+      selectedDevices: this.config.selectedDevices,
+      discoverDevices: this.config.discoverDevices,
+      usePreset: this.config.usePreset,
+      maxEnergyPerDay: this.config.maxEnergyPerDay,
+      offlineThresholdMinutes: this.config.offlineThresholdMinutes,
+      usePowerOutlets: this.config.usePowerOutlets,
+      dailyReports: this.config.dailyReports,
+    });
+    
+    // Simple hash function for better performance
+    let hash = 0;
+    for (let i = 0; i < configString.length; i++) {
+      const char = configString.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    return hash.toString();
+  }
+
+  private checkAndClearCacheIfNeeded(): void {
+    // Check if we have cached accessories that might be outdated
+    if (this.accessories.length > 0) {
+      const currentHash = this.generateConfigHash();
+      
+      // If configuration changed, clear the cache
+      if (currentHash !== this.configHash) {
+        this.log.warn('Configuration change detected. Clearing cached accessories and device data.');
+        this.log.info('This ensures new service types (e.g., Outlet vs LightSensor) are properly applied.');
+        
+        // Clear all cached data
+        this.accessories.length = 0; // Clear array without reassignment
+        this.discoveredDevices.clear();
+        this.deviceData.clear();
+        
+        // Update hash after clearing
+        this.configHash = currentHash;
+        
+        this.log.info('Cache cleared successfully. New accessories will be created with updated configuration.');
+      } else {
+        this.log.debug('Configuration unchanged, using cached accessories.');
+      }
+    }
   }
 }
