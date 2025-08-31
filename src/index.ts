@@ -1011,7 +1011,17 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
    * Sets up Energy Provider Service for power devices
    */
   private setupEnergyProviderService(accessory: PlatformAccessory, device: any) {
+    this.log.info('🚀 Starte Energy Provider Service Setup...');
+    
     try {
+      // Check if EnergyProvider service exists
+      // @ts-ignore - Check if EnergyProvider service exists
+      if (!this.Service.EnergyProvider) {
+        throw new Error('EnergyProvider Service nicht verfügbar in dieser Homebridge-Version');
+      }
+      
+      this.log.info('🎉 Energy Provider Service verfügbar! Verwende native Apple Home Integration!');
+      
       // Remove existing services
       accessory.services.forEach(service => {
         if (service.UUID !== this.Service.AccessoryInformation.UUID) {
@@ -1092,7 +1102,8 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
       this.log.info('✅ Energy Provider Service erfolgreich erstellt!');
       
     } catch (error) {
-      this.log.error('Fehler beim Erstellen des Energy Provider Service:', error);
+      this.log.error('❌ Fehler beim Erstellen des Energy Provider Service:', error);
+      this.log.info('🔄 Fallback auf Standard-Service...');
       // Fallback to standard service
       this.setupStandardService(accessory, device);
     }
