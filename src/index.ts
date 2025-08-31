@@ -12,10 +12,10 @@ import { DailyReportsManager, DailyReportConfig } from './daily-reports';
 import { UILocalizationManager } from './i18n/ui-manager';
 
 export = (api: API) => {
-  api.registerPlatform('homebridge-ahoy-dtu', 'AhoyDTU', AhoyDTUPlatform);
+  api.registerPlatform('homebridge-kostal-dtu', 'KostalDTU', KostalDTUPlatform);
 };
 
-interface AhoyDTUConfig extends PlatformConfig {
+interface KostalDTUConfig extends PlatformConfig {
   uiLanguage?: string; // UI language preference (de, en, fr)
   mqttHost?: string;
   mqttPort?: number;
@@ -31,7 +31,7 @@ interface AhoyDTUConfig extends PlatformConfig {
   dailyReports?: DailyReportConfig; // Daily solar reports configuration
 }
 
-class AhoyDTUPlatform implements DynamicPlatformPlugin {
+class KostalDTUPlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service = this.api.hap.Service;
   public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
   public readonly accessories: PlatformAccessory[] = [];
@@ -50,10 +50,10 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
 
   constructor(
     public readonly log: Logger,
-    public readonly config: AhoyDTUConfig,
+          public readonly config: KostalDTUConfig,
     public readonly api: API,
   ) {
-    this.log.debug('Finished initializing platform:', this.config.name);
+    this.log.debug('Finished initializing Kostal platform:', this.config.name);
 
     // Validate required configuration
     if (!this.config.mqttHost) {
@@ -386,25 +386,33 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
   }
 
   private setupPresetDevices() {
+    if (!this.mqttClient) {
+      this.log.error('MQTT client not connected');
+      return;
+    }
+
+    // Kostal-specific preset configurations
     const presets = {
       'basic': [
-        'AHOY-DTU_TOTAL/power',
-        'AHOY-DTU_TOTAL/energy_today',
-        'AHOY-DTU_TOTAL/status'
+        'kostal/status',
+        'kostal/power',
+        'kostal/energy_today'
       ],
       'detailed': [
-        'AHOY-DTU_TOTAL/power',
-        'AHOY-DTU_TOTAL/energy_today',
-        'AHOY-DTU_TOTAL/energy_total',
-        'AHOY-DTU_TOTAL/temperature',
-        'AHOY-DTU_TOTAL/status',
-        'AHOY-DTU_TOTAL/efficiency'
+        'kostal/status',
+        'kostal/power',
+        'kostal/energy_today',
+        'kostal/energy_total',
+        'kostal/voltage_dc',
+        'kostal/current_dc',
+        'kostal/temperature',
+        'kostal/efficiency'
       ],
       'individual-inverters': [
-        'AHOY-DTU_TOTAL/power',
-        'AHOY-DTU_TOTAL/energy_today',
-        'AHOY-DTU_TOTAL/status'
-        // Individual inverter topics would be added during discovery
+        'kostal/status',
+        'kostal/power',
+        'kostal/energy_today',
+        'kostal/temperature'
       ]
     };
 
@@ -975,8 +983,8 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
 
     // If any of these important settings have changed, clear cache
     for (const setting of importantChanges) {
-      if (this.config[setting as keyof AhoyDTUConfig] !== undefined) {
-        this.log.debug(`Important setting detected: ${setting} = ${this.config[setting as keyof AhoyDTUConfig]}`);
+              if (this.config[setting as keyof KostalDTUConfig] !== undefined) {
+        this.log.debug(`Important setting detected: ${setting} = ${this.config[setting as keyof KostalDTUConfig]}`);
       }
     }
 

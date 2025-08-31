@@ -1,85 +1,51 @@
 {
-  "name": "homebridge-ahoy-dtu",
-  "version": "1.2.5-dev.17",
-  "description": "Homebridge plugin for AHOY-DTU solar inverter monitoring via MQTT with device discovery, modern UI, configurable power measurement units, and multi-language daily reports",
+  "name": "homebridge-kostal-dtu",
+  "version": "1.0.0-dev.1",
+  "description": "Homebridge plugin for Kostal PV inverters with MQTT integration and Apple Home Energy Provider support",
   "main": "dist/index.js",
   "scripts": {
     "build": "rimraf ./dist && tsc && cp -r src/i18n/locales dist/i18n/",
+    "watch": "npm run build && npm link && nodemon",
+    "dev": "npm run build && npm link",
     "prepublishOnly": "npm run build",
-    "watch": "tsc -w",
-    "dev": "nodemon --exec ts-node src/index.ts",
-    "test": "npm run lint && npm run build",
-    "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix",
-    "clean": "rimraf ./dist",
-    "start": "node dist/index.js",
-    "dev:build": "npm run build",
-    "dev:publish": "npm version prerelease --preid=dev && npm publish --tag dev",
-    "release:patch": "npm version patch && npm publish --tag latest",
-    "release:minor": "npm version minor && npm publish --tag latest",
-    "release:major": "npm version major && npm publish --tag latest",
-    "release:beta": "npm version prerelease --preid=beta && npm publish --tag beta",
-    "release:rc": "npm version prerelease --preid=rc && npm publish --tag rc"
+    "dev:publish": "npm version prerelease --preid=dev && npm publish --tag dev"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "homebridge",
+    "kostal",
+    "inverter",
+    "solar",
+    "pv",
+    "mqtt",
+    "energy-provider",
+    "apple-home"
+  ],
+  "engines": {
+    "homebridge": ">=1.6.0",
+    "node": ">=18.0.0"
+  },
+  "author": "Christian Braun",
+  "license": "MIT",
+  "dependencies": {
+    "mqtt": "^5.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "homebridge": "^1.6.0",
+    "nodemon": "^3.0.2",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chr-braun/homebridge-ahoy-dtu.git"
+    "url": "git+https://github.com/yourusername/homebridge-kostal-dtu.git"
   },
-  "keywords": [
-    "homebridge",
-    "homebridge-plugin",
-    "homekit",
-    "solar",
-    "ahoy-dtu",
-    "ahoy",
-    "dtu",
-    "mqtt",
-    "inverter",
-    "renewable-energy",
-    "energy-monitoring",
-    "hoymiles",
-    "solar-power",
-    "iot",
-    "smart-home",
-    "photovoltaic",
-    "pv",
-    "daily-reports",
-    "multi-language",
-    "i18n",
-    "notifications",
-    "analytics"
-  ],
-  "author": {
-    "name": "Christian Braun",
-    "email": "chr-braun@users.noreply.github.com"
-  },
-  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/chr-braun/homebridge-ahoy-dtu/issues"
+    "url": "https://github.com/yourusername/homebridge-kostal-dtu/issues"
   },
-  "homepage": "https://github.com/chr-braun/homebridge-ahoy-dtu#readme",
-  "engines": {
-    "node": ">=14.18.1",
-    "homebridge": ">=1.3.0"
-  },
-  "files": [
-    "dist/**/*",
-    "config.schema.json",
-    "README.md",
-    "LICENSE"
-  ],
-  "dependencies": {
-    "mqtt": "^4.3.7"
-  },
-  "devDependencies": {
-    "@types/node": "^18.15.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.0.0",
-    "homebridge": "^1.6.0",
-    "nodemon": "^2.0.22",
-    "rimraf": "^4.4.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.2"
-  }
+  "homepage": "https://github.com/yourusername/homebridge-kostal-dtu#readme"
 }
