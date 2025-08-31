@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.4] - 2025-01-31
+
+### Added
+- **Enhanced Debug Logging**: Added detailed logging for configuration hash comparison and power outlet settings
+- **Configuration Validation Logging**: Shows current `usePowerOutlets` value and hash comparisons for troubleshooting
+
+### Changed
+- **Improved Debug Information**: Better visibility into why cache validation succeeds or fails
+- **Configuration State Logging**: Logs current power outlet configuration for verification
+
+### Technical
+- **Debug Output**: Added logging for hash comparison and configuration state
+- **Troubleshooting Support**: Better diagnostics for cache validation issues
+
+## [1.2.3] - 2025-01-31
+
+### Fixed
+- **Cache Validation Timing**: Moved configuration hash validation to `configureAccessory` method for proper execution order
+- **Immediate Cache Clearing**: Cache is now cleared immediately when configuration changes are detected, before accessories are loaded
+- **Service Type Detection**: Ensures Outlet vs LightSensor services are properly applied on first load
+
+### Changed
+- **Improved Cache Management**: Cache validation now runs at the correct time in the Homebridge lifecycle
+- **Better Error Handling**: Prevents duplicate accessory loading when configuration changes
+
+### Technical
+- **Lifecycle Optimization**: Cache validation moved from constructor to `configureAccessory` for proper timing
+- **Immediate Response**: Configuration changes are detected and handled immediately, not deferred
+
 ## [1.2.2] - 2025-01-31
 
 ### Added

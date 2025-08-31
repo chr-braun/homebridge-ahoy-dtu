@@ -79,11 +79,22 @@
 ### Via Command Line
 
 ```bash
-# Install globally
+# Install stable release (recommended)
 npm install -g homebridge-ahoy-dtu
+
+# Install development version (latest features)
+npm install -g homebridge-ahoy-dtu@dev
+
+# Install beta version (testing)
+npm install -g homebridge-ahoy-dtu@beta
+
+# Install release candidate
+npm install -g homebridge-ahoy-dtu@rc
 
 # Add to your Homebridge config.json (see configuration below)
 ```
+
+**⚠️ Warning:** Development, Beta, and RC versions may contain unstable features and bugs. Use only for testing purposes.
 
 ### Requirements
 

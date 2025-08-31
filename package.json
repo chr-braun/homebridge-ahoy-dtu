@@ -1,6 +1,6 @@
 {
   "name": "homebridge-ahoy-dtu",
-  "version": "1.2.2",
+  "version": "1.2.5-dev.1",
   "description": "Homebridge plugin for AHOY-DTU solar inverter monitoring via MQTT with device discovery, modern UI, configurable power measurement units, and multi-language daily reports",
   "main": "dist/index.js",
   "scripts": {
@@ -12,9 +12,14 @@
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "clean": "rimraf ./dist",
-    "verify-release": "node verify-release.js",
-    "prepare-npm": "npm run build && node verify-release.js",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "dev:build": "npm run build",
+    "dev:publish": "npm version prerelease --preid=dev && npm publish --tag dev",
+    "release:patch": "npm version patch && npm publish --tag latest",
+    "release:minor": "npm version minor && npm publish --tag latest",
+    "release:major": "npm version major && npm publish --tag latest",
+    "release:beta": "npm version prerelease --preid=beta && npm publish --tag beta",
+    "release:rc": "npm version prerelease --preid=rc && npm publish --tag rc"
   },
   "repository": {
     "type": "git",

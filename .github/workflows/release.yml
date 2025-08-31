@@ -1,0 +1,132 @@
+name: Release Management
+
+on:
+  push:
+    tags:
+      - 'v*'
+      - 'v*-dev.*'
+      - 'v*-beta.*'
+      - 'v*-rc.*'
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release Type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - beta
+          - rc
+          - dev
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        registry-url: 'https://registry.npmjs.org'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run tests
+      run: npm test
+      
+    - name: Build project
+      run: npm run build
+      
+    - name: Determine release type
+      id: release_type
+      run: |
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          TAG=${GITHUB_REF#refs/tags/}
+          if [[ $TAG == *-dev.* ]]; then
+            echo "type=dev" >> $GITHUB_OUTPUT
+            echo "tag=dev" >> $GITHUB_OUTPUT
+          elif [[ $TAG == *-beta.* ]]; then
+            echo "type=beta" >> $GITHUB_OUTPUT
+            echo "tag=beta" >> $GITHUB_OUTPUT
+          elif [[ $TAG == *-rc.* ]]; then
+            echo "type=rc" >> $GITHUB_OUTPUT
+            echo "tag=rc" >> $GITHUB_OUTPUT
+          else
+            echo "type=stable" >> $GITHUB_OUTPUT
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          fi
+        else
+          echo "type=${{ github.event.inputs.release_type }}" >> $GITHUB_OUTPUT
+          if [[ "${{ github.event.inputs.release_type }}" == "dev" ]]; then
+            echo "tag=dev" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event.inputs.release_type }}" == "beta" ]]; then
+            echo "tag=beta" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event.inputs.release_type }}" == "rc" ]]; then
+            echo "tag=rc" >> $GITHUB_OUTPUT
+          else
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          fi
+        fi
+        
+    - name: Publish to NPM
+      run: |
+        if [[ "${{ steps.release_type.outputs.type }}" == "dev" ]]; then
+          npm run dev:publish
+        elif [[ "${{ steps.release_type.outputs.type }}" == "beta" ]]; then
+          npm run release:beta
+        elif [[ "${{ steps.release_type.outputs.type }}" == "rc" ]]; then
+          npm run release:rc
+        else
+          npm run release:${{ steps.release_type.outputs.type }}
+        fi
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          ## 🚀 Release ${{ github.ref }}
+          
+          **Release Type:** ${{ steps.release_type.outputs.type }}
+          **NPM Tag:** ${{ steps.release_type.outputs.tag }}
+          
+          ### 📦 Installation
+          
+          **Stable Release:**
+          ```bash
+          npm install -g homebridge-ahoy-dtu
+          ```
+          
+          **Development Version:**
+          ```bash
+          npm install -g homebridge-ahoy-dtu@dev
+          ```
+          
+          **Beta Version:**
+          ```bash
+          npm install -g homebridge-ahoy-dtu@beta
+          ```
+          
+          **Release Candidate:**
+          ```bash
+          npm install -g homebridge-ahoy-dtu@rc
+          ```
+          
+          ### 🔍 Changes
+          
+          See [CHANGELOG.md](https://github.com/chr-braun/homebridge-ahoy-dtu/blob/main/CHANGELOG.md) for detailed changes.
+        draft: false
+        prerelease: ${{ steps.release_type.outputs.type != 'stable' }}
