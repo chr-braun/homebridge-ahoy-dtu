@@ -120,6 +120,10 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
         this.deviceData.clear();
         
         this.log.info('Cache cleared successfully. New accessories will be created with updated configuration.');
+        
+        // Force accessory creation by triggering the main logic
+        this.forceAccessoryCreation();
+        
         return; // Don't add the old accessory
       }
     } else {
@@ -986,5 +990,23 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
     }
 
     return false;
+  }
+
+  /**
+   * Forces accessory creation when cache is cleared
+   */
+  private forceAccessoryCreation() {
+    this.log.info('Forcing accessory creation after cache clear.');
+    
+    // Schedule accessory creation for next tick to ensure proper initialization
+    setImmediate(() => {
+      if (this.config.discoverDevices) {
+        this.startDeviceDiscovery();
+      } else if (this.config.usePreset) {
+        this.setupPresetDevices();
+      } else {
+        this.setupSelectedDevices();
+      }
+    });
   }
 }
