@@ -96,6 +96,20 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
       this.configHash = this.generateConfigHash();
       this.log.info('Initial configuration hash generated:', this.configHash);
       this.log.info('Current config - usePowerOutlets:', this.config.usePowerOutlets);
+      
+      // Check if we need to clear cache on first load due to important config changes
+      if (this.shouldClearCacheOnFirstLoad()) {
+        this.log.warn('Important configuration change detected on first load. Clearing cached accessories.');
+        this.log.info('This ensures new service types (e.g., Outlet vs LightSensor) are properly applied.');
+        
+        // Clear all cached data
+        this.accessories.length = 0;
+        this.discoveredDevices.clear();
+        this.deviceData.clear();
+        
+        this.log.info('Cache cleared successfully. New accessories will be created with updated configuration.');
+        return; // Don't add the old accessory
+      }
     } else {
       // Check if configuration changed
       const currentHash = this.generateConfigHash();
@@ -908,5 +922,40 @@ class AhoyDTUPlatform implements DynamicPlatformPlugin {
     return hash.toString();
   }
 
+  /**
+   * Checks if cache should be cleared on first load due to important configuration changes
+   */
+  private shouldClearCacheOnFirstLoad(): boolean {
+    // Check for important configuration changes that require cache clearing
+    const importantChanges = [
+      'usePowerOutlets',      // Service type changes (Outlet vs LightSensor)
+      'selectedDevices',      // Device selection changes
+      'usePreset',           // Preset configuration changes
+      'mqttHost',            // MQTT connection changes
+      'mqttPort',            // MQTT connection changes
+      'mqttUsername',        // MQTT authentication changes
+      'mqttPassword'         // MQTT authentication changes
+    ];
 
+    // If any of these important settings have changed, clear cache
+    for (const setting of importantChanges) {
+      if (this.config[setting as keyof AhoyDTUConfig] !== undefined) {
+        this.log.debug(`Important setting detected: ${setting} = ${this.config[setting as keyof AhoyDTUConfig]}`);
+      }
+    }
+
+    // Always clear cache if usePowerOutlets is enabled (this is the main issue)
+    if (this.config.usePowerOutlets === true) {
+      this.log.info('usePowerOutlets is enabled - clearing cache to ensure proper service types');
+      return true;
+    }
+
+    // Clear cache if selectedDevices changed significantly
+    if (this.config.selectedDevices && this.config.selectedDevices.length > 0) {
+      this.log.info('Selected devices configured - clearing cache to ensure proper device setup');
+      return true;
+    }
+
+    return false;
+  }
 }
