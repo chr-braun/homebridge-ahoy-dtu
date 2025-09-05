@@ -1,7 +1,7 @@
 {
   "name": "homebridge-ahoy-dtu",
   "displayName": "AHOY-DTU Solar Inverter",
-  "version": "2.0.2-dev.1",
+  "version": "2.0.2-dev.2",
   "description": "Homebridge plugin for AHOY-DTU solar inverters with MQTT integration, multi-language UI, and child bridge capability",
   "main": "dist/index.js",
   "scripts": {
