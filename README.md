@@ -1,6 +1,12 @@
 # Homebridge AHOY-DTU
 
+[![npm version](https://badge.fury.io/js/homebridge-ahoy-dtu.svg)](https://badge.fury.io/js/homebridge-ahoy-dtu)
+[![GitHub release](https://img.shields.io/github/release/chr-braun/homebridge-ahoy-dtu.svg)](https://github.com/chr-braun/homebridge-ahoy-dtu/releases)
+[![GitHub license](https://img.shields.io/github/license/chr-braun/homebridge-ahoy-dtu.svg)](https://github.com/chr-braun/homebridge-ahoy-dtu/blob/main/LICENSE)
+
 Ein Homebridge-Plugin für AHOY-DTU Solar-Wechselrichter von Hoymiles. Dieses Plugin integriert AHOY-DTU Geräte über MQTT in Apple HomeKit.
+
+[![NPM](https://nodei.co/npm/homebridge-ahoy-dtu.png)](https://www.npmjs.com/package/homebridge-ahoy-dtu)
 
 ## Features
 
@@ -130,13 +136,33 @@ Aktiviere den Debug-Modus in der Konfiguration für detaillierte Logs:
 }
 ```
 
+## GitHub
+
+- **Repository**: [chr-braun/homebridge-ahoy-dtu](https://github.com/chr-braun/homebridge-ahoy-dtu)
+- **Issues**: [GitHub Issues](https://github.com/chr-braun/homebridge-ahoy-dtu/issues)
+- **Releases**: [GitHub Releases](https://github.com/chr-braun/homebridge-ahoy-dtu/releases)
+- **Wiki**: [GitHub Wiki](https://github.com/chr-braun/homebridge-ahoy-dtu/wiki)
+
 ## Unterstützung
 
 Bei Problemen oder Fragen:
 
 1. Prüfe die [Troubleshooting-Sektion](#troubleshooting)
 2. Aktiviere den Debug-Modus
-3. Erstelle ein Issue auf GitHub mit den Logs
+3. Erstelle ein [Issue auf GitHub](https://github.com/chr-braun/homebridge-ahoy-dtu/issues) mit den Logs
+4. Prüfe die [GitHub Wiki](https://github.com/chr-braun/homebridge-ahoy-dtu/wiki) für weitere Informationen
+
+## Contributing
+
+Beiträge sind willkommen! Bitte:
+
+1. Forke das Repository
+2. Erstelle einen Feature-Branch (`git checkout -b feature/AmazingFeature`)
+3. Committe deine Änderungen (`git commit -m 'Add some AmazingFeature'`)
+4. Pushe zum Branch (`git push origin feature/AmazingFeature`)
+5. Öffne einen Pull Request
+
+Siehe [CONTRIBUTING.md](CONTRIBUTING.md) für weitere Details.
 
 ## Lizenz
 
