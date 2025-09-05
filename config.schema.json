@@ -1,129 +1,105 @@
 {
-  "pluginAlias": "KostalInverter",
+  "pluginAlias": "AhoyDTU",
   "pluginType": "platform",
   "singular": true,
-  "customUi": true,
+  "customUi": false,
   "schema": {
     "type": "object",
     "properties": {
       "name": {
         "title": "Platform Name",
         "type": "string",
-        "default": "Kostal Inverter",
-        "description": "Name der Kostal Inverter Platform"
+        "default": "AHOY-DTU Solar",
+        "description": "Name der AHOY-DTU Platform"
+      },
+      "mqtt": {
+        "title": "MQTT-Konfiguration",
+        "type": "object",
+        "properties": {
+          "host": {
+            "title": "MQTT-Broker IP-Adresse",
+            "type": "string",
+            "format": "ipv4",
+            "required": true,
+            "description": "IP-Adresse des MQTT-Brokers (z.B. AHOY-DTU Gerät)"
+          },
+          "port": {
+            "title": "MQTT-Port",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535,
+            "default": 1883,
+            "description": "Port des MQTT-Brokers"
+          },
+          "username": {
+            "title": "MQTT-Benutzername",
+            "type": "string",
+            "required": true,
+            "description": "Benutzername für die MQTT-Verbindung"
+          },
+          "password": {
+            "title": "MQTT-Passwort",
+            "type": "string",
+            "required": true,
+            "description": "Passwort für die MQTT-Verbindung"
+          },
+          "clientId": {
+            "title": "MQTT-Client-ID",
+            "type": "string",
+            "default": "homebridge-ahoy-dtu",
+            "description": "Eindeutige Client-ID für MQTT-Verbindung"
+          }
+        },
+        "required": ["host", "username", "password"]
+      },
+      "discoverDevices": {
+        "title": "Geräte automatisch entdecken",
+        "type": "boolean",
+        "default": true,
+        "description": "AHOY-DTU Geräte automatisch über MQTT-Topics entdecken"
+      },
+      "offlineThresholdMinutes": {
+        "title": "Offline-Schwellenwert (Minuten)",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 60,
+        "default": 5,
+        "description": "Nach wie vielen Minuten ohne Daten wird ein Gerät als offline markiert"
       },
       "language": {
         "title": "Sprache",
         "type": "string",
-        "enum": ["de", "en", "fr", "it", "zh"],
+        "enum": ["de", "en", "fr", "it"],
         "default": "de",
-        "description": "Sprache für die Benutzeroberfläche"
-      },
-      "kostal": {
-        "title": "Kostal Wechselrichter Verbindung",
-        "type": "object",
-        "properties": {
-          "host": {
-            "title": "IP-Adresse",
-            "type": "string",
-            "format": "ipv4",
-            "description": "IP-Adresse deines Kostal-Wechselrichters",
-            "required": true
-          },
-          "username": {
-            "title": "Benutzername",
-            "type": "string",
-            "default": "pvserver",
-            "description": "Benutzername für Kostal-Wechselrichter (Standard: pvserver)"
-          },
-          "password": {
-            "title": "Passwort",
-            "type": "string",
-            "format": "password",
-            "default": "pvwr",
-            "description": "Passwort für Kostal-Wechselrichter (Standard: pvwr)"
-          },
-          "autoDetectModel": {
-            "title": "Modell automatisch erkennen",
-            "type": "boolean",
-            "default": true,
-            "description": "Versuche das Wechselrichter-Modell automatisch zu erkennen"
-          }
-        },
-        "required": ["host"]
-      },
-      "inverter": {
-        "title": "Wechselrichter Konfiguration",
-        "type": "object",
-        "properties": {
-          "name": {
-            "title": "Wechselrichter Name",
-            "type": "string",
-            "default": "Kostal Plenticore",
-            "description": "Name des Wechselrichters in HomeKit"
-          },
-          "model": {
-            "title": "Modell",
-            "type": "string",
-            "default": "Plenticore 10.0",
-            "description": "Modell des Kostal-Wechselrichters (wird automatisch erkannt wenn aktiviert)"
-          },
-          "serialNumber": {
-            "title": "Seriennummer",
-            "type": "string",
-            "default": "123456789",
-            "description": "Seriennummer des Wechselrichters (wird automatisch erkannt wenn aktiviert)"
-          },
-          "maxPower": {
-            "title": "Maximale Leistung (W)",
-            "type": "number",
-            "default": 10000,
-            "minimum": 1000,
-            "maximum": 50000,
-            "description": "Maximale Leistung des Wechselrichters in Watt"
-          },
-          "maxEnergyPerDay": {
-            "title": "Maximale Tagesenergie (kWh)",
-            "type": "number",
-            "default": 20,
-            "minimum": 1,
-            "maximum": 100,
-            "description": "Maximale erwartete Tagesenergie in kWh"
-          },
-          "strings": {
-            "title": "Anzahl DC-Strings",
-            "type": "number",
-            "default": 2,
-            "minimum": 1,
-            "maximum": 4,
-            "description": "Anzahl der DC-Strings (Solarpanels)"
-          }
-        },
-        "required": ["name"]
-      },
-      "pollingInterval": {
-        "title": "Abfrageintervall (Sekunden)",
-        "type": "number",
-        "default": 30,
-        "minimum": 10,
-        "maximum": 300,
-        "description": "Intervall für Datenabfrage vom Kostal-Wechselrichter"
+        "description": "Sprache für Logs und Benutzeroberfläche"
       },
       "childBridge": {
         "title": "Child Bridge",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "title": "Child Bridge aktivieren",
+            "type": "boolean",
+            "default": false,
+            "description": "Plugin in separatem Prozess ausführen für bessere Stabilität"
+          },
+          "port": {
+            "title": "Child Bridge Port",
+            "type": "integer",
+            "minimum": 8000,
+            "maximum": 65535,
+            "default": 8582,
+            "description": "Port für die Child Bridge (nur wenn aktiviert)"
+          }
+        }
+      },
+      "debug": {
+        "title": "Debug-Modus",
         "type": "boolean",
         "default": false,
-        "description": "Plugin als Child Bridge ausführen (empfohlen für Stabilität)"
-      },
-      "childBridgePort": {
-        "title": "Child Bridge Port",
-        "type": "number",
-        "default": 8581,
-        "minimum": 1000,
-        "maximum": 65535,
-        "description": "Port für Child Bridge (nur wenn Child Bridge aktiviert)"
+        "description": "Ausführliche Logs für Fehlerbehebung aktivieren"
       }
     },
-    "required": ["inverter"]
+    "required": ["mqtt"]
   }
 }

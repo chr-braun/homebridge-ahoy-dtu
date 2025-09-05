@@ -1,204 +1,128 @@
-# Homebridge Kostal Inverter
+# Homebridge AHOY-DTU
 
-[![npm version](https://badge.fury.io/js/homebridge-kostal-inverter.svg)](https://badge.fury.io/js/homebridge-kostal-inverter)
-[![Downloads](https://img.shields.io/npm/dm/homebridge-kostal-inverter.svg)](https://www.npmjs.com/package/homebridge-kostal-inverter)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+Ein Homebridge-Plugin für AHOY-DTU Solar-Wechselrichter von Hoymiles. Dieses Plugin integriert AHOY-DTU Geräte über MQTT in Apple HomeKit.
 
-Ein professionelles Homebridge-Plugin für Kostal-Solarwechselrichter mit MQTT-Integration, mehrsprachiger Benutzeroberfläche und Child Bridge-Unterstützung.
+## Features
 
-## 🚀 Features
+- 🔌 **MQTT-Integration**: Direkte Verbindung zu AHOY-DTU Geräten über MQTT
+- 🏠 **HomeKit-Integration**: 6 verschiedene Sensoren für Solar-Daten
+- 🔍 **Auto-Discovery**: Automatische Erkennung von AHOY-DTU Geräten
+- 🌍 **Mehrsprachig**: Unterstützung für Deutsch, Englisch, Französisch und Italienisch
+- 🔧 **Homebridge-UI**: Konfiguration über die Homebridge-Benutzeroberfläche
+- 🌉 **Child Bridge**: Unterstützung für Child Bridge-Modus
 
-- **⚡ Kostal-Wechselrichter Integration** - Vollständige Unterstützung für alle Kostal-Modelle
-- **📡 MQTT-Protokoll** - Echtzeit-Datenübertragung über MQTT
-- **🌍 Mehrsprachige UI** - Deutsch, Englisch, Französisch, Italienisch, Chinesisch
-- **🔌 Child Bridge** - Kann als separate Bridge laufen für bessere Stabilität
-- **📊 Energie-Monitoring** - Überwachung von Leistung, Energie und Status
-- **🏠 HomeKit-Integration** - Nahtlose Integration in Apple Home
-- **🔧 Konfigurierbare Topics** - Flexible MQTT-Topic-Konfiguration
-- **📱 Real-time Updates** - Live-Daten alle 30 Sekunden
+## HomeKit-Sensoren
 
-## 📋 Voraussetzungen
+Das Plugin erstellt folgende Sensoren in HomeKit:
 
-- **Node.js** 18.0.0 oder höher
-- **Homebridge** 1.6.0 oder höher
-- **Kostal-Wechselrichter** mit Netzwerk-Zugang
-- **MQTT-Broker** (z.B. Mosquitto)
+1. **Solarproduktion** (LightSensor) - Aktuelle Solarleistung in Watt
+2. **Tagesenergie** (LightSensor) - Tägliche Energieerzeugung in kWh
+3. **Temperatur** (TemperatureSensor) - Wechselrichter-Temperatur
+4. **Status** (ContactSensor) - Online/Offline-Status
+5. **Spannung** (LightSensor) - DC-Spannung
+6. **Strom** (LightSensor) - DC-Strom
+7. **Effizienz** (LightSensor) - Wechselrichter-Effizienz
 
-## 🔧 Installation
+## Installation
 
-### Über Homebridge UI (Empfohlen)
+1. Installiere das Plugin über die Homebridge-UI oder über NPM:
+   ```bash
+   npm install -g homebridge-ahoy-dtu
+   ```
 
-1. Öffne die Homebridge UI
-2. Gehe zu "Plugins"
-3. Suche nach "Kostal Inverter"
-4. Klicke auf "Installieren"
+2. Konfiguriere das Plugin in der Homebridge-UI:
+   - **MQTT-Broker IP**: IP-Adresse deines AHOY-DTU Geräts
+   - **MQTT-Port**: Standard 1883
+   - **Benutzername**: MQTT-Benutzername
+   - **Passwort**: MQTT-Passwort
 
-### Über NPM
+## Konfiguration
 
-```bash
-npm install -g homebridge-kostal-inverter
-```
+### Über Homebridge-UI
 
-## ⚙️ Konfiguration
+1. Gehe zu **Plugins** → **Homebridge AHOY-DTU**
+2. Klicke auf **Settings**
+3. Konfiguriere die MQTT-Verbindung:
+   - **MQTT-Broker IP**: IP deines AHOY-DTU Geräts
+   - **MQTT-Port**: 1883 (Standard)
+   - **Benutzername**: Dein MQTT-Benutzername
+   - **Passwort**: Dein MQTT-Passwort
+4. Speichere die Konfiguration
 
-### Basis-Konfiguration
-
-```json
-{
-  "platform": "KostalInverter",
-  "name": "Kostal Solar",
-  "mqtt": {
-    "host": "192.168.1.100",
-    "port": 1883,
-    "username": "your_username",
-    "password": "your_password",
-    "clientId": "homebridge-kostal"
-  },
-  "inverter": {
-    "name": "Kostal Piko",
-    "model": "Piko 10.0",
-    "serialNumber": "123456789"
-  },
-  "language": "de",
-  "childBridge": false
-}
-```
-
-### Erweiterte Konfiguration
+### Manuelle Konfiguration
 
 ```json
 {
-  "platform": "KostalInverter",
-  "name": "Kostal Solar",
-  "mqtt": {
-    "host": "192.168.1.100",
-    "port": 1883,
-    "username": "your_username",
-    "password": "your_password",
-    "clientId": "homebridge-kostal",
-    "topics": {
-      "power": "kostal/inverter/power",
-      "energy": "kostal/inverter/energy_today",
-      "status": "kostal/inverter/status",
-      "temperature": "kostal/inverter/temperature",
-      "voltage": "kostal/inverter/voltage_ac",
-      "frequency": "kostal/inverter/frequency"
+  "platforms": [
+    {
+      "platform": "homebridge-ahoy-dtu.AhoyDTU",
+      "name": "AHOY-DTU Solar",
+      "mqtt": {
+        "host": "192.168.1.100",
+        "port": 1883,
+        "username": "dein_username",
+        "password": "dein_passwort",
+        "clientId": "homebridge-ahoy-dtu"
+      },
+      "discoverDevices": true,
+      "offlineThresholdMinutes": 5,
+      "language": "de"
     }
-  },
-  "inverter": {
-    "name": "Kostal Piko",
-    "model": "Piko 10.0",
-    "serialNumber": "123456789",
-    "maxPower": 10000,
-    "maxEnergyPerDay": 20,
-    "strings": 2
-  },
-  "language": "de",
-  "childBridge": false,
-  "updateInterval": 30,
-  "debug": false
+  ]
 }
 ```
 
-## 🌍 Unterstützte Sprachen
+## MQTT-Topics
 
-- 🇩🇪 **Deutsch** (de)
-- 🇺🇸 **Englisch** (en)
-- 🇫🇷 **Französisch** (fr)
-- 🇮🇹 **Italienisch** (it)
-- 🇨🇳 **Chinesisch** (zh)
+Das Plugin abonniert folgende MQTT-Topics:
 
-## 📊 MQTT-Topics
+- `AHOY-DTU_TOTAL/power` - Aktuelle Solarleistung
+- `AHOY-DTU_TOTAL/energy_today` - Tägliche Energieerzeugung
+- `AHOY-DTU_TOTAL/temperature` - Wechselrichter-Temperatur
+- `AHOY-DTU_TOTAL/status` - Online/Offline-Status
+- `AHOY-DTU_TOTAL/voltage` - DC-Spannung
+- `AHOY-DTU_TOTAL/current` - DC-Strom
+- `AHOY-DTU_TOTAL/efficiency` - Wechselrichter-Effizienz
 
-Das Plugin erwartet folgende MQTT-Topics von Ihrem Kostal-Wechselrichter:
+## HomeKit-Integration
 
-### Leistung
-- `kostal/inverter/power` - Aktuelle AC-Leistung in Watt
-- `kostal/inverter/power_dc1` - DC-Leistung String 1
-- `kostal/inverter/power_dc2` - DC-Leistung String 2
+### Automatisierungen
 
-### Energie
-- `kostal/inverter/energy_today` - Tagesenergie in kWh
-- `kostal/inverter/energy_total` - Gesamtenergie in kWh
+Du kannst Automatisierungen in der Home-App erstellen:
 
-### Status & Messwerte
-- `kostal/inverter/status` - Wechselrichter-Status (0/1)
-- `kostal/inverter/temperature` - Temperatur in °C
-- `kostal/inverter/voltage_ac` - AC-Spannung in Volt
-- `kostal/inverter/frequency` - Netzfrequenz in Hz
+- **Wenn Solarproduktion > 1000W**: Benachrichtigung senden
+- **Wenn Status = Offline**: Warnung senden
+- **Wenn Temperatur > 60°C**: Kühlung aktivieren
 
-## 🏠 HomeKit-Integration
+### Siri-Integration
 
-Das Plugin erstellt folgende HomeKit-Geräte:
+- "Hey Siri, wie viel Solarstrom produziere ich?"
+- "Hey Siri, ist der Wechselrichter online?"
+- "Hey Siri, wie warm ist der Wechselrichter?"
 
-- **Light Sensor** - Zeigt aktuelle Leistung als "Lux"-Wert
-- **Temperature Sensor** - Wechselrichter-Temperatur
-- **Humidity Sensor** - Tagesenergie als Prozent
-- **Contact Sensor** - Online/Offline-Status
+## Troubleshooting
 
-## 🔌 Child Bridge
+### Plugin wird nicht geladen
 
-Aktivieren Sie die Child Bridge-Funktion für bessere Stabilität:
+1. Prüfe die Homebridge-Logs auf Fehler
+2. Stelle sicher, dass die MQTT-Konfiguration korrekt ist
+3. Prüfe, ob das AHOY-DTU Gerät erreichbar ist
 
-```json
-{
-  "childBridge": true,
-  "childBridgePort": 8581
-}
-```
+### Keine Daten empfangen
 
-## 🔗 Echte Kostal-Daten
+1. Prüfe die MQTT-Verbindung
+2. Stelle sicher, dass AHOY-DTU MQTT-Daten sendet
+3. Prüfe die MQTT-Topics in den Logs
 
-Das Plugin kommuniziert direkt mit deinem Kostal-Wechselrichter über die REST-API:
+### Sensoren zeigen keine Werte
 
-```bash
-# 1. Plugin installieren
-npm install -g homebridge-kostal-inverter
+1. Warte auf Solarproduktion (nur tagsüber verfügbar)
+2. Prüfe die MQTT-Topics
+3. Aktiviere den Debug-Modus für detaillierte Logs
 
-# 2. Python-Dependencies installieren
-bash install-python-deps.sh
+## Debug-Modus
 
-# 3. Kostal-Wechselrichter konfigurieren
-npm run setup-kostal
-
-# 4. Homebridge starten
-homebridge -D
-```
-
-**Direkte Kostal-API-Integration:**
-- Kein MQTT-Broker erforderlich
-- Direkte Kommunikation mit Kostal-Wechselrichter
-- Automatische Datenabfrage alle 30 Sekunden
-- Unterstützt alle Kostal Plenticore Modelle
-
-**Installation der Python-Dependencies:**
-- Automatisch bei `npm install` (kann fehlschlagen auf manchen Systemen)
-- Manuell mit `bash install-python-deps.sh`
-- Oder direkt: `pip3 install pykoplenti`
-
-**Troubleshooting:**
-- Bei "externally-managed-environment" Fehler: `pip3 install --user pykoplenti`
-- Bei Permission-Fehlern: `sudo pip3 install pykoplenti`
-
-Siehe [KOSTAL-REAL-DATA-GUIDE.md](KOSTAL-REAL-DATA-GUIDE.md) für Details.
-
-## 🐛 Fehlerbehebung
-
-### Häufige Probleme
-
-1. **MQTT-Verbindung fehlgeschlagen**
-   - Überprüfen Sie MQTT-Broker-Einstellungen
-   - Prüfen Sie Netzwerkverbindung
-
-2. **Keine Daten angezeigt**
-   - Überprüfen Sie MQTT-Topics
-   - Aktivieren Sie Debug-Modus
-
-3. **HomeKit-Geräte nicht sichtbar**
-   - Starten Sie Homebridge neu
-   - Überprüfen Sie Konfiguration
-
-### Debug-Modus
+Aktiviere den Debug-Modus in der Konfiguration für detaillierte Logs:
 
 ```json
 {
@@ -206,32 +130,23 @@ Siehe [KOSTAL-REAL-DATA-GUIDE.md](KOSTAL-REAL-DATA-GUIDE.md) für Details.
 }
 ```
 
-## 🤝 Beitragen
+## Unterstützung
 
-Wir freuen uns über Beiträge! Bitte lesen Sie unsere [Contributing Guidelines](CONTRIBUTING.md).
+Bei Problemen oder Fragen:
 
-## 📝 Changelog
+1. Prüfe die [Troubleshooting-Sektion](#troubleshooting)
+2. Aktiviere den Debug-Modus
+3. Erstelle ein Issue auf GitHub mit den Logs
 
-Siehe [CHANGELOG.md](CHANGELOG.md) für alle Änderungen.
+## Lizenz
 
-## 📄 Lizenz
+MIT License - siehe [LICENSE](LICENSE) für Details.
 
-Dieses Projekt ist unter der MIT-Lizenz lizenziert. Siehe [LICENSE](LICENSE) für Details.
+## Changelog
 
-## 🙏 Danksagungen
-
-- Kostal für die Bereitstellung der Wechselrichter-Protokolle
-- Homebridge-Community für die Unterstützung
-- Alle Mitwirkenden und Tester
-
-## 📞 Support
-
-- **GitHub Issues**: [Probleme melden](https://github.com/chr-braun/homebridge-kostal-inverter/issues)
-- **Discussions**: [Diskussionen](https://github.com/chr-braun/homebridge-kostal-inverter/discussions)
-- **Wiki**: [Dokumentation](https://github.com/chr-braun/homebridge-kostal-inverter/wiki)
-
----
-
-**Entwickelt mit ❤️ für die Homebridge-Community**
-
-*Version 1.0.0 - Vollständig funktionsfähig und produktionsbereit*
+### v2.0.0
+- Erste Version mit MQTT-Integration
+- 6 HomeKit-Sensoren
+- Auto-Discovery
+- Mehrsprachige Unterstützung
+- Homebridge-UI-Integration
