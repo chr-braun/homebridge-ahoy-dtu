@@ -174,7 +174,7 @@ export class AhoyDtuPlatform implements DynamicPlatformPlugin {
    * Device ID aus Topic extrahieren
    */
   private extractDeviceId(topic: string): string | null {
-    const match = topic.match(/^AHOY-DTU_([^\/]+)/);
+    const match = topic.match(/^AHOY-DTU_([^/]+)/);
     return match ? match[1] : null;
   }
 
@@ -280,7 +280,7 @@ export class AhoyDtuPlatform implements DynamicPlatformPlugin {
     accessory.context.deviceType = 'ahoy-dtu';
     
     // AhoyDtuAccessory-Instanz erstellen (ohne circular reference)
-    const ahoyAccessory = new AhoyDtuAccessory(this, accessory);
+    new AhoyDtuAccessory(this, accessory);
     
     // Nur notwendige Daten im Context speichern (keine circular references)
     accessory.context.ahoyAccessory = null; // Circular reference entfernen

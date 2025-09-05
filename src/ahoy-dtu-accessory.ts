@@ -1,4 +1,4 @@
-import { API, Logger, PlatformAccessory, Service, Characteristic } from 'homebridge';
+import { Logger, PlatformAccessory, Service, Characteristic } from 'homebridge';
 import { AhoyDtuPlatform } from './ahoy-dtu-platform';
 
 export class AhoyDtuAccessory {
@@ -33,7 +33,6 @@ export class AhoyDtuAccessory {
   }
 
   private createServices(): void {
-    const deviceName = this.accessory.displayName;
     const sensorConfig = this.platform.config.sensors || {};
 
     // Solarproduktion als Light Sensor (Watt als Lux)
