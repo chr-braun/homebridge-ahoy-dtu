@@ -2,73 +2,62 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [2.0.2-dev.2] - 2025-01-05
+
+### Added
+- **Apple Flat Design Web Interface**: Modern, clean dashboard with Apple-style design
+- **Custom Sensor Names**: Individual names for all sensors via Homebridge UI
+- **Historical Data Storage**: Sparse storage with compression and rolling window
+- **REST API**: Complete API endpoints for data access and integration
+- **Status Indicators**: MQTT connection and data availability status
+- **Responsive Design**: Mobile-optimized interface for all devices
+- **Unit Display**: Proper units for all sensor types (W, kWh, °C, V, A, %, Hz, dBm)
+- **Real-time Charts**: Interactive graphs with Chart.js integration
+- **Time Range Selection**: 1h, 6h, 24h, 7d time periods
+- **Auto-refresh**: Configurable automatic data updates
+
+### Technical Improvements
+- Express web server with CORS support
+- DataStorageManager class for efficient data handling
+- WebInterface class with modern UI components
+- Improved error handling and loading states
+- TypeScript type definitions for Express and CORS
+- Better sensor data formatting and display
+
+### Changed
+- Complete UI redesign with Apple Flat Design principles
+- Improved sensor naming and display
+- Enhanced data visualization and statistics
+- Better mobile responsiveness
+
+## [2.0.2-dev.1] - 2025-01-05
+
+### Added
+- MQTT integration for AHOY-DTU devices
+- Configurable sensor selection via Homebridge UI
+- Child Bridge support for better stability
+- Multi-language support (German, English, French, Italian, Chinese)
+- Automatic device discovery
+- Offline detection and status updates
+
+### Changed
+- Complete rewrite from Kostal plugin to AHOY-DTU
+- Updated package.json with new dependencies
+- Improved error handling and logging
+
+### Fixed
+- Circular reference issues in Child Bridge mode
+- ESLint configuration for GitHub Actions
+- TypeScript compilation errors
+
+## [2.0.1] - 2025-01-05
+
+### Fixed
+- Minor bug fixes and improvements
 
 ## [2.0.0] - 2025-01-05
 
 ### Added
-- **🔌 MQTT-Integration**: Direkte Verbindung zu AHOY-DTU Geräten über MQTT
-- **🏠 HomeKit-Sensoren**: 7 verschiedene Sensoren für Solar-Daten
-  - Solarproduktion (LightSensor) - Aktuelle Solarleistung in Watt
-  - Tagesenergie (LightSensor) - Tägliche Energieerzeugung in kWh
-  - Temperatur (TemperatureSensor) - Wechselrichter-Temperatur
-  - Status (ContactSensor) - Online/Offline-Status
-  - Spannung (LightSensor) - DC-Spannung
-  - Strom (LightSensor) - DC-Strom
-  - Effizienz (LightSensor) - Wechselrichter-Effizienz
-- **🔍 Auto-Discovery**: Automatische Erkennung von AHOY-DTU Geräten über MQTT-Topics
-- **🌍 Mehrsprachige Unterstützung**: Deutsch, Englisch, Französisch, Italienisch
-- **🔧 Homebridge-UI-Integration**: Vollständige Konfiguration über die Homebridge-Benutzeroberfläche
-- **🌉 Child Bridge-Unterstützung**: Plugin kann als Child Bridge ausgeführt werden
-- **📊 MQTT-Topic-Abonnement**: Automatisches Abonnement aller relevanten AHOY-DTU Topics
-- **⚡ Offline-Erkennung**: Intelligente Erkennung von offline-Geräten mit konfigurierbarem Schwellenwert
-
-### Technical
-- **TypeScript-Implementation**: Vollständig typisierte Codebase
-- **MQTT-Client**: Verwendung von `mqtt.js` für robuste MQTT-Verbindungen
-- **Event-driven Architecture**: Asynchrone Verarbeitung von MQTT-Nachrichten
-- **Error Handling**: Umfassende Fehlerbehandlung und Logging
-- **Memory Management**: Effiziente Speicherverwaltung für Echtzeitdaten
-- **Configuration Schema**: JSON-Schema für Homebridge-UI-Integration
-
-### Documentation
-- **Vollständige README**: Detaillierte Installations- und Konfigurationsanleitung
-- **GitHub-Integration**: Badges, Links und Contributing-Guide
-- **Troubleshooting**: Umfassende Fehlerbehebung und Debug-Anleitung
-- **MQTT-Topic-Referenz**: Dokumentation aller unterstützten MQTT-Topics
-- **HomeKit-Integration**: Anleitungen für Automatisierungen und Siri-Integration
-
-### Configuration
-- **MQTT-Settings**: Host, Port, Username, Password, Client-ID
-- **Device Discovery**: Automatische oder manuelle Geräteerkennung
-- **Offline Threshold**: Konfigurierbare Offline-Erkennung (1-60 Minuten)
-- **Language Selection**: Dropdown für Sprachauswahl
-- **Debug Mode**: Detaillierte Logs für Fehlerbehebung
-- **Child Bridge**: Separate Prozess-Ausführung für bessere Stabilität
-
-### MQTT Topics
-- `AHOY-DTU_TOTAL/power` - Aktuelle Solarleistung
-- `AHOY-DTU_TOTAL/energy_today` - Tägliche Energieerzeugung
-- `AHOY-DTU_TOTAL/energy_total` - Gesamte Energieerzeugung
-- `AHOY-DTU_TOTAL/temperature` - Wechselrichter-Temperatur
-- `AHOY-DTU_TOTAL/status` - Online/Offline-Status
-- `AHOY-DTU_TOTAL/voltage` - DC-Spannung
-- `AHOY-DTU_TOTAL/current` - DC-Strom
-- `AHOY-DTU_TOTAL/efficiency` - Wechselrichter-Effizienz
-- `AHOY-DTU_TOTAL/frequency` - Netzfrequenz
-- `AHOY-DTU_TOTAL/rssi` - Signalstärke
-- `AHOY-DTU_TOTAL/reachable` - Erreichbarkeit
-- `AHOY-DTU_TOTAL/producing` - Produktionsstatus
-
-### Breaking Changes
-- **Neue Platform**: `homebridge-ahoy-dtu.AhoyDTU` (vorher Kostal-spezifisch)
-- **MQTT-Only**: Keine direkte API-Integration, nur MQTT-basiert
-- **Sensor-basiert**: Verwendung von HomeKit-Sensoren statt Outlets
-- **Konfiguration**: Vollständig neue Konfigurationsstruktur für MQTT
-
-### Dependencies
-- **Node.js**: ^18.15.0 || ^20.7.0 || ^22
-- **Homebridge**: ^1.3.0
-- **MQTT**: ^5.3.4
-- **TypeScript**: ^5.0.0
+- Initial release of AHOY-DTU plugin
+- Basic MQTT connectivity
+- HomeKit sensor integration
