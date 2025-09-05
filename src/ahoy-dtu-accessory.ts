@@ -187,6 +187,27 @@ export class AhoyDtuAccessory {
   updateData(data: any): void {
     const sensorConfig = this.platform.config.sensors || {};
     
+    // Historical Data Storage
+    const dataStorage = this.platform.getDataStorage();
+    if (dataStorage) {
+      // Speichere relevante Datenpunkte
+      if (data.power !== undefined) {
+        dataStorage.storeData(`${this.deviceId}_power`, data.power);
+      }
+      if (data.temperature !== undefined) {
+        dataStorage.storeData(`${this.deviceId}_temperature`, data.temperature);
+      }
+      if (data.energy_today !== undefined) {
+        dataStorage.storeData(`${this.deviceId}_energy_today`, data.energy_today);
+      }
+      if (data.voltage !== undefined) {
+        dataStorage.storeData(`${this.deviceId}_voltage`, data.voltage);
+      }
+      if (data.current !== undefined) {
+        dataStorage.storeData(`${this.deviceId}_current`, data.current);
+      }
+    }
+    
     // Alle Werte speichern
     Object.keys(data).forEach(key => {
       this.currentValues.set(key, data[key]);

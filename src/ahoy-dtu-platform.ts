@@ -1,5 +1,7 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 import { AhoyDtuAccessory } from './ahoy-dtu-accessory';
+import { DataStorageManager, StorageConfig } from './data-storage-manager';
+import { WebInterface, WebInterfaceConfig } from './web-interface';
 import { I18nManager } from './i18n';
 import * as mqtt from 'mqtt';
 
@@ -15,6 +17,8 @@ export class AhoyDtuPlatform implements DynamicPlatformPlugin {
   private mqttConfig: any = null;
   private discoveryInterval: NodeJS.Timeout | null = null;
   private offlineCheckInterval: NodeJS.Timeout | null = null;
+  private dataStorage: DataStorageManager | null = null;
+  private webInterface: WebInterface | null = null;
 
   constructor(
     public readonly log: Logger,
@@ -22,6 +26,24 @@ export class AhoyDtuPlatform implements DynamicPlatformPlugin {
     public readonly api: API,
   ) {
     this.i18n = new I18nManager(config.language || 'de');
+    
+    // DataStorageManager initialisieren
+    const storageConfig: StorageConfig = {
+      enabled: this.config.dataStorage?.enabled || false,
+      retentionHours: this.config.dataStorage?.retentionHours || 24,
+      samplingInterval: this.config.dataStorage?.samplingInterval || 5,
+      compressionEnabled: this.config.dataStorage?.compressionEnabled || true
+    };
+    this.dataStorage = new DataStorageManager(storageConfig, this.log);
+    
+    // Web Interface initialisieren
+    const webConfig: WebInterfaceConfig = {
+      enabled: this.config.webInterface?.enabled || false,
+      port: this.config.webInterface?.port || 8080,
+      refreshInterval: this.config.webInterface?.refreshInterval || 30
+    };
+    this.webInterface = new WebInterface(webConfig, this.log);
+    this.webInterface.setDataStorage(this.dataStorage);
     
     this.log.info(this.i18n.t('platform.initialized', 'AHOY-DTU Platform initialisiert'));
 
@@ -80,6 +102,7 @@ export class AhoyDtuPlatform implements DynamicPlatformPlugin {
         this.subscribeToTopics();
         this.startDiscovery();
         this.startOfflineCheck();
+        this.startWebInterface();
       });
 
       this.mqttClient.on('error', (error) => {
@@ -304,6 +327,22 @@ export class AhoyDtuPlatform implements DynamicPlatformPlugin {
   }
 
   /**
+   * Web Interface starten
+   */
+  private startWebInterface(): void {
+    if (this.webInterface) {
+      this.webInterface.start();
+    }
+  }
+
+  /**
+   * DataStorageManager für Accessories verfügbar machen
+   */
+  public getDataStorage(): DataStorageManager | null {
+    return this.dataStorage;
+  }
+
+  /**
    * Aufräumen beim Beenden
    */
   private cleanup(): void {
@@ -320,6 +359,10 @@ export class AhoyDtuPlatform implements DynamicPlatformPlugin {
     if (this.mqttClient) {
       this.mqttClient.end();
       this.mqttClient = null;
+    }
+    
+    if (this.webInterface) {
+      this.webInterface.stop();
     }
   }
 }
