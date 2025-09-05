@@ -228,6 +228,72 @@ node generate-daily-report.js --json
 0 20 * * * /pfad/zu/homebridge-kostal-inverter/daily-report.sh
 ```
 
+### 📱 Push-Benachrichtigungen
+
+Das Plugin unterstützt Push-Benachrichtigungen für tägliche Reports um 20:00 Uhr.
+
+#### Setup
+```bash
+# Setup durchführen
+./setup-push-notifications.sh
+
+# Konfiguration bearbeiten
+nano ~/.homebridge/kostal-push-config.json
+```
+
+#### Unterstützte Services
+- 📱 **Pushover**: Push-Benachrichtigungen auf iOS/Android
+- 💬 **Telegram**: Bot-Nachrichten
+- 🏠 **HomeKit Integration**: iOS-kompatible Benachrichtigungen über HomeKit
+- 🔗 **Webhook**: Beliebige HTTP-Endpoints
+- 📧 **E-Mail**: SMTP-Versand
+
+#### Konfiguration über Homebridge UI
+Die Push-Benachrichtigungen können direkt in der Homebridge UI konfiguriert werden:
+
+1. **Gehe zu den Plugin-Einstellungen**
+2. **Aktiviere "Push-Benachrichtigungen aktivieren"**
+3. **Wähle die gewünschten Services:**
+   - **Pushover**: Für iOS/Android Push-Benachrichtigungen
+   - **Telegram**: Für Bot-Nachrichten
+   - **HomeKit Integration**: Für iOS-kompatible Benachrichtigungen
+
+#### Manuelle Konfiguration
+```json
+{
+  "enabled": true,
+  "time": "20:00",
+  "services": {
+    "pushover": {
+      "enabled": true,
+      "userKey": "dein-user-key",
+      "appToken": "dein-app-token"
+    },
+    "telegram": {
+      "enabled": true,
+      "botToken": "dein-bot-token",
+      "chatId": "dein-chat-id"
+    },
+    "homekit": {
+      "enabled": true,
+      "accessoryName": "Kostal Solar Report"
+    }
+  }
+}
+```
+
+#### Verwendung
+```bash
+# Teste Push-Benachrichtigungen
+node push-notifications.js --test
+
+# Starte geplanten Service
+node push-notifications.js --schedule
+
+# Automatischer Start beim Booten (crontab)
+@reboot cd /pfad/zu/plugin && node push-notifications.js --schedule
+```
+
 ### Report-Features
 - ⚡ **Gesamtenergie** des Tages
 - 🔥 **Maximale Leistung** erreicht

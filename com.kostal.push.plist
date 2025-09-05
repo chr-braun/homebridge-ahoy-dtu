@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.kostal.push</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/node</string>
+        <string>push-notifications.js</string>
+        <string>--schedule</string>
+    </array>
+    
+    <key>WorkingDirectory</key>
+    <string>/var/lib/homebridge/node_modules/homebridge-kostal-inverter</string>
+    
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <key>KeepAlive</key>
+    <true/>
+    
+    <key>StandardOutPath</key>
+    <string>/var/log/kostal-push.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/var/log/kostal-push-error.log</string>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>NODE_ENV</key>
+        <string>production</string>
+    </dict>
+</dict>
+</plist>

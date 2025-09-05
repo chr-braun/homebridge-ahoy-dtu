@@ -1,0 +1,19 @@
+[Unit]
+Description=Kostal Solar Push Notifications
+After=network.target homebridge.service
+
+[Service]
+Type=simple
+User=homebridge
+WorkingDirectory=/var/lib/homebridge/node_modules/homebridge-kostal-inverter
+ExecStart=/usr/bin/node push-notifications.js --schedule
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Umgebungsvariablen
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

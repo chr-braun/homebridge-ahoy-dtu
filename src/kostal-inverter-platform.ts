@@ -1,4 +1,5 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
+import { SimplePushUI } from './simple-push-ui';
 
 export class KostalInverterPlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service = this.api.hap.Service;
@@ -21,6 +22,10 @@ export class KostalInverterPlatform implements DynamicPlatformPlugin {
     this.baseUrl = `http://${host}:${port}`;
 
     this.log.info(`HTTP-Client initialisiert für ${this.baseUrl}`);
+
+    // Push-Benachrichtigungen UI initialisieren
+    const pushUI = new SimplePushUI(this.api, this.log, this.config);
+    pushUI.register();
 
     this.api.on('didFinishLaunching', () => {
       this.discoverDevices();

@@ -33,7 +33,11 @@
     "homebridge": ">=1.6.0"
   },
   "dependencies": {
+    "axios": "^1.11.0",
     "modbus-serial": "^8.0.21-no-serial-port",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.6",
+    "pushover-notifications": "^1.2.3",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kostal Push-Benachrichtigungen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e5e7;
+        }
+
+        .card h2 {
+            color: #1d1d1f;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #1d1d1f;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e5e7;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .toggle input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .service-section {
+            border: 2px solid #e5e5e7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .service-section.enabled {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .service-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .service-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .service-icon {
+            font-size: 1.5rem;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .status {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .help-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .device-tokens {
+            margin-top: 15px;
+        }
+
+        .token-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .token-item input {
+            flex: 1;
+            margin: 0;
+        }
+
+        .remove-token {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .add-token {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Push-Benachrichtigungen</h1>
+            <p>Konfiguriere tägliche Solar-Reports um 20:00 Uhr</p>
+        </div>
+
+        <div id="status"></div>
+
+        <div class="card">
+            <h2>⚙️ Allgemeine Einstellungen</h2>
+            
+            <div class="form-group">
+                <div class="toggle">
+                    <input type="checkbox" id="enabled">
+                    <label for="enabled">Push-Benachrichtigungen aktivieren</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="time">Benachrichtigungszeit</label>
+                <input type="time" id="time" value="20:00">
+                <div class="help-text">Täglicher Report wird zu dieser Zeit gesendet</div>
+            </div>
+        </div>
+
+        <!-- Pushover -->
+        <div class="card">
+            <div class="service-section" id="pushover-section">
+                <div class="service-header">
+                    <div class="service-title">
+                        <span class="service-icon">📱</span>
+                        Pushover
+                    </div>
+                    <div class="toggle">
+                        <input type="checkbox" id="pushover-enabled">
+                        <label for="pushover-enabled">Aktivieren</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pushover-userKey">User Key</label>
+                    <input type="text" id="pushover-userKey" placeholder="Dein Pushover User Key">
+                    <div class="help-text">Finde deinen User Key unter <a href="https://pushover.net/" target="_blank">pushover.net</a></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pushover-appToken">App Token</label>
+                    <input type="text" id="pushover-appToken" placeholder="Dein Pushover App Token">
+                    <div class="help-text">Erstelle eine App unter <a href="https://pushover.net/apps/build" target="_blank">pushover.net/apps/build</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Telegram -->
+        <div class="card">
+            <div class="service-section" id="telegram-section">
+                <div class="service-header">
+                    <div class="service-title">
+                        <span class="service-icon">💬</span>
+                        Telegram
+                    </div>
+                    <div class="toggle">
+                        <input type="checkbox" id="telegram-enabled">
+                        <label for="telegram-enabled">Aktivieren</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="telegram-botToken">Bot Token</label>
+                    <input type="text" id="telegram-botToken" placeholder="Dein Telegram Bot Token">
+                    <div class="help-text">Erstelle einen Bot mit <a href="https://t.me/BotFather" target="_blank">@BotFather</a></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="telegram-chatId">Chat ID</label>
+                    <input type="text" id="telegram-chatId" placeholder="Deine Chat ID">
+                    <div class="help-text">Sende /start an deinen Bot und verwende <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Webhook -->
+        <div class="card">
+            <div class="service-section" id="webhook-section">
+                <div class="service-header">
+                    <div class="service-title">
+                        <span class="service-icon">🔗</span>
+                        Webhook
+                    </div>
+                    <div class="toggle">
+                        <input type="checkbox" id="webhook-enabled">
+                        <label for="webhook-enabled">Aktivieren</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="webhook-url">Webhook URL</label>
+                    <input type="url" id="webhook-url" placeholder="https://example.com/webhook">
+                    <div class="help-text">Beliebige HTTP-Endpoint für Push-Benachrichtigungen</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="webhook-method">HTTP-Methode</label>
+                    <select id="webhook-method">
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="PATCH">PATCH</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- E-Mail -->
+        <div class="card">
+            <div class="service-section" id="email-section">
+                <div class="service-header">
+                    <div class="service-title">
+                        <span class="service-icon">📧</span>
+                        E-Mail
+                    </div>
+                    <div class="toggle">
+                        <input type="checkbox" id="email-enabled">
+                        <label for="email-enabled">Aktivieren</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email-host">SMTP Host</label>
+                        <input type="text" id="email-host" placeholder="smtp.gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="email-port">Port</label>
+                        <input type="number" id="email-port" value="587">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email-user">Benutzername</label>
+                        <input type="text" id="email-user" placeholder="deine@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="email-pass">Passwort</label>
+                        <input type="password" id="email-pass" placeholder="App-Passwort">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email-from">Von</label>
+                        <input type="email" id="email-from" placeholder="sender@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="email-to">An</label>
+                        <input type="email" id="email-to" placeholder="empfaenger@email.com">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HomeKit Integration -->
+        <div class="card">
+            <div class="service-section" id="homekit-section">
+                <div class="service-header">
+                    <div class="service-title">
+                        <span class="service-icon">🏠</span>
+                        HomeKit Integration
+                    </div>
+                    <div class="toggle">
+                        <input type="checkbox" id="homekit-enabled">
+                        <label for="homekit-enabled">Aktivieren</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="homekit-webhook">Homebridge Webhook URL</label>
+                    <input type="url" id="homekit-webhook" placeholder="http://localhost:8080/api/webhook">
+                    <div class="help-text">Webhook-URL für HomeKit-Benachrichtigungen</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="homekit-accessory">Accessory Name</label>
+                    <input type="text" id="homekit-accessory" value="Kostal Solar Report">
+                    <div class="help-text">Name des Accessories für Benachrichtigungen</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="btn-group">
+                <button class="btn" onclick="saveConfig()">💾 Konfiguration speichern</button>
+                <button class="btn btn-secondary" onclick="loadConfig()">🔄 Neu laden</button>
+                <button class="btn btn-success" onclick="testPush()">📤 Test senden</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Lade Konfiguration beim Start
+        document.addEventListener('DOMContentLoaded', loadConfig);
+
+        async function loadConfig() {
+            try {
+                const response = await fetch('/api/kostal-push/push-config');
+                const config = await response.json();
+                
+                // Allgemeine Einstellungen
+                document.getElementById('enabled').checked = config.enabled;
+                document.getElementById('time').value = config.time;
+                
+                // Services
+                updateServiceSection('pushover', config.services.pushover);
+                updateServiceSection('telegram', config.services.telegram);
+                updateServiceSection('webhook', config.services.webhook);
+                updateServiceSection('email', config.services.email);
+                updateServiceSection('homekit', config.services.homekit);
+                
+                showStatus('Konfiguration geladen', 'success');
+            } catch (error) {
+                showStatus('Fehler beim Laden der Konfiguration', 'error');
+            }
+        }
+
+        function updateServiceSection(serviceName, serviceConfig) {
+            const section = document.getElementById(serviceName + '-section');
+            const enabled = document.getElementById(serviceName + '-enabled');
+            
+            enabled.checked = serviceConfig.enabled;
+            
+            if (serviceConfig.enabled) {
+                section.classList.add('enabled');
+            } else {
+                section.classList.remove('enabled');
+            }
+            
+            // Fülle Felder
+            Object.keys(serviceConfig).forEach(key => {
+                const element = document.getElementById(serviceName + '-' + key);
+                if (element) {
+                    if (key === 'smtp') {
+                        Object.keys(serviceConfig[key]).forEach(subKey => {
+                            const subElement = document.getElementById(serviceName + '-' + subKey);
+                            if (subElement) {
+                                if (subKey === 'auth') {
+                                    Object.keys(serviceConfig[key][subKey]).forEach(authKey => {
+                                        const authElement = document.getElementById(serviceName + '-' + authKey);
+                                        if (authElement) {
+                                            authElement.value = serviceConfig[key][subKey][authKey];
+                                        }
+                                    });
+                                } else {
+                                    subElement.value = serviceConfig[key][subKey];
+                                }
+                            }
+                        });
+                    } else {
+                        element.value = serviceConfig[key];
+                    }
+                }
+            });
+        }
+
+        async function saveConfig() {
+            try {
+                const config = {
+                    enabled: document.getElementById('enabled').checked,
+                    time: document.getElementById('time').value,
+                    services: {
+                        pushover: {
+                            enabled: document.getElementById('pushover-enabled').checked,
+                            userKey: document.getElementById('pushover-userKey').value,
+                            appToken: document.getElementById('pushover-appToken').value
+                        },
+                        telegram: {
+                            enabled: document.getElementById('telegram-enabled').checked,
+                            botToken: document.getElementById('telegram-botToken').value,
+                            chatId: document.getElementById('telegram-chatId').value
+                        },
+                        webhook: {
+                            enabled: document.getElementById('webhook-enabled').checked,
+                            url: document.getElementById('webhook-url').value,
+                            method: document.getElementById('webhook-method').value
+                        },
+                        email: {
+                            enabled: document.getElementById('email-enabled').checked,
+                            smtp: {
+                                host: document.getElementById('email-host').value,
+                                port: parseInt(document.getElementById('email-port').value),
+                                secure: false,
+                                auth: {
+                                    user: document.getElementById('email-user').value,
+                                    pass: document.getElementById('email-pass').value
+                                }
+                            },
+                            to: document.getElementById('email-to').value,
+                            from: document.getElementById('email-from').value
+                        },
+                        homekit: {
+                            enabled: document.getElementById('homekit-enabled').checked,
+                            homebridgeWebhook: document.getElementById('homekit-webhook').value,
+                            accessoryName: document.getElementById('homekit-accessory').value
+                        }
+                    }
+                };
+
+                const response = await fetch('/api/kostal-push/push-config', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(config)
+                });
+
+                if (response.ok) {
+                    showStatus('Konfiguration gespeichert!', 'success');
+                } else {
+                    showStatus('Fehler beim Speichern der Konfiguration', 'error');
+                }
+            } catch (error) {
+                showStatus('Fehler beim Speichern der Konfiguration', 'error');
+            }
+        }
+
+        async function testPush() {
+            try {
+                const response = await fetch('/api/kostal-push/push-test', {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    showStatus('Test-Benachrichtigung gesendet!', 'success');
+                } else {
+                    showStatus('Fehler beim Senden der Test-Benachrichtigung', 'error');
+                }
+            } catch (error) {
+                showStatus('Fehler beim Senden der Test-Benachrichtigung', 'error');
+            }
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+            
+            setTimeout(() => {
+                statusDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // Toggle Service Sections
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const section = this.closest('.service-section');
+                if (this.checked) {
+                    section.classList.add('enabled');
+                } else {
+                    section.classList.remove('enabled');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
