@@ -1,294 +1,231 @@
 {
-  "pluginAlias": "AHOY-DTU",
+  "pluginAlias": "KostalInverter",
   "pluginType": "platform",
+  "headerDisplay": "Kostal Plenticore Solar Inverter Plugin",
+  "headerDescription": "Integriert Kostal Plenticore Wechselrichter über HTTP/REST API in HomeKit",
   "schema": {
     "type": "object",
     "properties": {
       "name": {
         "title": "Platform Name",
         "type": "string",
-        "required": true,
-        "default": "AHOY-DTU Solar",
-        "description": "Name of the AHOY-DTU platform in Homebridge"
+        "default": "Kostal Plenticore",
+        "description": "Name der Platform in Homebridge"
       },
-      "uiLanguage": {
-        "title": "UI Language",
+      "host": {
+        "title": "Wechselrichter IP-Adresse",
         "type": "string",
-        "required": false,
-        "default": "de",
-        "enum": [
-          "de",
-          "en",
-          "fr",
-          "it",
-          "zh"
-        ],
-        "enumNames": [
-          "🇩🇪 Deutsch",
-          "🇺🇸 English",
-          "🇫🇷 Français",
-          "🇮🇹 Italiano",
-          "🇨🇳 中文"
-        ],
-        "description": "Language for the Homebridge UI interface"
+        "default": "192.168.1.100",
+        "description": "IP-Adresse deines Kostal Plenticore Wechselrichters"
       },
-      "mqttHost": {
-        "title": "MQTT Host",
-        "type": "string",
-        "required": true,
-        "format": "ipv4",
-        "description": "IP address of your MQTT broker (e.g., 192.168.1.100)"
-      },
-      "mqttPort": {
-        "title": "MQTT Port",
+      "port": {
+        "title": "Port",
         "type": "integer",
-        "required": false,
-        "default": 1883,
+        "default": 80,
         "minimum": 1,
         "maximum": 65535,
-        "description": "Port of your MQTT broker"
+        "description": "Port für die HTTP-Verbindung (Standard: 80)"
       },
-      "mqttUsername": {
-        "title": "MQTT Username",
-        "type": "string",
-        "required": false,
-        "description": "Username for MQTT authentication (if required)"
-      },
-      "mqttPassword": {
-        "title": "MQTT Password",
-        "type": "string",
-        "required": false,
-        "format": "password",
-        "description": "Password for MQTT authentication (if required)"
-      },
-      "mqttTopic": {
-        "title": "MQTT Base Topic",
-        "type": "string",
-        "required": false,
-        "default": "ahoy-dtu",
-        "description": "Base MQTT topic for AHOY-DTU messages"
-      },
-      "connectionType": {
-        "title": "Connection Type",
-        "type": "string",
-        "required": false,
-        "default": "platform",
-        "enum": [
-          "platform",
-          "child-bridge"
-        ],
-        "enumNames": [
-          "🏠 Platform Plugin (Main Homebridge)",
-          "🔌 Child Bridge (Separate Process)"
-        ],
-        "description": "Choose between platform plugin or child bridge mode"
-      },
-      "usePreset": {
-        "title": "Preset Configuration",
-        "type": "string",
-        "required": false,
-        "enum": [
-          "basic",
-          "detailed",
-          "individual-inverters"
-        ],
-        "enumNames": [
-          "📊 Basic (Power, Energy, Status)",
-          "🔍 Detailed (All Available Data)",
-          "🏭 Individual Inverters"
-        ],
-        "description": "Choose a preset configuration for your solar system"
-      },
-      "selectedDevices": {
-        "title": "Selected Devices",
-        "type": "array",
-        "items": {
-          "type": "string"
-        },
-        "required": false,
-        "description": "Specific MQTT topics to monitor (leave empty to use preset)"
-      },
-      "discoverDevices": {
-        "title": "Auto-Discover Devices",
-        "type": "boolean",
-        "required": false,
-        "default": false,
-        "description": "Automatically discover available devices from MQTT topics"
-      },
-      "usePowerOutlets": {
-        "title": "Use Power Outlets",
-        "type": "boolean",
-        "required": false,
-        "default": true,
-        "description": "Use Outlet service for power measurements (shows actual Watts instead of lumens)"
-      },
-      "maxEnergyPerDay": {
-        "title": "Maximum Daily Energy",
-        "type": "number",
-        "required": false,
-        "default": 10,
-        "minimum": 0,
-        "maximum": 1000,
-        "description": "Maximum daily energy production in kWh (for percentage calculations)"
-      },
-      "offlineThresholdMinutes": {
-        "title": "Offline Threshold",
+      "pollingInterval": {
+        "title": "Aktualisierungsintervall (Sekunden)",
         "type": "integer",
-        "required": false,
-        "default": 15,
-        "minimum": 1,
-        "maximum": 1440,
-        "description": "Minutes before considering device offline"
+        "default": 30,
+        "minimum": 10,
+        "maximum": 300,
+        "description": "Wie oft sollen die Daten vom Wechselrichter abgerufen werden?"
       },
-      "dailyReports": {
-        "title": "Daily Reports",
-        "type": "object",
-        "properties": {
-          "enabled": {
-            "title": "Enable Daily Reports",
-            "type": "boolean",
-            "required": false,
-            "default": true,
-            "description": "Enable daily solar production reports"
-          },
-          "language": {
-            "title": "Report Language",
-            "type": "string",
-            "required": false,
-            "default": "de",
-            "enum": [
-              "de",
-              "en",
-              "fr",
-              "it",
-              "zh"
-            ],
-            "enumNames": [
-              "🇩🇪 Deutsch",
-              "🇺🇸 English",
-              "🇫🇷 Français",
-              "🇮🇹 Italiano",
-              "🇨🇳 中文"
-            ],
-            "description": "Language for daily report notifications"
-          },
-          "time": {
-            "title": "Report Time",
-            "type": "string",
-            "required": false,
-            "default": "20:00",
-            "pattern": "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",
-            "description": "Time for daily reports (24-hour format, e.g., 20:00)"
-          },
-          "includePowerStats": {
-            "title": "Include Power Statistics",
-            "type": "boolean",
-            "required": false,
-            "default": true,
-            "description": "Include peak power and average power in daily reports"
-          },
-          "includeEnergyStats": {
-            "title": "Include Energy Statistics",
-            "type": "boolean",
-            "required": false,
-            "default": true,
-            "description": "Include daily energy and efficiency in daily reports"
-          }
-        }
+      "enableMainInverter": {
+        "title": "Hauptwechselrichter aktivieren",
+        "type": "boolean",
+        "default": true,
+        "description": "Hauptwechselrichter mit Leistung, Temperatur und Status anzeigen"
+      },
+      "enableStringMonitoring": {
+        "title": "PV-String-Überwachung aktivieren",
+        "type": "boolean",
+        "default": true,
+        "description": "Einzelne PV-Strings mit Spannung und Status überwachen"
       },
       "energyProvider": {
-        "title": "Energy Provider Service",
+        "title": "Apple Home Energy Provider",
         "type": "object",
         "properties": {
           "enabled": {
-            "title": "Enable Energy Provider",
+            "title": "Energy Provider aktivieren",
             "type": "boolean",
-            "required": false,
             "default": true,
-            "description": "Enable Apple Home Energy Provider service (iOS 16+)"
+            "description": "Als Apple Home Energy Provider anzeigen (iOS 16+). Erscheint im Apple Home Energie-Widget."
           },
-          "fallbackToStandard": {
-            "title": "Fallback to Standard Services",
-            "type": "boolean",
-            "required": false,
-            "default": true,
-            "description": "Use standard HomeKit services if Energy Provider not available"
+          "name": {
+            "title": "Energy Provider Name",
+            "type": "string",
+            "default": "Kostal Solar",
+            "description": "Name des Energy Providers in Apple Home"
           }
+        },
+        "description": "Apple Home Energy Provider Einstellungen für iOS 16+"
+      },
+      "stringCount": {
+        "title": "Anzahl PV-Strings",
+        "type": "integer",
+        "default": 3,
+        "minimum": 1,
+        "maximum": 10,
+        "description": "Wie viele PV-Strings hat deine Anlage?",
+        "condition": {
+          "functionBody": "return model.enableStringMonitoring === true;"
         }
       },
-      "advanced": {
-        "title": "Advanced Settings",
+      "apiEndpoints": {
+        "title": "API-Endpunkte",
         "type": "object",
         "properties": {
-          "debugMode": {
-            "title": "Debug Mode",
-            "type": "boolean",
-            "required": false,
-            "default": false,
-            "description": "Enable detailed debug logging"
+          "processData": {
+            "title": "Prozessdaten-Endpunkt",
+            "type": "string",
+            "default": "/api/v1/processdata",
+            "description": "Endpunkt für Leistungs- und Energiedaten"
           },
-          "cacheTimeout": {
-            "title": "Cache Timeout",
+          "systemData": {
+            "title": "Systemdaten-Endpunkt",
+            "type": "string",
+            "default": "/api/v1/systemdata",
+            "description": "Endpunkt für Temperatur- und Statusdaten"
+          }
+        },
+        "description": "API-Endpunkte für verschiedene Datentypen"
+      },
+      "advanced": {
+        "title": "Erweiterte Einstellungen",
+        "type": "object",
+        "properties": {
+          "timeout": {
+            "title": "HTTP-Timeout (ms)",
             "type": "integer",
-            "required": false,
-            "default": 300,
-            "minimum": 60,
-            "maximum": 3600,
-            "description": "Cache timeout in seconds"
+            "default": 10000,
+            "minimum": 1000,
+            "maximum": 60000,
+            "description": "Timeout für HTTP-Anfragen"
           },
-          "autoRestart": {
-            "title": "Auto Restart",
+          "retryAttempts": {
+            "title": "Wiederholungsversuche",
+            "type": "integer",
+            "default": 3,
+            "minimum": 1,
+            "maximum": 10,
+            "description": "Anzahl der Wiederholungsversuche bei Fehlern"
+          },
+          "enableDebugLogging": {
+            "title": "Debug-Logging aktivieren",
             "type": "boolean",
-            "required": false,
-            "default": true,
-            "description": "Automatically restart plugin on connection issues"
+            "default": false,
+            "description": "Detaillierte Logs für Fehlerbehebung"
+          },
+          "usePythonBridge": {
+            "title": "Python-Bridge verwenden",
+            "type": "boolean",
+            "default": false,
+            "description": "Verwende die Python-Bridge (pykoplenti) für bessere Datenabfrage. Erfordert Python 3.13+ und pykoplenti."
           }
         }
       }
-    }
+    },
+    "required": ["host"]
   },
-  "ui": true,
-  "uiSchema": {
-    "ui:order": [
-      "name",
-      "uiLanguage",
-      "connectionType",
-      "mqttHost",
-      "mqttPort",
-      "mqttUsername",
-      "mqttPassword",
-      "mqttTopic",
-      "usePreset",
-      "selectedDevices",
-      "discoverDevices",
-      "usePowerOutlets",
-      "maxEnergyPerDay",
-      "offlineThresholdMinutes",
-      "dailyReports",
-      "energyProvider",
-      "advanced"
-    ],
-    "dailyReports": {
-      "ui:order": [
-        "enabled",
-        "language",
-        "time",
-        "includePowerStats",
-        "includeEnergyStats"
+  "form": [
+    {
+      "type": "string",
+      "key": "name",
+      "title": "Platform Name"
+    },
+    {
+      "type": "string",
+      "key": "host",
+      "title": "Wechselrichter IP-Adresse"
+    },
+    {
+      "type": "number",
+      "key": "port",
+      "title": "Port"
+    },
+    {
+      "type": "number",
+      "key": "pollingInterval",
+      "title": "Aktualisierungsintervall (Sekunden)"
+    },
+    {
+      "type": "checkbox",
+      "key": "enableMainInverter",
+      "title": "Hauptwechselrichter aktivieren"
+    },
+    {
+      "type": "checkbox",
+      "key": "enableStringMonitoring",
+      "title": "PV-String-Überwachung aktivieren"
+    },
+    {
+      "type": "fieldset",
+      "title": "Apple Home Energy Provider",
+      "items": [
+        {
+          "type": "checkbox",
+          "key": "energyProvider.enabled",
+          "title": "Energy Provider aktivieren"
+        },
+        {
+          "type": "string",
+          "key": "energyProvider.name",
+          "title": "Energy Provider Name"
+        }
       ]
     },
-    "energyProvider": {
-      "ui:order": [
-        "enabled",
-        "fallbackToStandard"
+    {
+      "type": "number",
+      "key": "stringCount",
+      "title": "Anzahl PV-Strings",
+      "condition": "enableStringMonitoring"
+    },
+    {
+      "type": "fieldset",
+      "title": "API-Endpunkte",
+      "items": [
+        {
+          "type": "string",
+          "key": "apiEndpoints.processData",
+          "title": "Prozessdaten-Endpunkt"
+        },
+        {
+          "type": "string",
+          "key": "apiEndpoints.systemData",
+          "title": "Systemdaten-Endpunkt"
+        }
       ]
     },
-    "advanced": {
-      "ui:order": [
-        "debugMode",
-        "cacheTimeout",
-        "autoRestart"
+    {
+      "type": "fieldset",
+      "title": "Erweiterte Einstellungen",
+      "items": [
+        {
+          "type": "number",
+          "key": "advanced.timeout",
+          "title": "HTTP-Timeout (ms)"
+        },
+        {
+          "type": "number",
+          "key": "advanced.retryAttempts",
+          "title": "Wiederholungsversuche"
+        },
+        {
+          "type": "checkbox",
+          "key": "advanced.enableDebugLogging",
+          "title": "Debug-Logging aktivieren"
+        },
+        {
+          "type": "checkbox",
+          "key": "advanced.usePythonBridge",
+          "title": "Python-Bridge verwenden"
+        }
       ]
     }
-  }
+  ]
 }

@@ -1,0 +1,17 @@
+{
+  "platforms": [
+    {
+      "platform": "KostalInverter",
+      "name": "Kostal Plenticore",
+      "host": "192.168.1.100",
+      "port": 80,
+      "username": "admin",
+      "password": "ihr-passwort",
+      "strings": 3,
+      "updateInterval": 30,
+      "childBridge": false,
+      "childBridgePort": 8581,
+      "debug": false
+    }
+  ]
+}

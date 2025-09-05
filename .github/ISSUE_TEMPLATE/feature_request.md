@@ -1,45 +1,29 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: Feature Request
+about: Schlage eine neue Funktion für dieses Projekt vor
 title: '[FEATURE] '
 labels: 'enhancement'
 assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+**Ist Ihr Feature-Request mit einem Problem verbunden? Bitte beschreiben Sie es.**
+Eine klare und präzise Beschreibung des Problems. z.B. Ich bin immer frustriert, wenn [...]
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+**Beschreiben Sie die gewünschte Lösung**
+Eine klare und präzise Beschreibung dessen, was Sie möchten.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+**Beschreiben Sie Alternativen, die Sie in Betracht gezogen haben**
+Eine klare und präzise Beschreibung aller alternativen Lösungen oder Features, die Sie in Betracht gezogen haben.
 
-**Use Case**
-Describe how this feature would be used and why it's valuable. For example:
-- What AHOY-DTU setup would benefit from this?
-- How would it improve the user experience?
-- What HomeKit functionality would this enable?
+**Zusätzlicher Kontext**
+Fügen Sie hier alle anderen Kontexte oder Screenshots zu Ihrer Feature-Anfrage hinzu.
 
-**Proposed Implementation**
-If you have ideas about how this could be implemented, please share:
-- Configuration changes needed
-- New MQTT topics to support
-- UI/UX considerations
-- Compatibility requirements
+**Verwandte Projekte**
+Falls es ähnliche Projekte oder Implementierungen gibt, die Sie kennen, fügen Sie Links hinzu.
 
-**Examples**
-If applicable, provide examples of:
-- Configuration snippets
-- Expected behavior
-- Similar features in other plugins
-- Mock-ups or wireframes
-
-**Additional context**
-Add any other context, screenshots, or examples about the feature request here.
-
-**Compatibility Considerations**
-- Should this be backward compatible?
-- Does this affect existing configurations?
-- Are there breaking changes involved?
+**Vorgeschlagene Priorität**
+- [ ] Niedrig
+- [ ] Mittel  
+- [ ] Hoch
+- [ ] Kritisch

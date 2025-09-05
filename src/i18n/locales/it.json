@@ -1,39 +1,89 @@
 {
-  "energyGenerated": "Energia Generata",
-  "peakPower": "Potenza di Picco",
-  "productionHours": "Ore di Produzione",
-  "efficiency": "Efficienza",
-  
-  "dailySummaryTitle": "Riepilogo Solare Giornaliero",
-  "productionComplete": "Produzione solare completata per oggi",
-  "excellentDay": "Eccellente produzione solare oggi! ☀️",
-  "goodDay": "Buona produzione solare oggi! 🌤️",
-  "averageDay": "Produzione solare nella media oggi ⛅",
-  "poorDay": "Poco sole oggi, ma ogni contributo aiuta! ☁️",
-  "noProduction": "Nessuna produzione solare rilevata oggi 🌧️",
-  
-  "vsYesterday": "{{sign}}{{percent}}{{percentUnit}} rispetto a ieri",
-  "aboveAverage": "{{sign}}{{percent}}{{percentUnit}} sopra la media",
-  "belowAverage": "{{percent}}{{percentUnit}} sotto la media",
-  "newRecord": "Nuovo record giornaliero! 🎉",
-  
-  "sunny": "Soleggiato",
-  "partlyCloudy": "Parzialmente Nuvoloso",
-  "cloudy": "Nuvoloso",
-  "mixed": "Condizioni Variabili",
-  
-  "peakAt": "picco alle",
-  "hoursOfSun": "ore di sole",
-  
-  "kwh": "kWh",
-  "kw": "kW",
-  "hours": "ore",
-  "percent": "%",
-  
-  "templates": {
-    "dailyComplete": "Produzione solare completata per oggi\n• Generata: {{energy}} {{energyUnit}} ({{efficiency}}{{percent}} dell'obiettivo)\n• Picco: {{peak}} {{peakUnit}} alle {{peakTime}}\n• {{comparison}}",
-    "summary": "Riepilogo solare di oggi: {{energy}} {{energyUnit}} generata",
-    "comparison": "{{sign}}{{percent}}{{percentUnit}} rispetto a {{period}}",
-    "weather": "Condizioni: {{condition}}"
+  "platform": {
+    "initialized": "Piattaforma inverter Kostal inizializzata",
+    "http_connected": "Client HTTP connesso",
+    "http_error": "Errore di connessione HTTP",
+    "http_timeout": "Timeout HTTP",
+    "polling_started": "Polling dei dati avviato",
+    "data_updated": "Dati aggiornati"
+  },
+  "http": {
+    "connected": "Client HTTP connesso",
+    "disconnected": "Connessione HTTP disconnessa",
+    "error": "Errore HTTP",
+    "timeout": "Timeout HTTP",
+    "auth_failed": "Autenticazione HTTP fallita",
+    "request_failed": "Richiesta HTTP fallita"
+  },
+  "accessory": {
+    "loaded": "Caricamento accessorio dalla cache",
+    "created": "Creazione nuovo accessorio",
+    "restored": "Accessorio ripristinato dalla cache",
+    "updated": "Accessorio aggiornato",
+    "error": "Errore accessorio"
+  },
+  "device": {
+    "main": "Inverter principale",
+    "string": "Stringa",
+    "generic": "Generico",
+    "power": "Potenza",
+    "energy": "Energia",
+    "temperature": "Temperatura",
+    "voltage": "Tensione",
+    "current": "Corrente",
+    "status": "Stato"
+  },
+  "services": {
+    "solar_panel": "Pannello solare",
+    "temperature_sensor": "Sensore di temperatura",
+    "humidity_sensor": "Sensore di umidità",
+    "contact_sensor": "Sensore di contatto",
+    "light_sensor": "Sensore di luce"
+  },
+  "characteristics": {
+    "current_ambient_light_level": "Livello di luce ambientale attuale",
+    "current_temperature": "Temperatura attuale",
+    "current_relative_humidity": "Umidità relativa attuale",
+    "contact_sensor_state": "Stato sensore di contatto"
+  },
+  "values": {
+    "power_watts": "Potenza in watt",
+    "energy_kwh": "Energia in kWh",
+    "temperature_celsius": "Temperatura in Celsius",
+    "voltage_volts": "Tensione in volt",
+    "current_amperes": "Corrente in ampere",
+    "percentage": "Percentuale"
+  },
+  "status": {
+    "producing": "Produce energia",
+    "not_producing": "Non produce energia",
+    "online": "Online",
+    "offline": "Offline",
+    "error": "Errore",
+    "maintenance": "Manutenzione"
+  },
+  "units": {
+    "watts": "W",
+    "kilowatts": "kW",
+    "kilowatt_hours": "kWh",
+    "celsius": "°C",
+    "volts": "V",
+    "amperes": "A",
+    "percent": "%"
+  },
+  "errors": {
+    "http_client_not_initialized": "Client HTTP non inizializzato",
+    "invalid_response": "Risposta non valida",
+    "connection_failed": "Connessione fallita",
+    "timeout": "Timeout",
+    "authentication_failed": "Autenticazione fallita"
+  },
+  "config": {
+    "http_host_required": "Host HTTP richiesto",
+    "invalid_port": "Porta non valida",
+    "invalid_timeout": "Timeout non valido",
+    "invalid_max_power": "Potenza massima non valida",
+    "invalid_max_energy": "Energia giornaliera massima non valida",
+    "invalid_strings": "Numero di stringhe non valido"
   }
 }

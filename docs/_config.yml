@@ -1,0 +1,50 @@
+title: Homebridge Kostal Inverter Plugin
+description: Überwachen Sie Ihren Kostal-Solarwechselrichter in Apple HomeKit mit HTTP API-Integration und Energy Provider Support
+url: "https://yourusername.github.io"
+baseurl: "/homebridge-kostal-inverter"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      layout: "page"
+
+# Navigation
+nav:
+  - title: Home
+    url: /
+  - title: Installation
+    url: /installation/
+  - title: Konfiguration
+    url: /configuration/
+  - title: API
+    url: /api/
+  - title: Beispiele
+    url: /examples/
+
+# Footer
+footer:
+  - title: GitHub
+    url: https://github.com/yourusername/homebridge-kostal-inverter
+  - title: NPM
+    url: https://www.npmjs.com/package/homebridge-kostal-inverter
+  - title: Homebridge
+    url: https://homebridge.io

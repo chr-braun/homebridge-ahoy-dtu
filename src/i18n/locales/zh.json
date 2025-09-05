@@ -1,39 +1,89 @@
 {
-  "energyGenerated": "发电量",
-  "peakPower": "峰值功率",
-  "productionHours": "发电时长",
-  "efficiency": "效率",
-  
-  "dailySummaryTitle": "每日太阳能报告",
-  "productionComplete": "今日太阳能发电完成",
-  "excellentDay": "今日太阳能发电极佳！☀️",
-  "goodDay": "今日太阳能发电良好！🌤️",
-  "averageDay": "今日太阳能发电一般 ⛅",
-  "poorDay": "今日阳光有限，但聊胜于无！☁️",
-  "noProduction": "今日未检测到太阳能发电 🌧️",
-  
-  "vsYesterday": "比昨日{{sign}}{{percent}}{{percentUnit}}",
-  "aboveAverage": "高于平均值{{sign}}{{percent}}{{percentUnit}}",
-  "belowAverage": "低于平均值{{percent}}{{percentUnit}}",
-  "newRecord": "创造新的日发电记录！🎉",
-  
-  "sunny": "晴朗",
-  "partlyCloudy": "多云",
-  "cloudy": "阴天",
-  "mixed": "天气多变",
-  
-  "peakAt": "峰值时间",
-  "hoursOfSun": "小时日照",
-  
-  "kwh": "千瓦时",
-  "kw": "千瓦",
-  "hours": "小时",
-  "percent": "%",
-  
-  "templates": {
-    "dailyComplete": "今日太阳能发电完成\n• 发电量：{{energy}} {{energyUnit}}（目标的{{efficiency}}{{percent}}）\n• 峰值：{{peak}} {{peakUnit}} 于 {{peakTime}}\n• {{comparison}}",
-    "summary": "今日太阳能概况：发电 {{energy}} {{energyUnit}}",
-    "comparison": "{{period}}{{sign}}{{percent}}{{percentUnit}}",
-    "weather": "天气状况：{{condition}}"
+  "platform": {
+    "initialized": "Kostal逆变器平台已初始化",
+    "http_connected": "HTTP客户端已连接",
+    "http_error": "HTTP连接错误",
+    "http_timeout": "HTTP超时",
+    "polling_started": "数据轮询已启动",
+    "data_updated": "数据已更新"
+  },
+  "http": {
+    "connected": "HTTP客户端已连接",
+    "disconnected": "HTTP连接已断开",
+    "error": "HTTP错误",
+    "timeout": "HTTP超时",
+    "auth_failed": "HTTP身份验证失败",
+    "request_failed": "HTTP请求失败"
+  },
+  "accessory": {
+    "loaded": "从缓存加载配件",
+    "created": "创建新配件",
+    "restored": "从缓存恢复配件",
+    "updated": "配件已更新",
+    "error": "配件错误"
+  },
+  "device": {
+    "main": "主逆变器",
+    "string": "串",
+    "generic": "通用",
+    "power": "功率",
+    "energy": "能量",
+    "temperature": "温度",
+    "voltage": "电压",
+    "current": "电流",
+    "status": "状态"
+  },
+  "services": {
+    "solar_panel": "太阳能板",
+    "temperature_sensor": "温度传感器",
+    "humidity_sensor": "湿度传感器",
+    "contact_sensor": "接触传感器",
+    "light_sensor": "光传感器"
+  },
+  "characteristics": {
+    "current_ambient_light_level": "当前环境光水平",
+    "current_temperature": "当前温度",
+    "current_relative_humidity": "当前相对湿度",
+    "contact_sensor_state": "接触传感器状态"
+  },
+  "values": {
+    "power_watts": "功率（瓦特）",
+    "energy_kwh": "能量（千瓦时）",
+    "temperature_celsius": "温度（摄氏度）",
+    "voltage_volts": "电压（伏特）",
+    "current_amperes": "电流（安培）",
+    "percentage": "百分比"
+  },
+  "status": {
+    "producing": "正在发电",
+    "not_producing": "未发电",
+    "online": "在线",
+    "offline": "离线",
+    "error": "错误",
+    "maintenance": "维护"
+  },
+  "units": {
+    "watts": "W",
+    "kilowatts": "kW",
+    "kilowatt_hours": "kWh",
+    "celsius": "°C",
+    "volts": "V",
+    "amperes": "A",
+    "percent": "%"
+  },
+  "errors": {
+    "http_client_not_initialized": "HTTP客户端未初始化",
+    "invalid_response": "无效响应",
+    "connection_failed": "连接失败",
+    "timeout": "超时",
+    "authentication_failed": "身份验证失败"
+  },
+  "config": {
+    "http_host_required": "需要HTTP主机",
+    "invalid_port": "无效端口",
+    "invalid_timeout": "无效超时",
+    "invalid_max_power": "无效最大功率",
+    "invalid_max_energy": "无效最大日能量",
+    "invalid_strings": "无效串数"
   }
 }

@@ -1,39 +1,89 @@
 {
-  "energyGenerated": "Energy Generated",
-  "peakPower": "Peak Power",
-  "productionHours": "Production Hours",
-  "efficiency": "Efficiency",
-  
-  "dailySummaryTitle": "Daily Solar Summary",
-  "productionComplete": "Solar production complete for today",
-  "excellentDay": "Excellent solar production today! ☀️",
-  "goodDay": "Good solar production today! 🌤️",
-  "averageDay": "Average solar production today ⛅",
-  "poorDay": "Limited sun today, but every bit helps! ☁️",
-  "noProduction": "No solar production detected today 🌧️",
-  
-  "vsYesterday": "{{sign}}{{percent}}{{percentUnit}} vs yesterday",
-  "aboveAverage": "{{sign}}{{percent}}{{percentUnit}} above average",
-  "belowAverage": "{{percent}}{{percentUnit}} below average",
-  "newRecord": "New daily record! 🎉",
-  
-  "sunny": "Sunny",
-  "partlyCloudy": "Partly Cloudy", 
-  "cloudy": "Cloudy",
-  "mixed": "Mixed Conditions",
-  
-  "peakAt": "peak at",
-  "hoursOfSun": "hours of sunlight",
-  
-  "kwh": "kWh",
-  "kw": "kW", 
-  "hours": "hours",
-  "percent": "%",
-  
-  "templates": {
-    "dailyComplete": "Solar production complete for today\n• Generated: {{energy}} {{energyUnit}} ({{efficiency}}{{percent}} of target)\n• Peak: {{peak}} {{peakUnit}} at {{peakTime}}\n• {{comparison}}",
-    "summary": "Today's solar summary: {{energy}} {{energyUnit}} generated",
-    "comparison": "{{sign}}{{percent}}{{percentUnit}} compared to {{period}}",
-    "weather": "Conditions: {{condition}}"
+  "platform": {
+    "initialized": "Kostal Inverter Platform initialized",
+    "http_connected": "HTTP client connected",
+    "http_error": "HTTP connection error",
+    "http_timeout": "HTTP timeout",
+    "polling_started": "Data polling started",
+    "data_updated": "Data updated"
+  },
+  "http": {
+    "connected": "HTTP client connected",
+    "disconnected": "HTTP connection disconnected",
+    "error": "HTTP error",
+    "timeout": "HTTP timeout",
+    "auth_failed": "HTTP authentication failed",
+    "request_failed": "HTTP request failed"
+  },
+  "accessory": {
+    "loaded": "Loading accessory from cache",
+    "created": "Creating new accessory",
+    "restored": "Restored accessory from cache",
+    "updated": "Accessory updated",
+    "error": "Accessory error"
+  },
+  "device": {
+    "main": "Main Inverter",
+    "string": "String",
+    "generic": "Generic",
+    "power": "Power",
+    "energy": "Energy",
+    "temperature": "Temperature",
+    "voltage": "Voltage",
+    "current": "Current",
+    "status": "Status"
+  },
+  "services": {
+    "solar_panel": "Solar Panel",
+    "temperature_sensor": "Temperature Sensor",
+    "humidity_sensor": "Humidity Sensor",
+    "contact_sensor": "Contact Sensor",
+    "light_sensor": "Light Sensor"
+  },
+  "characteristics": {
+    "current_ambient_light_level": "Current Ambient Light Level",
+    "current_temperature": "Current Temperature",
+    "current_relative_humidity": "Current Relative Humidity",
+    "contact_sensor_state": "Contact Sensor State"
+  },
+  "values": {
+    "power_watts": "Power in Watts",
+    "energy_kwh": "Energy in kWh",
+    "temperature_celsius": "Temperature in Celsius",
+    "voltage_volts": "Voltage in Volts",
+    "current_amperes": "Current in Amperes",
+    "percentage": "Percentage"
+  },
+  "status": {
+    "producing": "Producing Power",
+    "not_producing": "Not Producing Power",
+    "online": "Online",
+    "offline": "Offline",
+    "error": "Error",
+    "maintenance": "Maintenance"
+  },
+  "units": {
+    "watts": "W",
+    "kilowatts": "kW",
+    "kilowatt_hours": "kWh",
+    "celsius": "°C",
+    "volts": "V",
+    "amperes": "A",
+    "percent": "%"
+  },
+  "errors": {
+    "http_client_not_initialized": "HTTP client not initialized",
+    "invalid_response": "Invalid response",
+    "connection_failed": "Connection failed",
+    "timeout": "Timeout",
+    "authentication_failed": "Authentication failed"
+  },
+  "config": {
+    "http_host_required": "HTTP host is required",
+    "invalid_port": "Invalid port",
+    "invalid_timeout": "Invalid timeout",
+    "invalid_max_power": "Invalid maximum power",
+    "invalid_max_energy": "Invalid maximum daily energy",
+    "invalid_strings": "Invalid number of strings"
   }
 }

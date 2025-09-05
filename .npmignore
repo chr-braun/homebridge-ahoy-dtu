@@ -1,46 +1,59 @@
-# Source files - only include compiled dist
+# Source files
 src/
 *.ts
-!*.d.ts
-
-# Keep locale files in distribution
-!dist/i18n/locales/*.json
+*.tsx
+*.js.map
 
 # Development files
-.vscode/
-.DS_Store
-Thumbs.db
-
-# Node modules
-node_modules/
-
-# Build files
+.eslintrc.json
+.eslintrc.js
+eslint.config.js
 tsconfig.json
-nodemon.json
-
-# Development documentation
-HOMEBRIDGE-UI-GUIDE.md
-GUI-LAYOUT.md
-AHOY-DTU-MQTT-SPECS.md
-homebridge-ui-styles.css
-config-examples.json
-POWER-DISPLAY-DEMO.md
-POWER-MEASUREMENT-OPTIONS.md
-POWER-MEASUREMENT-IMPLEMENTATION.md
-FIXES-SUMMARY.md
-test-config-*.json
-DEPLOYMENT.md
-GITHUB-READY.md
-git-setup.sh
-
-# Git files
-.git/
 .gitignore
+.github/
 
-# npm files
+# Documentation (keep only main README and CHANGELOG)
+README-DEV.md
+README-GITHUB.md
+PROJECT-STRUCTURE-OVERVIEW.md
+AHOY-DTU-MQTT-SPECS.md
+CONTRIBUTING.md
+DAILY-REPORTS-GUIDE.md
+DEPLOYMENT-READY.md
+DEPLOYMENT.md
+FIXES-SUMMARY.md
+GITHUB-READY.md
+GUI-LAYOUT.md
+HOMEBRIDGE-UI-GUIDE.md
+INSTALL.md
+MULTILANG-DAILY-REPORTS.md
+POWER-DISPLAY-DEMO.md
+POWER-MEASUREMENT-IMPLEMENTATION.md
+POWER-MEASUREMENT-OPTIONS.md
+PROJECT-COMPLETION-SUMMARY.md
+PUBLISH-SUCCESS.md
+README-KOSTAL.md
+README-npm-production.md
+README-npm.md
+RELEASE-COMPLETE.md
+RELEASE-GUIDE.md
+v1.2.0-RELEASE-COMPLETE.md
+
+# Development dependencies
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
 
 # Test files
 test/
@@ -51,20 +64,27 @@ __tests__/
 *.spec.js
 *.spec.ts
 
-# Coverage
-coverage/
+# Example files
+example-*.json
+docs/
+config-examples.json
+homebridge-config-example.json
+test-outlet-config.json
 
-# IDE
-.idea/
-*.swp
-*.swo
-*~
+# Build artifacts
+dist/*.map
+*.tgz
 
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+
+# Homebridge specific
+accessories/
+persist/
+homebridge-ui-styles.css
+~/.homebridge/config.json

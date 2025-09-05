@@ -1,39 +1,89 @@
 {
-  "energyGenerated": "Énergie Générée",
-  "peakPower": "Puissance de Pointe",
-  "productionHours": "Heures de Production",
-  "efficiency": "Efficacité",
-  
-  "dailySummaryTitle": "Résumé Solaire Quotidien",
-  "productionComplete": "Production solaire terminée pour aujourd'hui",
-  "excellentDay": "Excellente production solaire aujourd'hui! ☀️",
-  "goodDay": "Bonne production solaire aujourd'hui! 🌤️",
-  "averageDay": "Production solaire moyenne aujourd'hui ⛅",
-  "poorDay": "Peu de soleil aujourd'hui, mais chaque bit aide! ☁️",
-  "noProduction": "Aucune production solaire détectée aujourd'hui 🌧️",
-  
-  "vsYesterday": "{{sign}}{{percent}}{{percentUnit}} par rapport à hier",
-  "aboveAverage": "{{sign}}{{percent}}{{percentUnit}} au-dessus de la moyenne",
-  "belowAverage": "{{percent}}{{percentUnit}} en dessous de la moyenne",
-  "newRecord": "Nouveau record quotidien! 🎉",
-  
-  "sunny": "Ensoleillé",
-  "partlyCloudy": "Partiellement Nuageux",
-  "cloudy": "Nuageux",
-  "mixed": "Conditions Variables",
-  
-  "peakAt": "pic à",
-  "hoursOfSun": "heures de soleil",
-  
-  "kwh": "kWh",
-  "kw": "kW",
-  "hours": "heures",
-  "percent": "%",
-  
-  "templates": {
-    "dailyComplete": "Production solaire terminée pour aujourd'hui\n• Générée: {{energy}} {{energyUnit}} ({{efficiency}}{{percent}} de l'objectif)\n• Pic: {{peak}} {{peakUnit}} à {{peakTime}}\n• {{comparison}}",
-    "summary": "Résumé solaire d'aujourd'hui: {{energy}} {{energyUnit}} générée",
-    "comparison": "{{sign}}{{percent}}{{percentUnit}} par rapport à {{period}}",
-    "weather": "Conditions: {{condition}}"
+  "platform": {
+    "initialized": "Plateforme onduleur Kostal initialisée",
+    "http_connected": "Client HTTP connecté",
+    "http_error": "Erreur de connexion HTTP",
+    "http_timeout": "Délai d'attente HTTP",
+    "polling_started": "Interrogation des données démarrée",
+    "data_updated": "Données mises à jour"
+  },
+  "http": {
+    "connected": "Client HTTP connecté",
+    "disconnected": "Connexion HTTP déconnectée",
+    "error": "Erreur HTTP",
+    "timeout": "Délai d'attente HTTP",
+    "auth_failed": "Échec de l'authentification HTTP",
+    "request_failed": "Échec de la requête HTTP"
+  },
+  "accessory": {
+    "loaded": "Chargement de l'accessoire depuis le cache",
+    "created": "Création d'un nouvel accessoire",
+    "restored": "Accessoire restauré depuis le cache",
+    "updated": "Accessoire mis à jour",
+    "error": "Erreur d'accessoire"
+  },
+  "device": {
+    "main": "Onduleur principal",
+    "string": "String",
+    "generic": "Générique",
+    "power": "Puissance",
+    "energy": "Énergie",
+    "temperature": "Température",
+    "voltage": "Tension",
+    "current": "Courant",
+    "status": "Statut"
+  },
+  "services": {
+    "solar_panel": "Panneau solaire",
+    "temperature_sensor": "Capteur de température",
+    "humidity_sensor": "Capteur d'humidité",
+    "contact_sensor": "Capteur de contact",
+    "light_sensor": "Capteur de lumière"
+  },
+  "characteristics": {
+    "current_ambient_light_level": "Niveau d'éclairage ambiant actuel",
+    "current_temperature": "Température actuelle",
+    "current_relative_humidity": "Humidité relative actuelle",
+    "contact_sensor_state": "État du capteur de contact"
+  },
+  "values": {
+    "power_watts": "Puissance en watts",
+    "energy_kwh": "Énergie en kWh",
+    "temperature_celsius": "Température en Celsius",
+    "voltage_volts": "Tension en volts",
+    "current_amperes": "Courant en ampères",
+    "percentage": "Pourcentage"
+  },
+  "status": {
+    "producing": "Produit de l'électricité",
+    "not_producing": "Ne produit pas d'électricité",
+    "online": "En ligne",
+    "offline": "Hors ligne",
+    "error": "Erreur",
+    "maintenance": "Maintenance"
+  },
+  "units": {
+    "watts": "W",
+    "kilowatts": "kW",
+    "kilowatt_hours": "kWh",
+    "celsius": "°C",
+    "volts": "V",
+    "amperes": "A",
+    "percent": "%"
+  },
+  "errors": {
+    "http_client_not_initialized": "Client HTTP non initialisé",
+    "invalid_response": "Réponse invalide",
+    "connection_failed": "Échec de la connexion",
+    "timeout": "Délai d'attente",
+    "authentication_failed": "Échec de l'authentification"
+  },
+  "config": {
+    "http_host_required": "L'hôte HTTP est requis",
+    "invalid_port": "Port invalide",
+    "invalid_timeout": "Délai d'attente invalide",
+    "invalid_max_power": "Puissance maximale invalide",
+    "invalid_max_energy": "Énergie quotidienne maximale invalide",
+    "invalid_strings": "Nombre de strings invalide"
   }
 }
