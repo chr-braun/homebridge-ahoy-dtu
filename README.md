@@ -27,6 +27,14 @@ Homebridge Plugin für Kostal Plenticore Wechselrichter mit **Apple Home Energy 
 - **Wechselrichter-Temperatur**
 - **Produktionsstatus**
 
+### 📈 Tagesreport & Historische Daten
+- **Automatische Datensammlung** alle 5 Minuten (ressourcenschonend)
+- **Tägliche Energieberichte** mit Vergleichswerten
+- **Vergleich mit vorherigem Tag, Woche und Monat**
+- **Produktionszeiten-Tracking** (Start/Ende)
+- **SQLite-Datenbank** für effiziente Speicherung
+- **JSON-Export** für weitere Analysen
+
 ### 🏠 Home Assistant Kompatibel
 - **Basierend auf offizieller Home Assistant Integration**
 - Verwendet gleiche API-Endpunkte
@@ -192,6 +200,62 @@ sudo systemctl restart homebridge
 - 🎉 Initial Release
 - 🔌 Basis-Kostal Integration
 - 🏠 HomeKit-Services
+
+## 📈 Tagesreport & Historische Daten
+
+Das Plugin sammelt automatisch alle 5 Minuten Daten und erstellt tägliche Berichte mit Vergleichswerten.
+
+### Automatische Datensammlung
+- **Ressourcenschonend**: Nur alle 5 Minuten speichern
+- **JSON-Format**: Daten werden in `~/.homebridge/kostal-data/` gespeichert
+- **SQLite-Datenbank**: Tägliche Zusammenfassungen für schnelle Abfragen
+
+### Tagesreport generieren
+```bash
+# Report für heute
+node generate-daily-report.js
+
+# Report für bestimmtes Datum
+node generate-daily-report.js --date=2024-01-15
+
+# JSON-Output für weitere Verarbeitung
+node generate-daily-report.js --json
+```
+
+### Täglicher Report (Cron Job)
+```bash
+# Füge zu crontab hinzu für täglichen Report um 20:00
+0 20 * * * /pfad/zu/homebridge-kostal-inverter/daily-report.sh
+```
+
+### Report-Features
+- ⚡ **Gesamtenergie** des Tages
+- 🔥 **Maximale Leistung** erreicht
+- 🌡️ **Durchschnittstemperatur**
+- ⏱️ **Produktionszeiten** (Start/Ende)
+- 📊 **Vergleichswerte** (vorheriger Tag, Woche, Monat)
+- 📈 **Trend-Indikatoren** (📈📉➡️)
+
+### Beispiel-Report
+```
+======================================================================
+🌞 KOSTAL SOLAR TAGESREPORT - 2024-01-15
+======================================================================
+⚡ Gesamtenergie: 26.248 kWh
+🔥 Max. Leistung: 5084.4 W
+🌡️  Ø Temperatur: 27.0 °C
+⏱️  Produktionszeit: 10.83 Stunden
+🌅 Produktionsstart: 08:00
+🌇 Produktionsende: 18:55
+📊 Datenpunkte: 132
+
+======================================================================
+📈 VERGLEICHSWERTE
+======================================================================
+📅 Vorheriger Tag (2024-01-14): 24.156 kWh 📈 +2.092 kWh
+📊 Wochendurchschnitt (7 Tage): 22.845 kWh 📈 +3.403 kWh
+======================================================================
+```
 
 ## 📄 Lizenz
 

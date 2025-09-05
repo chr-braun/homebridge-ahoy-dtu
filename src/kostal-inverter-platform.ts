@@ -194,8 +194,65 @@ export class KostalInverterPlatform implements DynamicPlatformPlugin {
       const logLine = JSON.stringify(logEntry) + '\n';
       
       fs.appendFileSync(logFile, logLine);
+      
+      // Zusätzlich: Speichere Daten für Tagesreport
+      this.storeDataForDailyReport(logEntry);
     } catch (error) {
       this.log.error('❌ Fehler beim Schreiben der Daten-Logs:', error);
+    }
+  }
+
+  private storeDataForDailyReport(logEntry: any) {
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const dataDir = path.join(require('os').homedir(), '.homebridge', 'kostal-data');
+      
+      // Erstelle Datenverzeichnis falls nicht vorhanden
+      if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
+      }
+      
+      // Nur alle 5 Minuten speichern (ressourcenschonend)
+      const now = new Date();
+      const lastSaveKey = 'lastDataSave';
+      const lastSave = this[lastSaveKey as keyof this] as number || 0;
+      
+      if (now.getTime() - lastSave < 5 * 60 * 1000) { // 5 Minuten
+        return;
+      }
+      
+      (this as any)[lastSaveKey] = now.getTime();
+      
+      // Speichere Daten für aktuellen Tag
+      const dateStr = now.toISOString().split('T')[0];
+      const dataFile = path.join(dataDir, `${dateStr}.json`);
+      
+      let dayData = [];
+      if (fs.existsSync(dataFile)) {
+        try {
+          dayData = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+        } catch (e) {
+          dayData = [];
+        }
+      }
+      
+      // Füge neuen Datenpunkt hinzu
+      dayData.push({
+        timestamp: logEntry.timestamp,
+        power: logEntry.power,
+        energy: logEntry.energy,
+        temperature: logEntry.temperature,
+        status: logEntry.status,
+        is_producing: logEntry.status === 'running'
+      });
+      
+      // Speichere aktualisierte Daten
+      fs.writeFileSync(dataFile, JSON.stringify(dayData, null, 2));
+      
+      this.log.debug(`📊 Tagesreport-Daten gespeichert: ${dayData.length} Datenpunkte`);
+    } catch (error) {
+      this.log.error('❌ Fehler beim Speichern der Tagesreport-Daten:', error);
     }
   }
 

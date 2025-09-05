@@ -33,7 +33,8 @@
     "homebridge": ">=1.6.0"
   },
   "dependencies": {
-    "modbus-serial": "^8.0.21-no-serial-port"
+    "modbus-serial": "^8.0.21-no-serial-port",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
