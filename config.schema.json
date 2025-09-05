@@ -139,6 +139,134 @@
           }
         }
       },
+      "customNames": {
+        "title": "Benutzerdefinierte Sensornamen",
+        "type": "object",
+        "properties": {
+          "power": {
+            "title": "Solarproduktion Name",
+            "type": "string",
+            "default": "Solarproduktion",
+            "description": "Benutzerdefinierter Name für Solarproduktion"
+          },
+          "energyToday": {
+            "title": "Tagesenergie Name",
+            "type": "string",
+            "default": "Tagesenergie",
+            "description": "Benutzerdefinierter Name für Tagesenergie"
+          },
+          "temperature": {
+            "title": "Temperatur Name",
+            "type": "string",
+            "default": "Temperatur",
+            "description": "Benutzerdefinierter Name für Temperatur"
+          },
+          "status": {
+            "title": "Status Name",
+            "type": "string",
+            "default": "Status",
+            "description": "Benutzerdefinierter Name für Online-Status"
+          },
+          "voltage": {
+            "title": "Spannung Name",
+            "type": "string",
+            "default": "Spannung",
+            "description": "Benutzerdefinierter Name für DC-Spannung"
+          },
+          "current": {
+            "title": "Strom Name",
+            "type": "string",
+            "default": "Strom",
+            "description": "Benutzerdefinierter Name für DC-Strom"
+          },
+          "efficiency": {
+            "title": "Effizienz Name",
+            "type": "string",
+            "default": "Effizienz",
+            "description": "Benutzerdefinierter Name für Effizienz"
+          },
+          "frequency": {
+            "title": "Frequenz Name",
+            "type": "string",
+            "default": "Frequenz",
+            "description": "Benutzerdefinierter Name für Netzfrequenz"
+          },
+          "rssi": {
+            "title": "Signalstärke Name",
+            "type": "string",
+            "default": "Signalstärke",
+            "description": "Benutzerdefinierter Name für Signalstärke"
+          },
+          "producing": {
+            "title": "Produktion Name",
+            "type": "string",
+            "default": "Produktion",
+            "description": "Benutzerdefinierter Name für Produktionsstatus"
+          }
+        }
+      },
+      "dataStorage": {
+        "title": "Datenspeicherung",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "title": "Historische Daten speichern",
+            "type": "boolean",
+            "default": true,
+            "description": "Aktiviert die Speicherung historischer Daten"
+          },
+          "retentionHours": {
+            "title": "Speicherdauer (Stunden)",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 168,
+            "default": 24,
+            "description": "Wie lange Daten im Speicher gehalten werden (1-168h = 1 Woche)"
+          },
+          "samplingInterval": {
+            "title": "Sampling-Intervall (Minuten)",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60,
+            "default": 5,
+            "description": "Intervall für Datensammlung (1-60 Minuten)"
+          },
+          "compressionEnabled": {
+            "title": "Datenkomprimierung",
+            "type": "boolean",
+            "default": true,
+            "description": "Komprimiert alte Daten für sparsame Speicherung"
+          }
+        }
+      },
+      "webInterface": {
+        "title": "Web-Interface",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "title": "Web-Interface aktivieren",
+            "type": "boolean",
+            "default": true,
+            "description": "Aktiviert das Web-Dashboard für Monitoring"
+          },
+          "port": {
+            "title": "Web-Interface Port",
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 65535,
+            "default": 8080,
+            "description": "Port für das Web-Interface"
+          },
+          "refreshInterval": {
+            "title": "Aktualisierungsintervall (Sekunden)",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60,
+            "default": 5,
+            "description": "Intervall für Live-Updates im Web-Interface"
+          }
+        }
+      },
       "childBridge": {
         "title": "Child Bridge",
         "type": "object",

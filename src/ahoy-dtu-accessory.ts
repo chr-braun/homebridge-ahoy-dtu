@@ -34,40 +34,45 @@ export class AhoyDtuAccessory {
 
   private createServices(): void {
     const sensorConfig = this.platform.config.sensors || {};
+    const customNames = this.platform.config.customNames || {};
 
     // Solarproduktion als Light Sensor (Watt als Lux)
     if (sensorConfig.power !== false) {
-      this.powerService = this.accessory.getService('Solarproduktion') ||
-        this.accessory.addService(this.platform.Service.LightSensor, 'Solarproduktion', 'solar-power');
+      const powerName = customNames.power || 'Solarproduktion';
+      this.powerService = this.accessory.getService(powerName) ||
+        this.accessory.addService(this.platform.Service.LightSensor, powerName, 'solar-power');
       
-      this.powerService.setCharacteristic(this.platform.Characteristic.Name, 'Solarproduktion');
+      this.powerService.setCharacteristic(this.platform.Characteristic.Name, powerName);
       this.powerService.setCharacteristic(this.platform.Characteristic.CurrentAmbientLightLevel, 0.0001);
     }
 
     // Temperatur als Temperature Sensor
     if (sensorConfig.temperature !== false) {
-      this.temperatureService = this.accessory.getService('Temperatur') ||
-        this.accessory.addService(this.platform.Service.TemperatureSensor, 'Temperatur', 'temperature');
+      const tempName = customNames.temperature || 'Temperatur';
+      this.temperatureService = this.accessory.getService(tempName) ||
+        this.accessory.addService(this.platform.Service.TemperatureSensor, tempName, 'temperature');
       
-      this.temperatureService.setCharacteristic(this.platform.Characteristic.Name, 'Temperatur');
+      this.temperatureService.setCharacteristic(this.platform.Characteristic.Name, tempName);
       this.temperatureService.setCharacteristic(this.platform.Characteristic.CurrentTemperature, 20);
     }
 
     // Tagesenergie als Light Sensor (kWh als Lux)
     if (sensorConfig.energyToday !== false) {
-      this.energyService = this.accessory.getService('Tagesenergie') ||
-        this.accessory.addService(this.platform.Service.LightSensor, 'Tagesenergie', 'daily-energy');
+      const energyName = customNames.energyToday || 'Tagesenergie';
+      this.energyService = this.accessory.getService(energyName) ||
+        this.accessory.addService(this.platform.Service.LightSensor, energyName, 'daily-energy');
       
-      this.energyService.setCharacteristic(this.platform.Characteristic.Name, 'Tagesenergie');
+      this.energyService.setCharacteristic(this.platform.Characteristic.Name, energyName);
       this.energyService.setCharacteristic(this.platform.Characteristic.CurrentAmbientLightLevel, 0.0001);
     }
 
     // Status als Contact Sensor
     if (sensorConfig.status !== false) {
-      this.statusService = this.accessory.getService('Status') ||
-        this.accessory.addService(this.platform.Service.ContactSensor, 'Status', 'status');
+      const statusName = customNames.status || 'Status';
+      this.statusService = this.accessory.getService(statusName) ||
+        this.accessory.addService(this.platform.Service.ContactSensor, statusName, 'status');
       
-      this.statusService.setCharacteristic(this.platform.Characteristic.Name, 'Status');
+      this.statusService.setCharacteristic(this.platform.Characteristic.Name, statusName);
       this.statusService.setCharacteristic(this.platform.Characteristic.ContactSensorState, 
         this.platform.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED);
     }
