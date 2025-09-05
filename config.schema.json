@@ -73,6 +73,72 @@
         "default": "de",
         "description": "Sprache für Logs und Benutzeroberfläche"
       },
+      "sensors": {
+        "title": "HomeKit-Sensoren",
+        "type": "object",
+        "properties": {
+          "power": {
+            "title": "Solarproduktion (Watt)",
+            "type": "boolean",
+            "default": true,
+            "description": "Aktuelle Solarleistung als LightSensor"
+          },
+          "energyToday": {
+            "title": "Tagesenergie (kWh)",
+            "type": "boolean",
+            "default": true,
+            "description": "Tägliche Energieerzeugung als LightSensor"
+          },
+          "temperature": {
+            "title": "Temperatur (°C)",
+            "type": "boolean",
+            "default": true,
+            "description": "Wechselrichter-Temperatur als TemperatureSensor"
+          },
+          "status": {
+            "title": "Online-Status",
+            "type": "boolean",
+            "default": true,
+            "description": "Online/Offline-Status als ContactSensor"
+          },
+          "voltage": {
+            "title": "DC-Spannung (V)",
+            "type": "boolean",
+            "default": false,
+            "description": "DC-Spannung als LightSensor"
+          },
+          "current": {
+            "title": "DC-Strom (A)",
+            "type": "boolean",
+            "default": false,
+            "description": "DC-Strom als LightSensor"
+          },
+          "efficiency": {
+            "title": "Effizienz (%)",
+            "type": "boolean",
+            "default": false,
+            "description": "Wechselrichter-Effizienz als LightSensor"
+          },
+          "frequency": {
+            "title": "Netzfrequenz (Hz)",
+            "type": "boolean",
+            "default": false,
+            "description": "Netzfrequenz als LightSensor"
+          },
+          "rssi": {
+            "title": "Signalstärke (dBm)",
+            "type": "boolean",
+            "default": false,
+            "description": "WiFi-Signalstärke als LightSensor"
+          },
+          "producing": {
+            "title": "Produktionsstatus",
+            "type": "boolean",
+            "default": false,
+            "description": "Aktiver Produktionsstatus als MotionSensor"
+          }
+        }
+      },
       "childBridge": {
         "title": "Child Bridge",
         "type": "object",
