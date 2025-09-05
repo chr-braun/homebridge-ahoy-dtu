@@ -279,12 +279,14 @@ export class AhoyDtuPlatform implements DynamicPlatformPlugin {
     accessory.context.deviceId = deviceId;
     accessory.context.deviceType = 'ahoy-dtu';
     
+    // AhoyDtuAccessory-Instanz erstellen (ohne circular reference)
+    const ahoyAccessory = new AhoyDtuAccessory(this, accessory);
+    
+    // Nur notwendige Daten im Context speichern (keine circular references)
+    accessory.context.ahoyAccessory = null; // Circular reference entfernen
+    
     this.accessories.push(accessory);
     this.api.registerPlatformAccessories('homebridge-ahoy-dtu', 'AhoyDTU', [accessory]);
-    
-    // AhoyDtuAccessory-Instanz erstellen
-    const ahoyAccessory = new AhoyDtuAccessory(this, accessory);
-    accessory.context.ahoyAccessory = ahoyAccessory;
     
     this.log.info(`✅ Accessory erstellt: ${deviceName}`);
   }
