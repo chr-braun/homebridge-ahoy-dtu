@@ -1,153 +1,116 @@
 {
   "pluginAlias": "KostalInverter",
   "pluginType": "platform",
-  "headerDisplay": "Kostal Plenticore Solar Inverter Plugin",
-  "headerDescription": "Integriert Kostal Plenticore Wechselrichter über HTTP/REST API in HomeKit",
+  "singular": true,
+  "customUi": true,
   "schema": {
     "type": "object",
     "properties": {
       "name": {
         "title": "Platform Name",
         "type": "string",
-        "default": "Kostal Plenticore",
-        "description": "Name der Platform in Homebridge"
+        "default": "Kostal Inverter",
+        "description": "Name of the Kostal Inverter Platform"
       },
-      "host": {
-        "title": "Wechselrichter IP-Adresse",
+      "language": {
+        "title": "Language",
         "type": "string",
-        "default": "192.168.1.100",
-        "description": "IP-Adresse deines Kostal Plenticore Wechselrichters"
+        "enum": ["de", "en", "fr", "it", "zh"],
+        "default": "de",
+        "description": "Language for the user interface"
       },
-      "port": {
-        "title": "Port",
-        "type": "integer",
-        "default": 80,
-        "minimum": 1,
-        "maximum": 65535,
-        "description": "Port für die HTTP-Verbindung (Standard: 80)"
+      "kostal": {
+        "title": "Kostal Inverter Connection",
+        "type": "object",
+        "properties": {
+          "host": {
+            "title": "IP Address",
+            "type": "string",
+            "format": "ipv4",
+            "description": "IP address of your Kostal inverter",
+            "required": true
+          },
+          "username": {
+            "title": "Username",
+            "type": "string",
+            "default": "pvserver",
+            "description": "Username for Kostal inverter (default: pvserver)"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string",
+            "format": "password",
+            "default": "pvwr",
+            "description": "Password for Kostal inverter (default: pvwr)"
+          },
+          "autoDetectModel": {
+            "title": "Auto-detect Model",
+            "type": "boolean",
+            "default": true,
+            "description": "Try to automatically detect the inverter model"
+          },
+          "model": {
+            "title": "Inverter Model",
+            "type": "string",
+            "default": "Plenticore",
+            "description": "Inverter model (if auto-detection fails)"
+          }
+        },
+        "required": ["host"]
       },
       "pollingInterval": {
-        "title": "Aktualisierungsintervall (Sekunden)",
-        "type": "integer",
+        "title": "Polling Interval",
+        "type": "number",
         "default": 30,
         "minimum": 10,
         "maximum": 300,
-        "description": "Wie oft sollen die Daten vom Wechselrichter abgerufen werden?"
+        "description": "Data polling interval from Kostal inverter in seconds"
       },
-      "enableMainInverter": {
-        "title": "Hauptwechselrichter aktivieren",
+      "childBridge": {
+        "title": "Enable Child Bridge",
         "type": "boolean",
-        "default": true,
-        "description": "Hauptwechselrichter mit Leistung, Temperatur und Status anzeigen"
+        "default": false,
+        "description": "Run plugin as Child Bridge (recommended for stability)"
       },
-      "enableStringMonitoring": {
-        "title": "PV-String-Überwachung aktivieren",
-        "type": "boolean",
-        "default": true,
-        "description": "Einzelne PV-Strings mit Spannung und Status überwachen"
+      "childBridgePort": {
+        "title": "Child Bridge Port",
+        "type": "number",
+        "default": 8581,
+        "minimum": 1000,
+        "maximum": 65535,
+        "description": "Port for Child Bridge (only when Child Bridge enabled)"
       },
-      "energyProvider": {
-        "title": "Apple Home Energy Provider",
-        "type": "object",
-        "properties": {
-          "enabled": {
-            "title": "Energy Provider aktivieren",
-            "type": "boolean",
-            "default": true,
-            "description": "Als Apple Home Energy Provider anzeigen (iOS 16+). Erscheint im Apple Home Energie-Widget."
-          },
-          "name": {
-            "title": "Energy Provider Name",
-            "type": "string",
-            "default": "Kostal Solar",
-            "description": "Name des Energy Providers in Apple Home"
-          }
-        },
-        "description": "Apple Home Energy Provider Einstellungen für iOS 16+"
+      "childBridgeUsername": {
+        "title": "Child Bridge Username",
+        "type": "string",
+        "default": "0E:16:CA:9B:88:54",
+        "description": "Username for Child Bridge (auto-generated)"
       },
-      "stringCount": {
-        "title": "Anzahl PV-Strings",
-        "type": "integer",
-        "default": 3,
-        "minimum": 1,
-        "maximum": 10,
-        "description": "Wie viele PV-Strings hat deine Anlage?",
-        "condition": {
-          "functionBody": "return model.enableStringMonitoring === true;"
-        }
-      },
-      "apiEndpoints": {
-        "title": "API-Endpunkte",
-        "type": "object",
-        "properties": {
-          "processData": {
-            "title": "Prozessdaten-Endpunkt",
-            "type": "string",
-            "default": "/api/v1/processdata",
-            "description": "Endpunkt für Leistungs- und Energiedaten"
-          },
-          "systemData": {
-            "title": "Systemdaten-Endpunkt",
-            "type": "string",
-            "default": "/api/v1/systemdata",
-            "description": "Endpunkt für Temperatur- und Statusdaten"
-          }
-        },
-        "description": "API-Endpunkte für verschiedene Datentypen"
-      },
-      "advanced": {
-        "title": "Erweiterte Einstellungen",
-        "type": "object",
-        "properties": {
-          "timeout": {
-            "title": "HTTP-Timeout (ms)",
-            "type": "integer",
-            "default": 10000,
-            "minimum": 1000,
-            "maximum": 60000,
-            "description": "Timeout für HTTP-Anfragen"
-          },
-          "retryAttempts": {
-            "title": "Wiederholungsversuche",
-            "type": "integer",
-            "default": 3,
-            "minimum": 1,
-            "maximum": 10,
-            "description": "Anzahl der Wiederholungsversuche bei Fehlern"
-          },
-          "enableDebugLogging": {
-            "title": "Debug-Logging aktivieren",
-            "type": "boolean",
-            "default": false,
-            "description": "Detaillierte Logs für Fehlerbehebung"
-          },
-          "usePythonBridge": {
-            "title": "Python-Bridge verwenden",
-            "type": "boolean",
-            "default": false,
-            "description": "Verwende die Python-Bridge (pykoplenti) für bessere Datenabfrage. Erfordert Python 3.13+ und pykoplenti."
-          }
-        }
+      "childBridgePin": {
+        "title": "Child Bridge PIN",
+        "type": "string",
+        "default": "542-50-232",
+        "description": "PIN for Child Bridge (auto-generated)"
       },
       "pushNotifications": {
-        "title": "Push-Benachrichtigungen",
+        "title": "Push Notifications",
         "type": "object",
         "properties": {
           "enabled": {
-            "title": "Push-Benachrichtigungen aktivieren",
+            "title": "Enable Push Notifications",
             "type": "boolean",
             "default": false,
-            "description": "Tägliche Solar-Reports um 20:00 Uhr senden"
+            "description": "Send daily solar reports via push notifications"
           },
           "time": {
-            "title": "Benachrichtigungszeit",
+            "title": "Notification Time",
             "type": "string",
             "default": "20:00",
             "pattern": "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",
-            "description": "Zeit für tägliche Benachrichtigungen (HH:MM)"
+            "description": "Time for daily notifications (HH:MM format)"
           },
           "services": {
-            "title": "Push-Services",
+            "title": "Notification Services",
             "type": "object",
             "properties": {
               "pushover": {
@@ -155,19 +118,20 @@
                 "type": "object",
                 "properties": {
                   "enabled": {
-                    "title": "Pushover aktivieren",
+                    "title": "Enable Pushover",
                     "type": "boolean",
-                    "default": false
+                    "default": false,
+                    "description": "Enable Pushover notifications"
                   },
                   "userKey": {
-                    "title": "User Key",
+                    "title": "Pushover User Key",
                     "type": "string",
-                    "default": ""
+                    "description": "Your Pushover user key"
                   },
                   "appToken": {
-                    "title": "App Token",
+                    "title": "Pushover App Token",
                     "type": "string",
-                    "default": ""
+                    "description": "Your Pushover app token"
                   }
                 }
               },
@@ -176,217 +140,64 @@
                 "type": "object",
                 "properties": {
                   "enabled": {
-                    "title": "Telegram aktivieren",
+                    "title": "Enable Telegram",
                     "type": "boolean",
-                    "default": false
+                    "default": false,
+                    "description": "Enable Telegram notifications"
                   },
                   "botToken": {
-                    "title": "Bot Token",
+                    "title": "Telegram Bot Token",
                     "type": "string",
-                    "default": ""
+                    "description": "Your Telegram bot token"
                   },
                   "chatId": {
-                    "title": "Chat ID",
+                    "title": "Telegram Chat ID",
                     "type": "string",
-                    "default": ""
+                    "description": "Your Telegram chat ID"
                   }
                 }
               },
               "homekit": {
-                "title": "HomeKit Integration",
+                "title": "HomeKit",
                 "type": "object",
                 "properties": {
                   "enabled": {
-                    "title": "HomeKit-Benachrichtigungen aktivieren",
+                    "title": "Enable HomeKit Notifications",
                     "type": "boolean",
                     "default": false,
-                    "description": "Verwendet HomeKit-Services für iOS-Benachrichtigungen"
+                    "description": "Enable HomeKit notifications"
                   },
                   "accessoryName": {
-                    "title": "Accessory Name",
+                    "title": "Notification Accessory Name",
                     "type": "string",
                     "default": "Kostal Solar Report",
-                    "description": "Name des Accessories für Benachrichtigungen"
+                    "description": "Name for the notification accessory"
+                  }
+                }
+              },
+              "webhook": {
+                "title": "Webhook",
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "title": "Enable Webhook",
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable webhook notifications"
+                  },
+                  "url": {
+                    "title": "Webhook URL",
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Webhook URL for notifications"
                   }
                 }
               }
             }
           }
-        },
-        "description": "Konfiguration für tägliche Push-Benachrichtigungen"
         }
       }
     },
-    "required": ["host"]
-  },
-  "form": [
-    {
-      "type": "string",
-      "key": "name",
-      "title": "Platform Name"
-    },
-    {
-      "type": "string",
-      "key": "host",
-      "title": "Wechselrichter IP-Adresse"
-    },
-    {
-      "type": "number",
-      "key": "port",
-      "title": "Port"
-    },
-    {
-      "type": "number",
-      "key": "pollingInterval",
-      "title": "Aktualisierungsintervall (Sekunden)"
-    },
-    {
-      "type": "checkbox",
-      "key": "enableMainInverter",
-      "title": "Hauptwechselrichter aktivieren"
-    },
-    {
-      "type": "checkbox",
-      "key": "enableStringMonitoring",
-      "title": "PV-String-Überwachung aktivieren"
-    },
-    {
-      "type": "fieldset",
-      "title": "Apple Home Energy Provider",
-      "items": [
-        {
-          "type": "checkbox",
-          "key": "energyProvider.enabled",
-          "title": "Energy Provider aktivieren"
-        },
-        {
-          "type": "string",
-          "key": "energyProvider.name",
-          "title": "Energy Provider Name"
-        }
-      ]
-    },
-    {
-      "type": "number",
-      "key": "stringCount",
-      "title": "Anzahl PV-Strings",
-      "condition": "enableStringMonitoring"
-    },
-    {
-      "type": "fieldset",
-      "title": "API-Endpunkte",
-      "items": [
-        {
-          "type": "string",
-          "key": "apiEndpoints.processData",
-          "title": "Prozessdaten-Endpunkt"
-        },
-        {
-          "type": "string",
-          "key": "apiEndpoints.systemData",
-          "title": "Systemdaten-Endpunkt"
-        }
-      ]
-    },
-    {
-      "type": "fieldset",
-      "title": "Erweiterte Einstellungen",
-      "items": [
-        {
-          "type": "number",
-          "key": "advanced.timeout",
-          "title": "HTTP-Timeout (ms)"
-        },
-        {
-          "type": "number",
-          "key": "advanced.retryAttempts",
-          "title": "Wiederholungsversuche"
-        },
-        {
-          "type": "checkbox",
-          "key": "advanced.enableDebugLogging",
-          "title": "Debug-Logging aktivieren"
-        },
-        {
-          "type": "checkbox",
-          "key": "advanced.usePythonBridge",
-          "title": "Python-Bridge verwenden"
-        }
-      ]
-    },
-    {
-      "type": "fieldset",
-      "title": "Push-Benachrichtigungen",
-      "items": [
-        {
-          "type": "checkbox",
-          "key": "pushNotifications.enabled",
-          "title": "Push-Benachrichtigungen aktivieren"
-        },
-        {
-          "type": "string",
-          "key": "pushNotifications.time",
-          "title": "Benachrichtigungszeit"
-        },
-        {
-          "type": "fieldset",
-          "title": "Pushover",
-          "items": [
-            {
-              "type": "checkbox",
-              "key": "pushNotifications.services.pushover.enabled",
-              "title": "Pushover aktivieren"
-            },
-            {
-              "type": "string",
-              "key": "pushNotifications.services.pushover.userKey",
-              "title": "User Key"
-            },
-            {
-              "type": "string",
-              "key": "pushNotifications.services.pushover.appToken",
-              "title": "App Token"
-            }
-          ]
-        },
-        {
-          "type": "fieldset",
-          "title": "Telegram",
-          "items": [
-            {
-              "type": "checkbox",
-              "key": "pushNotifications.services.telegram.enabled",
-              "title": "Telegram aktivieren"
-            },
-            {
-              "type": "string",
-              "key": "pushNotifications.services.telegram.botToken",
-              "title": "Bot Token"
-            },
-            {
-              "type": "string",
-              "key": "pushNotifications.services.telegram.chatId",
-              "title": "Chat ID"
-            }
-          ]
-        },
-        {
-          "type": "fieldset",
-          "title": "HomeKit Integration",
-          "items": [
-            {
-              "type": "checkbox",
-              "key": "pushNotifications.services.homekit.enabled",
-              "title": "HomeKit-Benachrichtigungen aktivieren"
-            },
-            {
-              "type": "string",
-              "key": "pushNotifications.services.homekit.accessoryName",
-              "title": "Accessory Name"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+    "required": ["kostal"]
+  }
 }
